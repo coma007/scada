@@ -13,6 +13,9 @@
 *.user
 *.userosscache
 *.sln.docstates
+scada-back/appsettings.json
+scada-back/appsettings.Development.json
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
