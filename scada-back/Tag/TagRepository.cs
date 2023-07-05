@@ -14,56 +14,56 @@ public class TagRepository : ITagRepository
         _tags = _database.GetCollection<IAbstractTag>(settings.TagsCollectionName);
     }
     
-    public IEnumerable<IAbstractTag> GetAll()
+    public async Task<IEnumerable<IAbstractTag>> GetAll()
     {
-        return _tags.Find(tag => true).ToList();
+        return (await _tags.FindAsync(tag => true)).ToList();
     }
 
-    public IEnumerable<IAbstractTag> GetAllAnalogTags()
+    public async Task<IEnumerable<IAbstractTag>> GetAllAnalogTags()
     {
-        return _tags.Find(tag => tag.SignalType == "analog").ToList();
+        return (await _tags.FindAsync(tag => tag.SignalType == "analog")).ToList();
     }
 
-    public IEnumerable<IAbstractTag> GetAllAnalogInputTags()
+    public async Task<IEnumerable<IAbstractTag>> GetAllAnalogInputTags()
     {
-        return _tags.Find(tag => tag.SignalType == "analog" && tag.TagType == "input").ToList();
+        return (await _tags.FindAsync(tag => tag.SignalType == "analog" && tag.TagType == "input")).ToList();
     }
 
-    public IEnumerable<IAbstractTag> GetAllAnalogOutputTags()
+    public async Task<IEnumerable<IAbstractTag>> GetAllAnalogOutputTags()
     {
-        return _tags.Find(tag => tag.SignalType == "analog" && tag.TagType == "output").ToList();
+        return (await _tags.FindAsync(tag => tag.SignalType == "analog" && tag.TagType == "output")).ToList();
     }
 
-    public IEnumerable<IAbstractTag> GetAllDigitalTags()
+    public async Task<IEnumerable<IAbstractTag>> GetAllDigitalTags()
     {
-        return _tags.Find(tag => tag.SignalType == "digital").ToList();
+        return (await _tags.FindAsync(tag => tag.SignalType == "digital")).ToList();
     }
 
-    public IEnumerable<IAbstractTag> GetAllDigitalInputTags()
+    public async Task<IEnumerable<IAbstractTag>> GetAllDigitalInputTags()
     {
-        return _tags.Find(tag => tag.SignalType == "digital" && tag.TagType == "input").ToList();
+        return (await _tags.FindAsync(tag => tag.SignalType == "digital" && tag.TagType == "input")).ToList();
     }
 
-    public IEnumerable<IAbstractTag> GetAllDigitalOutputTags()
+    public async Task<IEnumerable<IAbstractTag>> GetAllDigitalOutputTags()
     {
-        return _tags.Find(tag => tag.SignalType == "digital" && tag.TagType == "output").ToList();
+        return (await _tags.FindAsync(tag => tag.SignalType == "digital" && tag.TagType == "output")).ToList();
     }
 
-    public IAbstractTag Get(string tagName)
+    public async Task<IAbstractTag> Get(string tagName)
     {
-        return _tags.Find(tag => tag.TagName == tagName).FirstOrDefault();
+        return (await _tags.FindAsync(tag => tag.TagName == tagName)).FirstOrDefault();
     }
 
-    public IAbstractTag Create(IAbstractTag tag)
+    public async Task<IAbstractTag> Create(IAbstractTag tag)
     {
-        _tags.InsertOne(tag);
-        return Get(tag.Id);
+        await _tags.InsertOneAsync(tag);
+        return await Get(tag.Id);
     }
 
-    public IAbstractTag Delete(string tagName)
+    public async Task<IAbstractTag> Delete(string tagName)
     {
-        IAbstractTag tag = Get(tagName);
-        _tags.DeleteOne(tag => tag.TagName == tagName);
+        IAbstractTag tag = await Get(tagName);
+        await _tags.DeleteOneAsync(tag => tag.TagName == tagName);
         return tag;
     }
 }

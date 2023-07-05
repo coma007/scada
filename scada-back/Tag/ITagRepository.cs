@@ -4,15 +4,15 @@ namespace scada_back.Tag;
 
 public interface ITagRepository
 {
-    IEnumerable<IAbstractTag> GetAll();
-    IEnumerable<IAbstractTag> GetAllAnalogTags();
-    IEnumerable<IAbstractTag> GetAllAnalogInputTags();
-    IEnumerable<IAbstractTag> GetAllAnalogOutputTags();
-    IEnumerable<IAbstractTag> GetAllDigitalTags();
-    IEnumerable<IAbstractTag> GetAllDigitalInputTags();
-    IEnumerable<IAbstractTag> GetAllDigitalOutputTags();
-    IAbstractTag Get(string tagName);
-    IAbstractTag Create(IAbstractTag tag);
-    IAbstractTag Delete(string tagName);
+    Task<IEnumerable<IAbstractTag>> GetAll();
+    Task<IEnumerable<IAbstractTag>> GetAllAnalogTags();
+    Task<IEnumerable<IAbstractTag>> GetAllAnalogInputTags();
+    Task<IEnumerable<IAbstractTag>> GetAllAnalogOutputTags();
+    Task<IEnumerable<IAbstractTag>> GetAllDigitalTags();
+    Task<IEnumerable<IAbstractTag>> GetAllDigitalInputTags();
+    Task<IEnumerable<IAbstractTag>> GetAllDigitalOutputTags();
+    Task<IAbstractTag> Get(string tagName);
+    Task<IAbstractTag> Create(IAbstractTag tag);
+    Task<IAbstractTag> Delete(string tagName);
     
 }
