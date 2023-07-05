@@ -1,15 +1,14 @@
 namespace scada_back.Alarm;
 
-public class AlarmDTO
+public class AlarmCreateUpdateDTO
 {
-    public string Id { get; set; } = string.Empty;
     public AlarmType Type { get; set; }
     public Priority Priority { get; set; }
     public double Limit { get; set; }
     public string AlarmName { get; set; } = string.Empty;
     public string TagId { get; set; } = string.Empty;
 
-    public AlarmDTO(AlarmType type, Priority priority, double limit, string alarmName, string tagId)
+    public AlarmCreateUpdateDTO(AlarmType type, Priority priority, double limit, string alarmName, string tagId)
     {
         Type = type;
         Priority = priority;
@@ -18,15 +17,14 @@ public class AlarmDTO
         TagId = tagId;
     }
 
-    public AlarmDTO()
+    public AlarmCreateUpdateDTO()
     {
     }
 
-    public Alarm ToEntity()
+    public AlarmDTO ToRegularDTO()
     {
-        return new Alarm()
+        return new AlarmDTO()
         {
-            Id = Id,
             AlarmName = AlarmName,
             Type = Type,
             TagId = TagId,
