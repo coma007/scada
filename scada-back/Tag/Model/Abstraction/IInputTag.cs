@@ -1,15 +1,14 @@
 namespace scada_back.Tag.Model.Abstraction;
 
-public interface IInputTag : IAbstractTag
-{
-    public object Driver { get; set; }
+public interface IInputTag {
+    public string Driver { get; set; }
     public double ScanTime { get; set; }
     public bool Scan { get; set; }
 }
 
-public interface IInputTagDTO : IAbstractTagDTO
+public interface IInputTagDTO
 {
-    public object Driver { get; set; }
+    public string Driver { get; set; }
     public double ScanTime { get; set; }
     public bool Scan { get; set; }
 }
