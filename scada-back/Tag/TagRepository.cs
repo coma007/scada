@@ -19,8 +19,51 @@ public class TagRepository : ITagRepository
         return _tags.Find(tag => true).ToList();
     }
 
-    public IAbstractTag Get(string id)
+    public IEnumerable<IAbstractTag> GetAllAnalogTags()
     {
-        return _tags.Find(tag => tag.Id == id).FirstOrDefault();
+        return _tags.Find(tag => tag.SignalType == "analog").ToList();
+    }
+
+    public IEnumerable<IAbstractTag> GetAllAnalogInputTags()
+    {
+        return _tags.Find(tag => tag.SignalType == "analog" && tag.TagType == "input").ToList();
+    }
+
+    public IEnumerable<IAbstractTag> GetAllAnalogOutputTags()
+    {
+        return _tags.Find(tag => tag.SignalType == "analog" && tag.TagType == "output").ToList();
+    }
+
+    public IEnumerable<IAbstractTag> GetAllDigitalTags()
+    {
+        return _tags.Find(tag => tag.SignalType == "digital").ToList();
+    }
+
+    public IEnumerable<IAbstractTag> GetAllDigitalInputTags()
+    {
+        return _tags.Find(tag => tag.SignalType == "digital" && tag.TagType == "input").ToList();
+    }
+
+    public IEnumerable<IAbstractTag> GetAllDigitalOutputTags()
+    {
+        return _tags.Find(tag => tag.SignalType == "digital" && tag.TagType == "output").ToList();
+    }
+
+    public IAbstractTag Get(string tagName)
+    {
+        return _tags.Find(tag => tag.TagName == tagName).FirstOrDefault();
+    }
+
+    public IAbstractTag Create(IAbstractTag tag)
+    {
+        _tags.InsertOne(tag);
+        return Get(tag.Id);
+    }
+
+    public IAbstractTag Delete(string tagName)
+    {
+        IAbstractTag tag = Get(tagName);
+        _tags.DeleteOne(tag => tag.TagName == tagName);
+        return tag;
     }
 }
