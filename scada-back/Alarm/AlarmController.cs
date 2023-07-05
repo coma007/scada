@@ -6,44 +6,44 @@ namespace scada_back.Alarm;
 [Route("Api/[controller]/[action]")]
 public class AlarmController : ControllerBase
 {
-    private readonly IAlarmService _alarmService;
+    private readonly IAlarmService _service;
     private readonly ILogger<AlarmController> _logger;
     
-    public AlarmController(IAlarmService alarmService, ILogger<AlarmController> logger)
+    public AlarmController(IAlarmService service, ILogger<AlarmController> logger)
     {
-        _alarmService = alarmService;
+        _service = service;
         _logger = logger;
     }
     [HttpGet(Name = "GetAllAlarms")]
     public ActionResult<AlarmDto> GetAll()
     {
-        return Ok(_alarmService.GetAll());
+        return Ok(_service.GetAll());
     }
     
 
     [HttpGet(Name = "GetAlarmByName")]
     public ActionResult<AlarmDto> Get(string alarmName)
     {
-        return Ok(_alarmService.Get(alarmName));
+        return Ok(_service.Get(alarmName));
     }
 
     
     [HttpPost(Name = "CreateAlarm")]
     public ActionResult<AlarmDto> Create([FromBody]AlarmDto alarm)
     {
-        return Ok(_alarmService.Create(alarm));
+        return Ok(_service.Create(alarm));
     }
     
     [HttpDelete(Name = "DeleteAlarm")]
     public ActionResult<AlarmDto> Delete(string alarmName)
     {
-        return Ok(_alarmService.Delete(alarmName));
+        return Ok(_service.Delete(alarmName));
     }
     
     [HttpPatch(Name = "UpdateAlarm")]
     public ActionResult<AlarmDto> Update([FromBody]AlarmDto alarm)
     {
-        return Ok(_alarmService.Update(alarm));
+        return Ok(_service.Update(alarm));
     }
 
 }

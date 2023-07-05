@@ -29,7 +29,7 @@ public class TagService : ITagService
         Model.Abstraction.Tag tag =  _repository.Get(tagName).Result;
         if (tag == null)
         {
-            throw new ObjectNotFoundException($"Tag with '{tagName}' not found.");
+            throw new ObjectNotFoundException($"Tag with name '{tagName}' not found.");
         }
         return tag.ToDto();
     }

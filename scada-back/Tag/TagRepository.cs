@@ -34,7 +34,12 @@ public class TagRepository : ITagRepository
     public async Task<Model.Abstraction.Tag> Create(Model.Abstraction.Tag newTag)
     {
         await _tags.InsertOneAsync(newTag);
-        return await Get(newTag.TagName);
+        Model.Abstraction.Tag tag = await Get(newTag.TagName);
+        if (tag == null)
+        {
+            throw new ActionNotExecutedException("Create failed.");
+        }
+        return tag;
     }
 
     public async Task<Model.Abstraction.Tag> Delete(string tagName)
