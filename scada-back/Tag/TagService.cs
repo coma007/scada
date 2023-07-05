@@ -29,13 +29,18 @@ public class TagService : ITagService
         Model.Abstraction.Tag tag =  _repository.Get(tagName).Result;
         if (tag == null)
         {
-            throw new ObjectNotFound($"Tag with {tagName} not found.");
+            throw new ObjectNotFound($"Tag with '{tagName}' not found.");
         }
         return tag.ToDTO();
     }
 
     public TagDTO Create(TagDTO tag)
     {
+        Model.Abstraction.Tag existingTag = _repository.Get(tag.TagName).Result;
+        if (existingTag != null)
+        {
+            throw new ObjectNameAlreadyExists($"Tag with name '{tag.TagName}' already exists.");
+        }
         Model.Abstraction.Tag newTag = tag.ToEntity();
         return _repository.Create(newTag).Result.ToDTO();
     }

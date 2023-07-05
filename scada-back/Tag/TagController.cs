@@ -78,6 +78,10 @@ public class TagController : ControllerBase
         {
             newTag = _tagService.Create(tag);
         }
+        catch (ObjectNameAlreadyExists e)
+        {
+            return Conflict(e.Message);
+        }
         catch (System.Exception e)
         {
             return BadRequest(e.Message);
