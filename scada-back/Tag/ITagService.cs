@@ -4,9 +4,10 @@ namespace scada_back.Tag;
 
 public interface ITagService
 {
-    IEnumerable<TagDTO> GetAll();
-    IEnumerable<TagDTO> GetAll(string discriminator);
-    TagDTO Get(string tagName);
-    TagDTO Create(TagDTO tag);
-    TagDTO Delete(string tagName);
+    IEnumerable<TagDto> GetAll();
+    IEnumerable<TagDto> GetAll(string discriminator);
+    TagDto Get(string tagName);
+    TagDto Create(TagDto newTag);
+    TagDto Delete(string tagName);
+    TagDto Update(TagDto updatedTag);
 }

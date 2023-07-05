@@ -13,9 +13,9 @@ public class User
     [BsonElement("password")]
     public string Password { get; set; } = string.Empty;
 
-    public UserDTO ToDTO()
+    public UserDto ToDto()
     {
-        return new UserDTO
+        return new UserDto
         {
             Username = this.Username
         };
@@ -23,9 +23,9 @@ public class User
 }
 
 
-public class UserDTO
+public class UserDto
 {
-    public String Username { get; set; } = String.Empty;
+    public string Username { get; set; } = String.Empty;
 
     
 }

@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using scada_back.Tag.Model.Abstraction;
 
@@ -13,13 +12,13 @@ public class AnalogOutputTag : Abstraction.Tag, IAnalogTag, IOutputTag
     [BsonElement("high_limit")]
     public double HighLimit { get; set; }
     [BsonElement("units")]
-    public string Units { get; set; }
+    public string Units { get; set; }  = string.Empty;
     [BsonElement("initial_value")]
     public double InitialValue { get; set; }
     
-    public override TagDTO ToDTO()
+    public override TagDto ToDto()
     {
-        return new AnalogOutputTagDTO
+        return new AnalogOutputTagDto
         {
             TagName = this.TagName,
             TagType = "analog_output",
@@ -34,11 +33,11 @@ public class AnalogOutputTag : Abstraction.Tag, IAnalogTag, IOutputTag
     
 }
 
-public class AnalogOutputTagDTO : TagDTO, IAnalogTagDTO, IOutputTagDTO
+public class AnalogOutputTagDto : TagDto, IAnalogTagDto, IOutputTagDto
 {
     public double LowLimit { get; set; }
     public double HighLimit { get; set; }
-    public string Units { get; set; }
+    public string Units { get; set; } = string.Empty;
     public double InitialValue { get; set; }
     
     public override Tag.Model.Abstraction.Tag ToEntity()
@@ -55,13 +54,13 @@ public class AnalogOutputTagDTO : TagDTO, IAnalogTagDTO, IOutputTagDTO
         };
     }
 
-    public AnalogOutputTagDTO()
+    public AnalogOutputTagDto()
     {
         
     }
 
     [JsonConstructor]
-    public AnalogOutputTagDTO(string tagName, string tagType, string description, string ioAddress, double lowLimit, double highLimit, string units, double initialValue) : base(tagName, tagType, description, ioAddress)
+    public AnalogOutputTagDto(string tagName, string tagType, string description, string ioAddress, double lowLimit, double highLimit, string units, double initialValue) : base(tagName, tagType, description, ioAddress)
     {
         LowLimit = lowLimit;
         HighLimit = highLimit;

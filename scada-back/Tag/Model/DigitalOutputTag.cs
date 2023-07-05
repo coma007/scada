@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using scada_back.Tag.Model.Abstraction;
 
@@ -11,9 +10,9 @@ public class DigitalOutputTag : Abstraction.Tag, IDigitalTag, IOutputTag
     [BsonElement("initial_value")]
     public double InitialValue { get; set; }
 
-    public override TagDTO ToDTO()
+    public override TagDto ToDto()
     {
-        return new DigitalOutputTagDTO
+        return new DigitalOutputTagDto
         {
             TagName = this.TagName,
             TagType = "digital_output",
@@ -25,7 +24,7 @@ public class DigitalOutputTag : Abstraction.Tag, IDigitalTag, IOutputTag
     
 }
 
-public class DigitalOutputTagDTO :  TagDTO, IDigitalTagDTO, IOutputTagDTO
+public class DigitalOutputTagDto :  TagDto, IDigitalTagDto, IOutputTagDto
 {
     public double InitialValue { get; set; }
     public override Tag.Model.Abstraction.Tag ToEntity()
@@ -39,13 +38,13 @@ public class DigitalOutputTagDTO :  TagDTO, IDigitalTagDTO, IOutputTagDTO
         };
     }
 
-    public DigitalOutputTagDTO()
+    public DigitalOutputTagDto()
     {
         
     }
 
     [JsonConstructor]
-    public DigitalOutputTagDTO(string tagName, string tagType, string description, string ioAddress, double initialValue) : base(tagName, tagType, description, ioAddress)
+    public DigitalOutputTagDto(string tagName, string tagType, string description, string ioAddress, double initialValue) : base(tagName, tagType, description, ioAddress)
     {
         InitialValue = initialValue;
     }

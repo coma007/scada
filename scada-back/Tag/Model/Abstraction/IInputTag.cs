@@ -6,7 +6,7 @@ public interface IInputTag {
     public bool Scan { get; set; }
 }
 
-public interface IInputTagDTO
+public interface IInputTagDto
 {
     public string Driver { get; set; }
     public double ScanTime { get; set; }

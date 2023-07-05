@@ -8,7 +8,7 @@ public interface IAnalogTag
 
 }
 
-public interface IAnalogTagDTO
+public interface IAnalogTagDto
 {
     public double LowLimit { get; set; }
     public double HighLimit { get; set; }

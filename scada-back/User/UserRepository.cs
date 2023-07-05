@@ -9,8 +9,8 @@ public class UserRepository : IUserRepository
 
     public UserRepository(IScadaDatabaseSettings settings, IMongoClient mongoClient)
     {
-        var _database = mongoClient.GetDatabase(settings.DatabaseName);
-        _users = _database.GetCollection<User>(settings.UsersCollectionName);
+        var database = mongoClient.GetDatabase(settings.DatabaseName);
+        _users = database.GetCollection<User>(settings.UsersCollectionName);
     }
   
     public User Get(string username)

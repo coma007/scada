@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using scada_back.Tag.Model.Abstraction;
 
@@ -9,15 +8,15 @@ namespace scada_back.Tag.Model;
 public class DigitalInputTag : Abstraction.Tag, IDigitalTag, IInputTag
 {
     [BsonElement("driver")]
-    public string Driver { get; set; }
+    public string Driver { get; set; } = string.Empty;
     [BsonElement("scan_time")]
     public double ScanTime { get; set; }
     [BsonElement("scan")]
     public bool Scan { get; set; }
     
-    public override TagDTO ToDTO()
+    public override TagDto ToDto()
     {
-        return new DigitalInputTagDTO
+        return new DigitalInputTagDto
         {
             TagName = this.TagName,
             TagType = "digital_input",
@@ -31,9 +30,9 @@ public class DigitalInputTag : Abstraction.Tag, IDigitalTag, IInputTag
 
 }
 
-public class DigitalInputTagDTO :  TagDTO, IDigitalTagDTO, IInputTagDTO
+public class DigitalInputTagDto :  TagDto, IDigitalTagDto, IInputTagDto
 {
-    public string Driver { get; set; }
+    public string Driver { get; set; } = string.Empty;
     public double ScanTime { get; set; }
     public bool Scan { get; set; }
     
@@ -50,13 +49,13 @@ public class DigitalInputTagDTO :  TagDTO, IDigitalTagDTO, IInputTagDTO
         };
     }
 
-    public DigitalInputTagDTO()
+    public DigitalInputTagDto()
     {
         
     }
 
     [JsonConstructor]
-    public DigitalInputTagDTO(string tagName, string tagType, string description, string ioAddress, string driver, double scanTime, bool scan) : base(tagName, tagType, description, ioAddress)
+    public DigitalInputTagDto(string tagName, string tagType, string description, string ioAddress, string driver, double scanTime, bool scan) : base(tagName, tagType, description, ioAddress)
     {
         Driver = driver;
         ScanTime = scanTime;

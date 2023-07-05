@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using scada_back.Exception;
-using scada_back.Tag.Model;
 using scada_back.Tag.Model.Abstraction;
 
 namespace scada_back.Tag;
@@ -18,76 +16,41 @@ public class TagController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet(Name = "GetAll")]
-    public ActionResult<IEnumerable<TagDTO>> GetAll()
+    [HttpGet(Name = "GetAllTags")]
+    public ActionResult<IEnumerable<TagDto>> GetAll()
     {
-        IEnumerable<TagDTO> tags;
-        try
-        {
-            tags = _tagService.GetAll();
-        }
-        catch (System.Exception e)
-        {
-            return BadRequest(e.Message);
-        }
-
-        return Ok(tags);
+        return Ok(_tagService.GetAll());
     }
     
-    [HttpGet(Name = "GetAllByType")]
-    public ActionResult<IEnumerable<TagDTO>> GetAllByType(string tagType)
+    [HttpGet(Name = "GetAllTagsByType")]
+    public ActionResult<IEnumerable<TagDto>> GetAllByType(string tagType)
     {
-        IEnumerable<TagDTO> tags;
-        try
-        {
-            tags = _tagService.GetAll(tagType);
-        }
-        catch (System.Exception e)
-        {
-            return BadRequest(e.Message);
-        }
-
-        return Ok(tags);
+        return Ok(_tagService.GetAll(tagType));
     }
     
-    [HttpGet(Name = "GetByName")]
-    public ActionResult<TagDTO> Get(string tagName)
+    [HttpGet(Name = "GetTagByName")]
+    public ActionResult<TagDto> Get(string tagName)
     {
-        TagDTO tag;
-        try
-        {
-            tag = _tagService.Get(tagName);
-        }
-        catch (ObjectNotFound e)
-        {
-            return NotFound(e.Message);
-        }
-        catch (System.Exception e)
-        {
-            return BadRequest(e.Message);
-        }
-
-        return Ok(tag);
+        return Ok(_tagService.Get(tagName));
     }
     
-    [HttpPost(Name = "Create")]
-    public ActionResult<TagDTO> Create(TagDTO tag)
+    [HttpPost(Name = "CreateTag")]
+    public ActionResult<TagDto> Create([FromBody]TagDto tag)
     {
-        TagDTO newTag;
-        try
-        {
-            newTag = _tagService.Create(tag);
-        }
-        catch (ObjectNameAlreadyExists e)
-        {
-            return Conflict(e.Message);
-        }
-        catch (System.Exception e)
-        {
-            return BadRequest(e.Message);
-        }
-
-        return Ok(newTag);
+        return Ok(_tagService.Create(tag));
     }
     
+    
+    [HttpDelete(Name = "DeleteTag")]
+    public ActionResult<TagDto> Delete(string tagName)
+    {
+        return Ok(_tagService.Delete(tagName));
+    }
+    
+    [HttpPatch(Name = "UpdateTag")]
+    public ActionResult<TagDto> Update([FromBody]TagDto tag)
+    {
+        return Ok(_tagService.Update(tag));
+    }
+
 }

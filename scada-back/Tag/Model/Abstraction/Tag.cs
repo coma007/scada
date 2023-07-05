@@ -9,34 +9,34 @@ public abstract class Tag
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
+    public string Id { get; set; } = string.Empty;
     [BsonElement("tag_name")]
-    public string TagName { get; set; }
+    public string TagName { get; set; } = string.Empty;
     [BsonElement("description")]
-    public string Description { get; set; }
+    public string Description { get; set; } = string.Empty;
     [BsonElement("io_address")]
-    public string IOAddress { get; set; }
+    public string IOAddress { get; set; } = string.Empty;
 
 
-    public abstract TagDTO ToDTO();
+    public abstract TagDto ToDto();
 }
 
-public abstract class TagDTO
+public abstract class TagDto
 {
-    public string TagName { get; set; }
-    public string TagType { get; set; }
-    public string Description { get; set; }
-    public string IOAddress { get; set; }
+    public string TagName { get; set; } = string.Empty;
+    public string TagType { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string IOAddress { get; set; } = string.Empty;
 
     public abstract Tag ToEntity();
 
-    public TagDTO()
+    public TagDto()
     {
         
     }
     
     [JsonConstructor]
-    protected TagDTO(string tagName, string tagType, string description, string ioAddress)
+    protected TagDto(string tagName, string tagType, string description, string ioAddress)
     {
         TagName = tagName;
         TagType = tagType;

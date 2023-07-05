@@ -14,39 +14,36 @@ public class AlarmController : ControllerBase
         _alarmService = alarmService;
         _logger = logger;
     }
+    [HttpGet(Name = "GetAllAlarms")]
+    public ActionResult<AlarmDto> GetAll()
+    {
+        return Ok(_alarmService.GetAll());
+    }
+    
 
-    [HttpGet(Name = "alarm")]
-    public ActionResult<AlarmDTO> Get(string id)
+    [HttpGet(Name = "GetAlarmByName")]
+    public ActionResult<AlarmDto> Get(string alarmName)
     {
-       AlarmDTO alarm = _alarmService.Get(id);
-       return Ok(alarm);
+        return Ok(_alarmService.Get(alarmName));
     }
-    
-    [HttpGet(Name = "alarms")]
-    public ActionResult<AlarmDTO> GetAll()
-    {
-        IEnumerable<AlarmDTO> alarms = _alarmService.GetAll();
-        return Ok(alarms);
-    }
-    
-    [HttpPost(Name = "create")]
-    public ActionResult<AlarmDTO> Create([FromBody]AlarmCreateUpdateDTO updateDto)
-    {
-        AlarmDTO alarm = _alarmService.Create(updateDto);
-        return Ok(alarm);
-    }
-    
-    [HttpDelete(Name = "delete")]
-    public ActionResult<Boolean> Delete(string id)
-    {
-        return Ok(_alarmService.Delete(id));
-    }
-    
-    [HttpPatch(Name = "update")]
 
-    public ActionResult<Boolean> Update([FromBody]AlarmCreateUpdateDTO dto, string id)
+    
+    [HttpPost(Name = "CreateAlarm")]
+    public ActionResult<AlarmDto> Create([FromBody]AlarmDto alarm)
     {
-        return Ok(_alarmService.Update(dto, id));
+        return Ok(_alarmService.Create(alarm));
+    }
+    
+    [HttpDelete(Name = "DeleteAlarm")]
+    public ActionResult<AlarmDto> Delete(string alarmName)
+    {
+        return Ok(_alarmService.Delete(alarmName));
+    }
+    
+    [HttpPatch(Name = "UpdateAlarm")]
+    public ActionResult<AlarmDto> Update([FromBody]AlarmDto alarm)
+    {
+        return Ok(_alarmService.Update(alarm));
     }
 
 }

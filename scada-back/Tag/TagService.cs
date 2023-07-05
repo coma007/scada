@@ -12,41 +12,46 @@ public class TagService : ITagService
         _repository = repository;
     }
     
-    public IEnumerable<TagDTO> GetAll()
+    public IEnumerable<TagDto> GetAll()
     {
         IEnumerable<Model.Abstraction.Tag> tags =  _repository.GetAll().Result;
-        return tags.Select(tags => tags.ToDTO());
+        return tags.Select(tag => tag.ToDto());
     }
 
-    public IEnumerable<TagDTO> GetAll(string discriminator)
+    public IEnumerable<TagDto> GetAll(string discriminator)
     {
         IEnumerable<Model.Abstraction.Tag> tags = _repository.GetAll(discriminator).Result;
-        return tags.Select(tags => tags.ToDTO());
+        return tags.Select(tag => tag.ToDto());
     }
     
-    public TagDTO Get(string tagName)
+    public TagDto Get(string tagName)
     {
         Model.Abstraction.Tag tag =  _repository.Get(tagName).Result;
         if (tag == null)
         {
-            throw new ObjectNotFound($"Tag with '{tagName}' not found.");
+            throw new ObjectNotFoundException($"Tag with '{tagName}' not found.");
         }
-        return tag.ToDTO();
+        return tag.ToDto();
     }
 
-    public TagDTO Create(TagDTO tag)
+    public TagDto Create(TagDto newTag)
     {
-        Model.Abstraction.Tag existingTag = _repository.Get(tag.TagName).Result;
+        Model.Abstraction.Tag existingTag = _repository.Get(newTag.TagName).Result;
         if (existingTag != null)
         {
-            throw new ObjectNameAlreadyExists($"Tag with name '{tag.TagName}' already exists.");
+            throw new ObjectNameTakenException($"Tag with name '{newTag.TagName}' already exists.");
         }
-        Model.Abstraction.Tag newTag = tag.ToEntity();
-        return _repository.Create(newTag).Result.ToDTO();
+        Model.Abstraction.Tag tag = newTag.ToEntity();
+        return _repository.Create(tag).Result.ToDto();
     }
 
-    public TagDTO Delete(string tagName)
+    public TagDto Delete(string tagName)
     {
-        throw new NotImplementedException();
+        return _repository.Delete(tagName).Result.ToDto();
+    }
+
+    public TagDto Update(TagDto updatedTag)
+    {
+        return _repository.Update(updatedTag.ToEntity()).Result.ToDto();
     }
 }

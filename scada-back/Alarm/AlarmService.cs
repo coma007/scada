@@ -1,4 +1,4 @@
-using System.Collections;
+using scada_back.Exception;
 
 namespace scada_back.Alarm;
 
@@ -10,41 +10,40 @@ public class AlarmService : IAlarmService
     {
         _repository = repository;
     }
-    public AlarmDTO Get(string id)
-    {
-        return _repository.Get(id).Result.ToDto();
-    }
-
-    public IEnumerable<AlarmDTO> GetAll()
+    
+    public IEnumerable<AlarmDto> GetAll()
     {
         IEnumerable<Alarm> alarms = _repository.GetAll().Result;
-        return alarms.Count() > 0 ? alarms.Select(alarm => alarm.ToDto()) : Enumerable.Empty<AlarmDTO>();
+        return alarms.Select(alarm => alarm.ToDto());
     }
 
-    public AlarmDTO Create(AlarmCreateUpdateDTO updateDto)
+    public AlarmDto Get(string alarmName)
     {
-        if (_repository.GetByName(updateDto.AlarmName).Result != null)
-            throw new System.Exception("Already exists alarm with that name");
-        Alarm newAlarm = updateDto.ToRegularDTO().ToEntity();
-        return _repository.Create(newAlarm).Result.ToDto();
-    }
-
-    public AlarmDTO Delete(string id)
-    {
-        return _repository.Delete(id).Result.ToDto();
-    }
-
-    public AlarmDTO Update(AlarmCreateUpdateDTO dto, string id)
-    {
-        Alarm sameName = _repository.GetByName(dto.AlarmName).Result;
-        if (sameName != null)
+        Alarm alarm = _repository.Get(alarmName).Result;
+        if (alarm == null)
         {
-            if ( sameName.Id != id)
-                throw new System.Exception("Already exists alarm with that name");
+            throw new ObjectNotFoundException($"Alarm with '{alarmName}' not found.");
         }
+        return alarm.ToDto();
+    }
 
-        AlarmDTO updatedDto = dto.ToRegularDTO();
-        updatedDto.Id = id;
-        return _repository.Update(updatedDto.ToEntity()).Result.ToDto();
+    public AlarmDto Create(AlarmDto newAlarm)
+    {
+        Alarm existingAlarm = _repository.Get(newAlarm.AlarmName).Result;
+        if (existingAlarm != null) {
+            throw new ObjectNameTakenException($"Alarm with name '{newAlarm.AlarmName}' already exists.");
+        }
+        Alarm alarm = newAlarm.ToEntity();
+        return _repository.Create(alarm).Result.ToDto();
+    }
+
+    public AlarmDto Delete(string alarmName)
+    {
+        return _repository.Delete(alarmName).Result.ToDto();
+    }
+
+    public AlarmDto Update(AlarmDto updatedAlarm)
+    {
+        return _repository.Update(updatedAlarm.ToEntity()).Result.ToDto();
     }
 }

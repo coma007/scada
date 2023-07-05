@@ -1,9 +1,6 @@
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using scada_back.Database;
-using scada_back.Tag.Model;
-using scada_back.Tag.Model.Abstraction;
+using scada_back.Exception;
 
 namespace scada_back.Tag;
 
@@ -13,17 +10,8 @@ public class TagRepository : ITagRepository
 
     public TagRepository(IScadaDatabaseSettings settings, IMongoClient mongoClient)
     {
-        // BsonClassMap.RegisterClassMap<AbstractTag>(cm =>
-        // {
-        //     cm.AutoMap();
-        //     cm.SetDiscriminator("analog_input");
-        //     cm.SetDiscriminator("analog_output");
-        //     cm.SetDiscriminator("digital_input");
-        //     cm.SetDiscriminator("digital_output");
-        // });
-        
-        var _database = mongoClient.GetDatabase(settings.DatabaseName);
-        _tags = _database.GetCollection<Model.Abstraction.Tag>(settings.TagsCollectionName);
+        var database = mongoClient.GetDatabase(settings.DatabaseName);
+        _tags = database.GetCollection<Model.Abstraction.Tag>(settings.TagsCollectionName);
 
     }
     
@@ -43,16 +31,31 @@ public class TagRepository : ITagRepository
         return (await _tags.FindAsync(tag => tag.TagName == tagName)).FirstOrDefault();
     }
 
-    public async Task<Model.Abstraction.Tag> Create(Model.Abstraction.Tag tag)
+    public async Task<Model.Abstraction.Tag> Create(Model.Abstraction.Tag newTag)
     {
-        await _tags.InsertOneAsync(tag);
-        return await Get(tag.TagName);
+        await _tags.InsertOneAsync(newTag);
+        return await Get(newTag.TagName);
     }
 
     public async Task<Model.Abstraction.Tag> Delete(string tagName)
     {
-        Model.Abstraction.Tag tag = await Get(tagName);
-        await _tags.DeleteOneAsync(tag => tag.TagName == tagName);
-        return tag;
+        Model.Abstraction.Tag toBeDeleted = await Get(tagName);
+        DeleteResult result = await _tags.DeleteOneAsync(tag => tag.TagName == tagName);
+        if (result.DeletedCount == 0)
+        {
+            throw new ActionNotExecutedException("Delete failed.");
+        }
+        return toBeDeleted;
+    }
+
+    public async Task<Model.Abstraction.Tag> Update(Model.Abstraction.Tag updatedTag)
+    {
+        ReplaceOneResult result = await _tags.ReplaceOneAsync(tag => tag.TagName == updatedTag.TagName, updatedTag);
+        if (result.ModifiedCount == 0)
+        {
+            throw new ActionNotExecutedException("Update failed.");
+        }
+
+        return await Get(updatedTag.TagName);
     }
 }

@@ -5,7 +5,7 @@ public interface IDigitalTag
     
 }
 
-public interface IDigitalTagDTO 
+public interface IDigitalTagDto 
 {
     
 }

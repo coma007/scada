@@ -7,7 +7,7 @@ public interface IOutputTag
 
 }
 
-public interface IOutputTagDTO
+public interface IOutputTagDto
 {
     public double InitialValue { get; set; }
 
