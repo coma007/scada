@@ -4,7 +4,10 @@ namespace scada_back.Tag;
 
 public interface ITagRepository
 {
-    IEnumerable<IAbstractTag> GetAll();
+    Task<IEnumerable<Model.Abstraction.Tag>> GetAll();
+    Task<IEnumerable<Model.Abstraction.Tag>> GetAll(string discriminator);
+    Task<Model.Abstraction.Tag> Get(string tagName);
+    Task<Model.Abstraction.Tag> Create(Model.Abstraction.Tag tag);
+    Task<Model.Abstraction.Tag> Delete(string tagName);
     
-    IAbstractTag Get(string id);
 }
