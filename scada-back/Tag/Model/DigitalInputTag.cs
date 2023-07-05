@@ -25,4 +25,32 @@ public class DigitalInputTag : IDigitalTag, IInputTag
     public double ScanTime { get; set; }
     [BsonElement("scan")]
     public bool Scan { get; set; }
+    
+    public IAbstractTagDTO ToDTO()
+    {
+        return new DigitalInputTagDTO
+        {
+            TagName = this.TagName,
+            TagType = this.TagType,
+            SignalType = this.SignalType,
+            Description = this.Description,
+            IOAddress = this.IOAddress,
+            Driver = this.Driver,
+            ScanTime = this.ScanTime,
+            Scan = this.Scan
+        };
+    }
+
+}
+
+public class DigitalInputTagDTO : IDigitalTagDTO, IInputTagDTO
+{
+    public string TagName { get; set; }
+    public string TagType { get; set; } = "input";
+    public string SignalType { get; set; } = "digital";
+    public string Description { get; set; }
+    public string IOAddress { get; set; }
+    public object Driver { get; set; }
+    public double ScanTime { get; set; }
+    public bool Scan { get; set; }
 }

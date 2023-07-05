@@ -12,6 +12,7 @@ public interface IAbstractTag
     public string Description { get; set; }
     public string IOAddress { get; set; }
 
+    public IAbstractTagDTO ToDTO();
 }
 
 public interface IAbstractTagDTO
@@ -21,5 +22,5 @@ public interface IAbstractTagDTO
     public string SignalType { get; set; } 
     public string Description { get; set; }
     public string IOAddress { get; set; }
-
+    
 }

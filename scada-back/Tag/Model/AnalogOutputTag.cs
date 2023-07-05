@@ -27,4 +27,34 @@ public class AnalogOutputTag :IAnalogTag, IOutputTag
     public string Units { get; set; }
     [BsonElement("initial_value")]
     public double InitialValue { get; set; }
+    
+    public IAbstractTagDTO ToDTO()
+    {
+        return new AnalogOutputTagDTO
+        {
+            TagName = this.TagName,
+            TagType = this.TagType,
+            SignalType = this.SignalType,
+            Description = this.Description,
+            IOAddress = this.IOAddress,
+            LowLimit = this.LowLimit,
+            HightLimit = this.HightLimit,
+            Units = this.Units,
+            InitialValue = this.InitialValue
+        };
+    }
+    
+}
+
+public class AnalogOutputTagDTO :IAnalogTagDTO, IOutputTagDTO
+{
+    public string TagName { get; set; }
+    public string TagType { get; set; } = "output";
+    public string SignalType { get; set; } = "analog";
+    public string Description { get; set; }
+    public string IOAddress { get; set; }
+    public double LowLimit { get; set; }
+    public double HightLimit { get; set; }
+    public string Units { get; set; }
+    public double InitialValue { get; set; }
 }

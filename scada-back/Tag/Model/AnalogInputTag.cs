@@ -19,6 +19,7 @@ public class AnalogInputTag : IAnalogTag, IInputTag
     public string Description { get; set; }
     [BsonElement("io_address")]
     public string IOAddress { get; set; }
+
     [BsonElement("low_limit")]
     public double LowLimit { get; set; }
     [BsonElement("high_limit")]
@@ -31,8 +32,9 @@ public class AnalogInputTag : IAnalogTag, IInputTag
     public double ScanTime { get; set; }
     [BsonElement("scan")]
     public bool Scan { get; set; }
-
-    public AnalogInputTagDTO ToDTO()
+    
+    
+    public IAbstractTagDTO ToDTO()
     {
         return new AnalogInputTagDTO
         {
@@ -49,6 +51,7 @@ public class AnalogInputTag : IAnalogTag, IInputTag
             Scan = this.Scan
         };
     }
+    
 }
 
 public class AnalogInputTagDTO : IAnalogTagDTO, IInputTagDTO
