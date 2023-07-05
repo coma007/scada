@@ -1,44 +1,32 @@
+using System.Text.Json.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using scada_back.Tag.Model.Abstraction;
 
 namespace scada_back.Tag.Model;
 
-public class AnalogOutputTag :IAnalogTag, IOutputTag
+[BsonDiscriminator("analog_output")]
+public class AnalogOutputTag : Abstraction.Tag, IAnalogTag, IOutputTag
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
-    [BsonElement("tag_name")]
-    public string TagName { get; set; }
-    [BsonElement("tag_type")] 
-    public string TagType { get; set; } = "output";
-    [BsonElement("signal_type")]
-    public string SignalType { get; set; } = "analog";
-    [BsonElement("description")]
-    public string Description { get; set; }
-    [BsonElement("io_address")]
-    public string IOAddress { get; set; }
     [BsonElement("low_limit")]
     public double LowLimit { get; set; }
     [BsonElement("high_limit")]
-    public double HightLimit { get; set; }
+    public double HighLimit { get; set; }
     [BsonElement("units")]
     public string Units { get; set; }
     [BsonElement("initial_value")]
     public double InitialValue { get; set; }
     
-    public IAbstractTagDTO ToDTO()
+    public override TagDTO ToDTO()
     {
         return new AnalogOutputTagDTO
         {
             TagName = this.TagName,
-            TagType = this.TagType,
-            SignalType = this.SignalType,
+            TagType = "analog_output",
             Description = this.Description,
             IOAddress = this.IOAddress,
             LowLimit = this.LowLimit,
-            HightLimit = this.HightLimit,
+            HighLimit = this.HighLimit,
             Units = this.Units,
             InitialValue = this.InitialValue
         };
@@ -46,15 +34,38 @@ public class AnalogOutputTag :IAnalogTag, IOutputTag
     
 }
 
-public class AnalogOutputTagDTO :IAnalogTagDTO, IOutputTagDTO
+public class AnalogOutputTagDTO : TagDTO, IAnalogTagDTO, IOutputTagDTO
 {
-    public string TagName { get; set; }
-    public string TagType { get; set; } = "output";
-    public string SignalType { get; set; } = "analog";
-    public string Description { get; set; }
-    public string IOAddress { get; set; }
     public double LowLimit { get; set; }
-    public double HightLimit { get; set; }
+    public double HighLimit { get; set; }
     public string Units { get; set; }
     public double InitialValue { get; set; }
+    
+    public override Tag.Model.Abstraction.Tag ToEntity()
+    {
+        return new AnalogOutputTag
+        {
+            TagName = this.TagName,
+            Description = this.Description,
+            IOAddress = this.IOAddress,
+            LowLimit = this.LowLimit,
+            HighLimit = this.HighLimit,
+            Units = this.Units,
+            InitialValue = this.InitialValue
+        };
+    }
+
+    public AnalogOutputTagDTO()
+    {
+        
+    }
+
+    [JsonConstructor]
+    public AnalogOutputTagDTO(string tagName, string tagType, string description, string ioAddress, double lowLimit, double highLimit, string units, double initialValue) : base(tagName, tagType, description, ioAddress)
+    {
+        LowLimit = lowLimit;
+        HighLimit = highLimit;
+        Units = units;
+        InitialValue = initialValue;
+    }
 }

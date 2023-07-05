@@ -1,29 +1,22 @@
+using System.Text.Json.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using scada_back.Tag.Model.Abstraction;
 
 namespace scada_back.Tag.Model;
 
-public class DigitalOutputTag : IDigitalTag, IOutputTag
+[BsonDiscriminator("digital_output")]
+public class DigitalOutputTag : Abstraction.Tag, IDigitalTag, IOutputTag
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
+    [BsonElement("initial_value")]
+    public double InitialValue { get; set; }
 
-    [BsonElement("tag_name")] public string TagName { get; set; }
-    [BsonElement("tag_type")] public string TagType { get; set; } = "output";
-    [BsonElement("signal_type")] public string SignalType { get; set; } = "digital";
-    [BsonElement("description")] public string Description { get; set; }
-    [BsonElement("io_address")] public string IOAddress { get; set; }
-    [BsonElement("initial_value")] public double InitialValue { get; set; }
-
-    public IAbstractTagDTO ToDTO()
+    public override TagDTO ToDTO()
     {
         return new DigitalOutputTagDTO
         {
             TagName = this.TagName,
-            TagType = this.TagType,
-            SignalType = this.SignalType,
+            TagType = "digital_output",
             Description = this.Description,
             IOAddress = this.IOAddress,
             InitialValue = this.InitialValue
@@ -32,12 +25,28 @@ public class DigitalOutputTag : IDigitalTag, IOutputTag
     
 }
 
-public class DigitalOutputTagDTO : IDigitalTagDTO, IOutputTagDTO
+public class DigitalOutputTagDTO :  TagDTO, IDigitalTagDTO, IOutputTagDTO
 {
-    public string TagName { get; set; }
-    public string TagType { get; set; } = "output";
-    public string SignalType { get; set; } = "digital";
-    public string Description { get; set; }
-    public string IOAddress { get; set; }
     public double InitialValue { get; set; }
+    public override Tag.Model.Abstraction.Tag ToEntity()
+    {
+        return new DigitalOutputTag
+        {
+            TagName = this.TagName,
+            Description = this.Description,
+            IOAddress = this.IOAddress,
+            InitialValue = this.InitialValue
+        };
+    }
+
+    public DigitalOutputTagDTO()
+    {
+        
+    }
+
+    [JsonConstructor]
+    public DigitalOutputTagDTO(string tagName, string tagType, string description, string ioAddress, double initialValue) : base(tagName, tagType, description, ioAddress)
+    {
+        InitialValue = initialValue;
+    }
 }

@@ -1,50 +1,36 @@
-using MongoDB.Bson;
+using System.Text.Json.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using scada_back.Tag.Model.Abstraction;
 
 namespace scada_back.Tag.Model;
 
-public class AnalogInputTag : IAnalogTag, IInputTag
+[BsonDiscriminator("analog_input")]
+public class AnalogInputTag : Abstraction.Tag, IAnalogTag, IInputTag
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
-    [BsonElement("tag_name")]
-    public string TagName { get; set; }
-    [BsonElement("tag_type")]
-    public string TagType { get; set; } = "input";
-    [BsonElement("signal_type")]
-    public string SignalType { get; set; } = "analog";
-    [BsonElement("description")]
-    public string Description { get; set; }
-    [BsonElement("io_address")]
-    public string IOAddress { get; set; }
-
     [BsonElement("low_limit")]
     public double LowLimit { get; set; }
     [BsonElement("high_limit")]
-    public double HightLimit { get; set; }
+    public double HighLimit { get; set; }
     [BsonElement("units")]
     public string Units { get; set; }
     [BsonElement("driver")]
-    public object Driver { get; set; }
+    public string Driver { get; set; }
     [BsonElement("scan_time")]
     public double ScanTime { get; set; }
     [BsonElement("scan")]
     public bool Scan { get; set; }
     
     
-    public IAbstractTagDTO ToDTO()
+    public override TagDTO ToDTO()
     {
         return new AnalogInputTagDTO
         {
             TagName = this.TagName,
-            TagType = this.TagType,
-            SignalType = this.SignalType,
+            TagType = "analog_input",
             Description = this.Description,
             IOAddress = this.IOAddress,
             LowLimit = this.LowLimit,
-            HightLimit = this.HightLimit,
+            HighLimit = this.HighLimit,
             Units = this.Units,
             Driver = this.Driver,
             ScanTime = this.ScanTime,
@@ -54,17 +40,43 @@ public class AnalogInputTag : IAnalogTag, IInputTag
     
 }
 
-public class AnalogInputTagDTO : IAnalogTagDTO, IInputTagDTO
+public class AnalogInputTagDTO :  TagDTO, IAnalogTagDTO, IInputTagDTO
 {
-    public string TagName { get; set; }
-    public string TagType { get; set; }
-    public string SignalType { get; set; }
-    public string Description { get; set; }
-    public string IOAddress { get; set; }
     public double LowLimit { get; set; }
-    public double HightLimit { get; set; }
+    public double HighLimit { get; set; }
     public string Units { get; set; }
-    public object Driver { get; set; }
+    public string Driver { get; set; }
     public double ScanTime { get; set; }
     public bool Scan { get; set; }
+    public override Tag.Model.Abstraction.Tag ToEntity()
+    {
+        return new AnalogInputTag
+        {
+            TagName = this.TagName,
+            Description = this.Description,
+            IOAddress = this.IOAddress,
+            LowLimit = this.LowLimit,
+            HighLimit = this.HighLimit,
+            Units = this.Units,
+            Driver = this.Driver,
+            ScanTime = this.ScanTime,
+            Scan = this.Scan
+        };
+    }
+
+    public AnalogInputTagDTO()
+    {
+        
+    }
+
+    [JsonConstructor]
+    public AnalogInputTagDTO(string tagName, string tagType, string description, string ioAddress, double lowLimit, double highLimit, string units, string driver, double scanTime, bool scan) : base(tagName, tagType, description, ioAddress)
+    {
+        LowLimit = lowLimit;
+        HighLimit = highLimit;
+        Units = units;
+        Driver = driver;
+        ScanTime = scanTime;
+        Scan = scan;
+    }
 }

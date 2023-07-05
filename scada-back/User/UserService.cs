@@ -17,7 +17,6 @@ public class UserService : IUserService
         {
             throw new ObjectNotFound("Incorrect credentials.");
         }
-
         return user.ToDTO();
     }
 }
