@@ -8,6 +8,5 @@ public interface ITagRepository
     Task<Model.Abstraction.Tag> Get(string tagName);
     Task<Model.Abstraction.Tag> Create(Model.Abstraction.Tag newTag);
     Task<Model.Abstraction.Tag> Delete(string tagName);
-    public Task<Model.Abstraction.Tag> Update(Model.Abstraction.Tag updatedTag);
-    
+    Task<Model.Abstraction.Tag> Update(Model.Abstraction.Tag updatedTag);
 }

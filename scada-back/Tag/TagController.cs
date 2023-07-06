@@ -52,5 +52,11 @@ public class TagController : ControllerBase
     {
         return Ok(_service.Update(tag));
     }
+    
+    [HttpPatch(Name = "UpdateTagScan")]
+    public ActionResult<TagDto> UpdateScan(string tagName)
+    {
+        return Ok(_service.UpdateScan(tagName));
+    }
 
 }

@@ -11,6 +11,7 @@ namespace scada_back.Exception.Filter
             {
                 ObjectNameTakenException => new ConflictObjectResult(context.Exception.Message),
                 ObjectNotFoundException => new NotFoundObjectResult(context.Exception.Message),
+                InvalidSignalTypeException => new BadRequestObjectResult(context.Exception.Message),
                 ActionNotExecutedException => new ObjectResult(context.Exception.Message) { StatusCode = 503 },
                 _ => new BadRequestObjectResult(context.Exception.Message)
             };

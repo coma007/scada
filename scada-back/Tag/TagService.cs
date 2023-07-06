@@ -1,4 +1,5 @@
 using scada_back.Exception;
+using scada_back.Tag.Model;
 using scada_back.Tag.Model.Abstraction;
 
 namespace scada_back.Tag;
@@ -63,5 +64,20 @@ public class TagService : ITagService
     public TagDto Update(TagDto updatedTag)
     {
         return _repository.Update(updatedTag.ToEntity()).Result.ToDto();
+    }
+
+    public TagDto UpdateScan(string tagName)
+    {
+        Model.Abstraction.Tag tag = _repository.Get(tagName).Result;
+        if (tag is IInputTag inputTag)
+        {
+            inputTag.Scan = !inputTag.Scan;
+        }
+        else
+        {
+            throw new InvalidSignalTypeException($"Tag with {tagName} is not ");
+        }
+        return _repository.Update(tag).Result.ToDto();
+
     }
 }

@@ -2,6 +2,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using scada_back.Database;
 using scada_back.Exception;
+using scada_back.Tag.Model;
 
 namespace scada_back.Tag;
 
