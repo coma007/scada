@@ -1,5 +1,6 @@
 using scada_back.Exception;
 using scada_back.Tag;
+using scada_back.Tag.Model.Abstraction;
 using scada_back.Validation;
 
 namespace scada_back.Alarm;
@@ -47,6 +48,16 @@ public class AlarmService : IAlarmService
         {
             throw new ObjectNotFoundException($"Tag with name '{newAlarm.TagName}' not found.");
         }
+
+        if (tag is not IAnalogTag analogTag)
+        {
+            throw new System.Exception("Tag for alarm should be analog");
+        }
+
+        if (!(newAlarm.Limit < analogTag.HighLimit && newAlarm.Limit > analogTag.LowLimit))
+        {
+            throw new System.Exception("Alarm limit is not between high and low limit");
+        }
         Alarm alarm = newAlarm.ToEntity();
         return _repository.Create(alarm).Result.ToDto();
     }
@@ -69,6 +80,7 @@ public class AlarmService : IAlarmService
         {
             throw new System.Exception("Cannot change tag name");
         }
+        
         return _repository.Update(updatedAlarm.ToEntity()).Result.ToDto();
     }
 }
