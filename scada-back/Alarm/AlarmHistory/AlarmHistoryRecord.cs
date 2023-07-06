@@ -7,7 +7,7 @@ public class AlarmHistoryRecord
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
+    public string Id { get; set; } = string.Empty;
     [BsonElement("alarm_name")]
     public string AlarmName { get; set; }
     [BsonElement("timestamp")]
@@ -20,7 +20,6 @@ public class AlarmHistoryRecord
     {
         return new AlarmHistoryRecordDTO()
         {
-            Id = Id,
             Timestamp = Timestamp,
             AlarmName = AlarmName,
             TagValue = TagValue

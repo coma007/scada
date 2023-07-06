@@ -39,7 +39,6 @@ public class Alarm
             Type = Type,
             AlarmName = AlarmName,
             Limit = Limit,
-            Id = Id,
             TagId = TagId,
             Priority = Priority
         };

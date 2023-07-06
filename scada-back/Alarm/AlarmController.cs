@@ -16,9 +16,9 @@ public class AlarmController : ControllerBase
     }
 
     [HttpGet(Name = "alarm")]
-    public ActionResult<AlarmDTO> Get(string id)
+    public ActionResult<AlarmDTO> GetByName(string name)
     {
-       AlarmDTO alarm = _alarmService.Get(id);
+       AlarmDTO alarm = _alarmService.GetByName(name);
        return Ok(alarm);
     }
     
@@ -30,7 +30,7 @@ public class AlarmController : ControllerBase
     }
     
     [HttpPost(Name = "create")]
-    public ActionResult<AlarmDTO> Create([FromBody]AlarmCreateUpdateDTO updateDto)
+    public ActionResult<AlarmDTO> Create([FromBody]AlarmDTO updateDto)
     {
         AlarmDTO alarm = _alarmService.Create(updateDto);
         return Ok(alarm);
@@ -44,9 +44,9 @@ public class AlarmController : ControllerBase
     
     [HttpPatch(Name = "update")]
 
-    public ActionResult<Boolean> Update([FromBody]AlarmCreateUpdateDTO dto, string id)
+    public ActionResult<Boolean> Update([FromBody]AlarmDTO dto)
     {
-        return Ok(_alarmService.Update(dto, id));
+        return Ok(_alarmService.Update(dto));
     }
 
 }

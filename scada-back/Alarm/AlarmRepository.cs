@@ -14,14 +14,7 @@ public class AlarmRepository: IAlarmRepository
         var _database = mongoClient.GetDatabase(settings.DatabaseName);
         _alarms = _database.GetCollection<Alarm>(settings.AlarmsCollectionName);
     }
-    
-    public async Task<Alarm> Get(string id)
-    {
-        return await _alarms
-            .Find(Builders<Alarm>.Filter.Eq(x => x.Id, id))
-            .FirstOrDefaultAsync();
-    }
-    
+
     public async Task<Alarm> GetByName(string name)
     {
         return await _alarms
@@ -40,10 +33,10 @@ public class AlarmRepository: IAlarmRepository
         return newAlarm;
     }
 
-    public async Task<Alarm> Delete(string id)
+    public async Task<Alarm> Delete(string name)
     {
-        Alarm toBeDeleted = await Get(id);
-        DeleteResult result = await _alarms.DeleteOneAsync(Builders<Alarm>.Filter.Eq(x => x.Id, id));
+        Alarm toBeDeleted = await GetByName(name);
+        DeleteResult result = await _alarms.DeleteOneAsync(Builders<Alarm>.Filter.Eq(x => x.AlarmName, name));
         if (result.DeletedCount == 0)
         {
             throw new NotExecutedException();
@@ -53,12 +46,12 @@ public class AlarmRepository: IAlarmRepository
 
     public async Task<Alarm> Update(Alarm toBeUpdated)
     {
-        ReplaceOneResult result = await _alarms.ReplaceOneAsync(Builders<Alarm>.Filter.Eq(x => x.Id, toBeUpdated.Id), toBeUpdated);
+        ReplaceOneResult result = await _alarms.ReplaceOneAsync(Builders<Alarm>.Filter.Eq(x => x.AlarmName, toBeUpdated.AlarmName), toBeUpdated);
         if (result.ModifiedCount == 0)
         {
             throw new NotExecutedException();
         }
 
-        return await Get(toBeUpdated.Id);
+        return await GetByName(toBeUpdated.AlarmName);
     }
 }

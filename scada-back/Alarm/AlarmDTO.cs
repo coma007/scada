@@ -2,7 +2,6 @@ namespace scada_back.Alarm;
 
 public class AlarmDTO
 {
-    public string Id { get; set; } = string.Empty;
     public AlarmType Type { get; set; }
     public Priority Priority { get; set; }
     public double Limit { get; set; }
@@ -26,7 +25,6 @@ public class AlarmDTO
     {
         return new Alarm()
         {
-            Id = Id,
             AlarmName = AlarmName,
             Type = Type,
             TagId = TagId,

@@ -11,9 +11,9 @@ public class AlarmService : IAlarmService
     {
         _repository = repository;
     }
-    public AlarmDTO Get(string id)
+    public AlarmDTO GetByName(string name)
     {
-        Alarm result = _repository.Get(id).Result; 
+        Alarm result = _repository.GetByName(name).Result; 
         return result != null ? result.ToDto() : throw new ObjectNotFound("Not found");
     }
 
@@ -23,11 +23,11 @@ public class AlarmService : IAlarmService
         return alarms.Count() > 0 ? alarms.Select(alarm => alarm.ToDto()) : Enumerable.Empty<AlarmDTO>();
     }
 
-    public AlarmDTO Create(AlarmCreateUpdateDTO updateDto)
+    public AlarmDTO Create(AlarmDTO updateDto)
     {
         if (_repository.GetByName(updateDto.AlarmName).Result != null)
             throw new System.Exception("Already exists alarm with that name");
-        Alarm newAlarm = updateDto.ToRegularDTO().ToEntity();
+        Alarm newAlarm = updateDto.ToEntity();
         return _repository.Create(newAlarm).Result.ToDto();
     }
 
@@ -36,17 +36,10 @@ public class AlarmService : IAlarmService
         return _repository.Delete(id).Result.ToDto();
     }
 
-    public AlarmDTO Update(AlarmCreateUpdateDTO dto, string id)
+    public AlarmDTO Update(AlarmDTO dto)
     {
-        Alarm sameName = _repository.GetByName(dto.AlarmName).Result;
-        if (sameName != null)
-        {
-            if ( sameName.Id != id)
-                throw new System.Exception("Already exists alarm with that name");
-        }
-
-        AlarmDTO updatedDto = dto.ToRegularDTO();
-        updatedDto.Id = id;
-        return _repository.Update(updatedDto.ToEntity()).Result.ToDto();
+        AlarmDTO updatedDto = dto;
+        Alarm toCreate = updatedDto.ToEntity();
+        return _repository.Update(toCreate).Result.ToDto();
     }
 }

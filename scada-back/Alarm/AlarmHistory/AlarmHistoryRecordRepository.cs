@@ -14,10 +14,10 @@ public class AlarmHistoryRecordRepository : IAlarmHistoryRecordRepository
         _alarmRecords = _database.GetCollection<AlarmHistoryRecord>(settings.AlarmsHistoryCollectionName);
     }
 
-    public async Task<AlarmHistoryRecord> Get(string id)
+    public async Task<AlarmHistoryRecord> GetByName(string name)
     {
         return await _alarmRecords
-            .Find(Builders<AlarmHistoryRecord>.Filter.Eq(x => x.Id, id))
+            .Find(Builders<AlarmHistoryRecord>.Filter.Eq(x => x.AlarmName, name))
             .FirstOrDefaultAsync();
     }
 

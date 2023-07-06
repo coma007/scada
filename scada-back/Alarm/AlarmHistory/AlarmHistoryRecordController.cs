@@ -17,14 +17,6 @@ public class AlarmHistoryRecordController: ControllerBase
     }
     
     [HttpGet]
-    [Route("alarm-record")]
-    public ActionResult<AlarmHistoryRecordDTO> Get(string id)
-    {
-        AlarmHistoryRecordDTO record = _alarmHistoryRecordService.Get(id);
-        return Ok(record);
-    }
-    
-    [HttpGet]
     [Route("alarm-records")]
     public ActionResult<IEnumerable<AlarmHistoryRecordDTO>> GetAll()
     {
@@ -42,7 +34,7 @@ public class AlarmHistoryRecordController: ControllerBase
 
     [HttpPost]
     [Route("alarm-record/create")]
-    public ActionResult<AlarmDTO> Create([FromBody]AlarmHistoryRecordCreateDTO createDto)
+    public ActionResult<AlarmDTO> Create([FromBody]AlarmHistoryRecordDTO createDto)
     {
         AlarmHistoryRecordDTO record = _alarmHistoryRecordService.Create(createDto);
         return Ok(record);
