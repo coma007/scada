@@ -43,15 +43,5 @@ public class AlarmRepository: IAlarmRepository
         }
         return toBeDeleted;
     }
-
-    public async Task<Alarm> Update(Alarm toBeUpdated)
-    {
-        ReplaceOneResult result = await _alarms.ReplaceOneAsync(Builders<Alarm>.Filter.Eq(x => x.AlarmName, toBeUpdated.AlarmName), toBeUpdated);
-        if (result.ModifiedCount == 0)
-        {
-            throw new NotExecutedException();
-        }
-
-        return await GetByName(toBeUpdated.AlarmName);
-    }
+    
 }

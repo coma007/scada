@@ -35,11 +35,5 @@ public class AlarmService : IAlarmService
     {
         return _repository.Delete(id).Result.ToDto();
     }
-
-    public AlarmDTO Update(AlarmDTO dto)
-    {
-        AlarmDTO updatedDto = dto;
-        Alarm toCreate = updatedDto.ToEntity();
-        return _repository.Update(toCreate).Result.ToDto();
-    }
+    
 }

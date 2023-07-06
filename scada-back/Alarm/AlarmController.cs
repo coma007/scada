@@ -41,12 +41,5 @@ public class AlarmController : ControllerBase
     {
         return Ok(_alarmService.Delete(id));
     }
-    
-    [HttpPatch(Name = "update")]
-
-    public ActionResult<Boolean> Update([FromBody]AlarmDTO dto)
-    {
-        return Ok(_alarmService.Update(dto));
-    }
 
 }
