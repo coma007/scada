@@ -23,23 +23,21 @@ public class AlarmHistoryRecordController: ControllerBase
         return Ok(records);
     }
     
-    [HttpGet]
-    [Route("name")]
+    [HttpGet(Name = "GetAlarmRecordByName")]
     public ActionResult<IEnumerable<AlarmHistoryRecordDTO>> GetByName(string name)
     {
         IEnumerable<AlarmHistoryRecordDTO> records = _alarmHistoryRecordService.GetByName(name);
         return Ok(records);
     }
     
-    [HttpGet]
-    [Route("between")]
+    [HttpGet(Name = "GetAlarmRecordBetween")]
     public ActionResult<IEnumerable<AlarmHistoryRecordDTO>> GetBetween(DateTime start, DateTime end)
     {
         IEnumerable<AlarmHistoryRecordDTO> records = _alarmHistoryRecordService.GetBetween(start, end);
         return Ok(records);
     }
 
-    [HttpPost]
+    [HttpPost(Name = "CreateAlarmRecord")]
     public ActionResult<AlarmHistoryRecordDTO> Create([FromBody]AlarmHistoryRecordDTO createDto)
     {
         AlarmHistoryRecordDTO record = _alarmHistoryRecordService.Create(createDto);
