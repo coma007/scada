@@ -24,14 +24,14 @@ public class AlarmHistoryController: ControllerBase
     }
     
     [HttpGet(Name = "GetAlarmRecordByName")]
-    public ActionResult<IEnumerable<AlarmHistoryRecordDto>> Get(string alarmName)
+    public ActionResult<IEnumerable<AlarmHistoryRecordDto>> GetByAlarmName(string alarmName)
     {
         IEnumerable<AlarmHistoryRecordDto> records = _alarmHistoryService.Get(alarmName);
         return Ok(records);
     }
     
     [HttpGet(Name = "GetAlarmRecordByPriority")]
-    public ActionResult<IEnumerable<AlarmHistoryRecordDto>> Get(int priority)
+    public ActionResult<IEnumerable<AlarmHistoryRecordDto>> GetByAlarmPriority(int priority)
     {
         IEnumerable<AlarmHistoryRecordDto> records = _alarmHistoryService.Get(priority);
         return Ok(records);
