@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using scada_back.Alarm;
 using scada_back.AlarmHistory;
 using scada_back.Database;
+using scada_back.DriverState;
 using scada_back.Exception.Filter;
 using scada_back.Tag;
 using scada_back.Tag.Model.Converter;
@@ -33,6 +34,9 @@ builder.Services.AddScoped<IAlarmService, AlarmService>();
 
 builder.Services.AddScoped<IAlarmHistoryRecordRepository, AlarmHistoryRecordRepository>();
 builder.Services.AddScoped<IAlarmHistoryRecordService, AlarmHistoryRecordService>();
+
+builder.Services.AddScoped<IDriverStateRepository, DriverStateRepository>();
+builder.Services.AddScoped<IDriverStateService, DriverStateService>();
 
 
 builder.Services.AddScoped<IValidationService, ValidationService>();
