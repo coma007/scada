@@ -32,6 +32,12 @@ public class TagHistoryController : ControllerBase
     {
         return Ok(_service.GetBetween(startDateTime, endDateTime));
     }
+    
+    [HttpGet(Name = "GetLastValueBySignalType")]
+    public ActionResult<TagHistoryRecordDto> GetLast(string signalType)
+    {
+        return Ok(_service.GetLast(signalType));
+    }
 
     [HttpPost(Name = "CreateTagHistoryRecord")]
     public ActionResult<TagHistoryRecordDto> Create([FromBody] TagHistoryRecordDto record)

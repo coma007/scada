@@ -16,12 +16,14 @@ public class TagHistoryRepository : ITagHistoryRepository
     }
     public async Task<IEnumerable<TagHistoryRecord>> GetAll()
     {
-        return (await _tagRecords.FindAsync(tagRecord => true)).ToList();
+        return (await _tagRecords.Find(Builders<TagHistoryRecord>.Filter.Empty)
+            .SortByDescending(record => record.Timestamp).ToListAsync());
     }
 
     public async Task<IEnumerable<TagHistoryRecord>> GetAll(string tagName)
     {
-        return (await _tagRecords.FindAsync(tagRecord => tagRecord.TagName == tagName)).ToList();
+        return (await _tagRecords.Find(tagRecord => tagRecord.TagName == tagName)
+            .SortByDescending(record => record.TagValue).ToListAsync());
     }
 
     public async Task<IEnumerable<TagHistoryRecord>> GetBetween(DateTime startDateTime, DateTime endDateTime)
@@ -30,7 +32,13 @@ public class TagHistoryRepository : ITagHistoryRepository
             Builders<TagHistoryRecord>.Filter.Gte(record => record.Timestamp, startDateTime),
             Builders<TagHistoryRecord>.Filter.Lt(record => record.Timestamp, endDateTime)
         );
-        return (await _tagRecords.FindAsync(filter)).ToList();
+        return await _tagRecords.Find(filter).SortByDescending(record => record.Timestamp).ToListAsync();
+    }
+
+    public async Task<IEnumerable<TagHistoryRecord>> GetLast(IEnumerable<string> tagNames)
+    {
+        var filter = Builders<TagHistoryRecord>.Filter.In(record => record.TagName, tagNames);
+        return await _tagRecords.Find(filter).SortByDescending(record => record.Timestamp).ToListAsync();
     }
 
     public async void Create(TagHistoryRecord newRecord)

@@ -15,21 +15,28 @@ public class TagHistoryService : ITagHistoryService
     
     public IEnumerable<TagHistoryRecordDto> GetAll()
     {
-        IEnumerable<TagHistoryRecord> tags =  _repository.GetAll().Result;
-        return tags.Select(tag => tag.ToDto());
+        IEnumerable<TagHistoryRecord> records =  _repository.GetAll().Result;
+        return records.Select(record => record.ToDto());
 
     }
 
     public IEnumerable<TagHistoryRecordDto> GetAll(string tagName)
     {
-        IEnumerable<TagHistoryRecord> tags =  _repository.GetAll(tagName).Result;
-        return tags.Select(tag => tag.ToDto());
+        IEnumerable<TagHistoryRecord> records =  _repository.GetAll(tagName).Result;
+        return records.Select(record => record.ToDto());
     }
 
     public IEnumerable<TagHistoryRecordDto> GetBetween(DateTime startDateTime, DateTime endDateTime)
     {
-        IEnumerable<TagHistoryRecord> tags =  _repository.GetBetween(startDateTime, endDateTime).Result;
-        return tags.Select(tag => tag.ToDto());
+        IEnumerable<TagHistoryRecord> records =  _repository.GetBetween(startDateTime, endDateTime).Result;
+        return records.Select(record => record.ToDto());
+    }
+
+    public IEnumerable<TagHistoryRecordDto> GetLast(string signalType)
+    {
+        IEnumerable<string> tagNames = _tagService.GetAllNames(signalType).Result;
+        IEnumerable<TagHistoryRecord> records  = _repository.GetLast(tagNames).Result;
+        return records.Select(record => record.ToDto());
     }
 
     public void Create(TagHistoryRecordDto newRecord)
