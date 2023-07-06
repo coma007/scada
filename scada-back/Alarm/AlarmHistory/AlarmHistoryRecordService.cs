@@ -36,20 +36,8 @@ public class AlarmHistoryRecordService : IAlarmHistoryRecordService
 
     public IEnumerable<AlarmHistoryRecordDTO> GetBetween(DateTime start, DateTime end)
     {
-        IEnumerable<AlarmHistoryRecord> records = SortByPriorityThenTime(_repository.GetBetween(start, end).Result);
+        IEnumerable<AlarmHistoryRecord> records = _repository.GetBetween(start, end).Result;
         return records.Count() > 0 ? records.Select(alarm => alarm.ToDto()) : Enumerable.Empty<AlarmHistoryRecordDTO>();
     }
-
-    private IEnumerable<AlarmHistoryRecord> SortByPriorityThenTime(IEnumerable<AlarmHistoryRecord> records)
-    {
-        return records
-            .OrderByDescending(x =>
-            {
-                Alarm alarm = _alarmRepository.Get(x.AlarmName).Result;
-                if(alarm == null)
-                    throw new ObjectNotFoundException($"Alarm with name {alarm.AlarmName} is not found");
-                return alarm.AlarmPriority;
-            })
-            .ThenByDescending(x => x.Timestamp);
-    }
+    
 }
