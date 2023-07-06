@@ -1,4 +1,5 @@
 using System.Collections;
+using scada_back.Exception;
 
 namespace scada_back.Alarm;
 
@@ -12,7 +13,8 @@ public class AlarmService : IAlarmService
     }
     public AlarmDTO Get(string id)
     {
-        return _repository.Get(id).Result.ToDto();
+        Alarm result = _repository.Get(id).Result; 
+        return result != null ? result.ToDto() : throw new ObjectNotFound("Not found");
     }
 
     public IEnumerable<AlarmDTO> GetAll()

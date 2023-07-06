@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using scada_back.Alarm;
+using scada_back.Alarm.AlarmHistory;
 using scada_back.Database;
 using scada_back.User;
 
@@ -17,6 +18,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAlarmRepository, AlarmRepository>();
 builder.Services.AddScoped<IAlarmService, AlarmService>();
+builder.Services.AddScoped<IAlarmHistoryRecordRepository, AlarmHistoryRecordRepository>();
+builder.Services.AddScoped<IAlarmHistoryRecordService, AlarmHistoryRecordService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
