@@ -1,8 +1,5 @@
 using FluentValidation;
 using scada_back.Alarm;
-using scada_back.Alarm.Enumeration;
-using scada_back.Tag.Model;
-using scada_back.Tag.Model.Abstraction;
 
 namespace scada_back.Validation.Validators;
 
@@ -27,8 +24,8 @@ public class AlarmValidator : AbstractValidator<AlarmDto>
             .NotEmpty().WithMessage("AlarmName is required.")
             .Length(1, 20).WithMessage("AlarmName should have a length between 1 and 20.");
 
-        // RuleFor(alarm => alarm.Limit)
-        //     .NotEmpty().WithMessage("Limit is required.");
+        RuleFor(alarm => alarm.Limit)
+            .NotEmpty().WithMessage("Limit is required.");
 
     }
 }

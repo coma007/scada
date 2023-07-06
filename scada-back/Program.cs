@@ -32,8 +32,8 @@ builder.Services.AddScoped<ITagHistoryService, TagHistoryService>();
 builder.Services.AddScoped<IAlarmRepository, AlarmRepository>();
 builder.Services.AddScoped<IAlarmService, AlarmService>();
 
-builder.Services.AddScoped<IAlarmHistoryRecordRepository, AlarmHistoryRecordRepository>();
-builder.Services.AddScoped<IAlarmHistoryRecordService, AlarmHistoryRecordService>();
+builder.Services.AddScoped<IAlarmHistoryRepository, AlarmHistoryRepository>();
+builder.Services.AddScoped<IAlarmHistoryService, AlarmHistoryService>();
 
 builder.Services.AddScoped<IDriverStateRepository, DriverStateRepository>();
 builder.Services.AddScoped<IDriverStateService, DriverStateService>();

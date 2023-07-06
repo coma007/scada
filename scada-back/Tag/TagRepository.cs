@@ -2,13 +2,12 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using scada_back.Database;
 using scada_back.Exception;
-using scada_back.Tag.Model;
 
 namespace scada_back.Tag;
 
 public class TagRepository : ITagRepository
 {
-    private IMongoCollection<Model.Abstraction.Tag> _tags;
+    private readonly IMongoCollection<Model.Abstraction.Tag> _tags;
 
     public TagRepository(IScadaDatabaseSettings settings, IMongoClient mongoClient)
     {
@@ -54,6 +53,9 @@ public class TagRepository : ITagRepository
     public async Task<Model.Abstraction.Tag> Delete(string tagName)
     {
         Model.Abstraction.Tag toBeDeleted = await Get(tagName);
+        if (toBeDeleted == null) {
+            throw new ObjectNotFoundException($"Tag with {tagName} doesn't exist");
+        }
         DeleteResult result = await _tags.DeleteOneAsync(tag => tag.TagName == tagName);
         if (result.DeletedCount == 0)
         {
@@ -65,6 +67,9 @@ public class TagRepository : ITagRepository
     public async Task<Model.Abstraction.Tag> Update(Model.Abstraction.Tag updatedTag)
     {
         Model.Abstraction.Tag oldTag = Get(updatedTag.TagName).Result;
+        if (oldTag == null) {
+            throw new ObjectNotFoundException($"Tag with {updatedTag.TagName} doesn't exist");
+        }
         updatedTag.Id = oldTag.Id;
         ReplaceOneResult result = await _tags.ReplaceOneAsync(tag => tag.Id == updatedTag.Id, updatedTag);
         if (result.ModifiedCount == 0)

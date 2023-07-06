@@ -13,6 +13,7 @@ public class AlarmRepository: IAlarmRepository
         var database = mongoClient.GetDatabase(settings.DatabaseName);
         _alarms = database.GetCollection<Alarm>(settings.AlarmsCollectionName);
     }
+    
     public async Task<IEnumerable<Alarm>> GetAll()
     {
         return (await _alarms.FindAsync(alarm => true)).ToList();
@@ -39,6 +40,9 @@ public class AlarmRepository: IAlarmRepository
     public async Task<Alarm> Delete(string alarmName)
     {
         Alarm toBeDeleted = await Get(alarmName);
+        if (toBeDeleted == null) {
+            throw new ObjectNotFoundException($"Alarm with {alarmName} doesn't exist");
+        }
         DeleteResult result = await _alarms.DeleteOneAsync(alarm => alarm.AlarmName == alarmName);
         if (result.DeletedCount == 0)
         {
@@ -50,15 +54,15 @@ public class AlarmRepository: IAlarmRepository
     public async Task<Alarm> Update(Alarm updatedAlarm)
     {
         Alarm oldAlarm = Get(updatedAlarm.AlarmName).Result;
-        if (oldAlarm == null)
+        if (oldAlarm == null) {
             throw new ObjectNotFoundException($"Alarm with {updatedAlarm.AlarmName} doesn't exist");
+        }
         updatedAlarm.Id = oldAlarm.Id;
         ReplaceOneResult result = await _alarms.ReplaceOneAsync(alarm => alarm.AlarmName == updatedAlarm.AlarmName, updatedAlarm);
         if (result.ModifiedCount == 0)
         {
             throw new ActionNotExecutedException("Update failed.");
         }
-
         return await Get(updatedAlarm.AlarmName);
     }
 }

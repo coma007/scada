@@ -18,7 +18,7 @@ public class DigitalInputTag : Abstraction.Tag, IDigitalTag, IInputTag
     public override TagDto ToDto()
     {
         string driver = "REALTIME";
-        if (this.Driver == DriverType.SIMULATION)
+        if (this.Driver == DriverType.Simulation)
         {
             driver = "SIMULATION";
         }
@@ -44,10 +44,10 @@ public class DigitalInputTagDto :  TagDto, IDigitalTagDto, IInputTagDto
     
     public override Tag.Model.Abstraction.Tag ToEntity()
     {
-        DriverType driver = DriverType.REALTIME;
+        DriverType driver = DriverType.Realtime;
         if (this.Driver.ToUpper() == "SIMULATION")
         {
-            driver = DriverType.SIMULATION;
+            driver = DriverType.Simulation;
         }
         return new DigitalInputTag
         {

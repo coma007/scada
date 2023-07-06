@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace scada_back.DriverState;
@@ -17,27 +16,27 @@ public class DriverStateController : ControllerBase
     }
     
     [HttpGet(Name = "GetAllDriverState")]
-    public ActionResult<DriverStateDTO> GetAll()
+    public ActionResult<DriverStateDto> GetAll()
     {
         return Ok(_service.GetAll());
     }
     
     [HttpGet(Name = "GetDriverState")]
-    public ActionResult<DriverStateDTO> Get(int address)
+    public ActionResult<DriverStateDto> Get(int address)
     {
         return Ok(_service.Get(address));
     }
     
         
     [HttpPost(Name = "CreateDriverState")]
-    public ActionResult<DriverStateDTO> Create([FromBody]DriverStateDTO dto)
+    public ActionResult<DriverStateDto> Create([FromBody]DriverStateDto driverState)
     {
-        return Ok(_service.Create(dto));
+        return Ok(_service.Create(driverState));
     }
     
     [HttpPatch(Name = "UpdateDriverState")]
-    public ActionResult<DriverStateDTO> Update([FromBody]DriverStateDTO dto)
+    public ActionResult<DriverStateDto> Update([FromBody]DriverStateDto driverState)
     {
-        return Ok(_service.Update(dto));
+        return Ok(_service.Update(driverState));
     }
 }

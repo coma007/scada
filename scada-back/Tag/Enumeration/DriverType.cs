@@ -2,6 +2,6 @@ namespace scada_back.Tag.Enumeration;
 
 public enum DriverType
 {
-    SIMULATION = 1, 
-    REALTIME = 0
+    Simulation = 1, 
+    Realtime = 0
 }

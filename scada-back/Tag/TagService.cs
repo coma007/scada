@@ -1,6 +1,5 @@
 using scada_back.DriverState;
 using scada_back.Exception;
-using scada_back.Tag.Model;
 using scada_back.Tag.Model.Abstraction;
 using scada_back.Validation;
 

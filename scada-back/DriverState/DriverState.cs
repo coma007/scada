@@ -1,6 +1,5 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using scada_back.Alarm.Enumeration;
 
 namespace scada_back.DriverState;
 
@@ -14,9 +13,9 @@ public class DriverState
     [BsonElement("value")]
     public double Value { get; set; }
 
-    public DriverStateDTO ToDto()
+    public DriverStateDto ToDto()
     {
-        return new DriverStateDTO()
+        return new DriverStateDto()
         {
             Value = Value,
             IOAddress = IOAddress
@@ -24,7 +23,7 @@ public class DriverState
     }
 }
 
-public class DriverStateDTO
+public class DriverStateDto
 {
     public int IOAddress { get; set; }
     public double Value { get; set; }

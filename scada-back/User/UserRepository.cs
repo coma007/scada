@@ -5,7 +5,7 @@ namespace scada_back.User;
 
 public class UserRepository : IUserRepository
 {
-    private IMongoCollection<User> _users;
+    private readonly IMongoCollection<User> _users;
 
     public UserRepository(IScadaDatabaseSettings settings, IMongoClient mongoClient)
     {

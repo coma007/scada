@@ -35,7 +35,7 @@ public class TagValidator : AbstractValidator<TagDto>
          
         RuleFor(tag => tag)
             .Must(tag => tag is DigitalOutputTagDto digitalOutputTag && 
-                         (digitalOutputTag.InitialValue == 0 || digitalOutputTag.InitialValue == 1))
+                         digitalOutputTag.InitialValue is 0 or 1)
             .WithMessage("InitialValue of digital output tag should be 0 or 1.")
             .When(tag => tag is DigitalOutputTagDto);   
     }

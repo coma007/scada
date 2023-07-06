@@ -14,6 +14,7 @@ public class AlarmController : ControllerBase
         _service = service;
         _logger = logger;
     }
+    
     [HttpGet(Name = "GetAllAlarms")]
     public ActionResult<AlarmDto> GetAll()
     {
@@ -26,7 +27,6 @@ public class AlarmController : ControllerBase
         return Ok(_service.Get(alarmName));
     }
 
-    
     [HttpPost(Name = "CreateAlarm")]
     public ActionResult<AlarmDto> Create([FromBody]AlarmDto alarm)
     {

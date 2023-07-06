@@ -47,7 +47,7 @@ public class TagHistoryRepository : ITagHistoryRepository
         {
             await _tagRecords.InsertOneAsync(newRecord);
         }
-        catch (System.Exception e)
+        catch (System.Exception)
         {
             throw new ActionNotExecutedException("Create failed.");
         }

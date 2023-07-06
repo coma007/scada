@@ -11,34 +11,35 @@ public class DriverStateService : IDriverStateService
     {
         _repository = repository;
     }
-    public IEnumerable<DriverStateDTO> GetAll()
+    
+    public IEnumerable<DriverStateDto> GetAll()
     {
         IEnumerable<DriverState> alarms = _repository.GetAll().Result;
         return alarms.Select(alarm => alarm.ToDto());
     }
     
-    public DriverStateDTO Get(int address)
+    public DriverStateDto Get(int ioAddress)
     {
-        DriverState state = _repository.Get(address).Result;
+        DriverState state = _repository.Get(ioAddress).Result;
         if (state == null)
         {
-            throw new ObjectNotFoundException($"Driver with address '{address}' not found.");
+            throw new ObjectNotFoundException($"Driver with address '{ioAddress}' not found.");
         }
         return state.ToDto();
     }
 
-    public DriverStateDTO Create(DriverStateDTO dto)
+    public DriverStateDto Create(DriverStateDto driverState)
     {
-        DriverState existingDriverState = _repository.Get(dto.IOAddress).Result;
+        DriverState existingDriverState = _repository.Get(driverState.IOAddress).Result;
         if (existingDriverState != null) {
-            throw new ObjectNameTakenException($"Driver with address '{dto.IOAddress}' already exists.");
+            throw new ObjectNameTakenException($"Driver with address '{driverState.IOAddress}' already exists.");
         }
-        DriverState state = dto.ToEntity();
+        DriverState state = driverState.ToEntity();
         return _repository.Create(state).Result.ToDto();
     }
 
-    public DriverStateDTO Update(DriverStateDTO dto)
+    public DriverStateDto Update(DriverStateDto driverState)
     {
-        return _repository.Update(dto.ToEntity()).Result.ToDto();
+        return _repository.Update(driverState.ToEntity()).Result.ToDto();
     }
 }

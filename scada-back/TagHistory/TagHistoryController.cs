@@ -40,9 +40,9 @@ public class TagHistoryController : ControllerBase
     }
 
     [HttpPost(Name = "CreateTagHistoryRecord")]
-    public ActionResult<TagHistoryRecordDto> Create([FromBody] TagHistoryRecordDto record)
+    public ActionResult<TagHistoryRecordDto> Create([FromBody] TagHistoryRecordDto tagRecord)
     {
-        _service.Create(record);
+        _service.Create(tagRecord);
         return Ok();
     }
 

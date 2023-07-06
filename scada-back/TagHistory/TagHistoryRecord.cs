@@ -11,9 +11,10 @@ public class TagHistoryRecord
     [BsonElement("tag_name")]
     public string TagName { get; set; } = string.Empty;
     [BsonElement("timestamp")]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     public DateTime Timestamp { get; set; }
     [BsonElement("tag_value")]
-    public Double TagValue { get; set; }
+    public double TagValue { get; set; }
 
     public TagHistoryRecordDto ToDto()
     {
@@ -31,7 +32,7 @@ public class TagHistoryRecordDto
 {
     public string TagName { get; set; } = string.Empty;
     public DateTime Timestamp { get; set; }
-    public Double TagValue { get; set; }
+    public double TagValue { get; set; }
 
     public TagHistoryRecord ToEntity()
     {
