@@ -44,6 +44,10 @@ public class AlarmRepository: IAlarmRepository
 
     public async Task<Alarm> Update(Alarm updatedAlarm)
     {
+        Alarm oldAlarm = Get(updatedAlarm.AlarmName).Result;
+        if (oldAlarm == null)
+            throw new ObjectNotFoundException($"Alarm with {updatedAlarm.AlarmName} doesn't exist");
+        updatedAlarm.Id = oldAlarm.Id;
         ReplaceOneResult result = await _alarms.ReplaceOneAsync(alarm => alarm.AlarmName == updatedAlarm.AlarmName, updatedAlarm);
         if (result.ModifiedCount == 0)
         {
