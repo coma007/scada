@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace scada_back.Alarm.AlarmHistory;
+namespace scada_back.AlarmHistory;
 
 
 [ApiController]

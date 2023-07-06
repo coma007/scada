@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using scada_back.Alarm;
-using scada_back.Alarm.AlarmHistory;
+using scada_back.AlarmHistory;
 using scada_back.Database;
 using scada_back.Exception.Filter;
 using scada_back.Tag;

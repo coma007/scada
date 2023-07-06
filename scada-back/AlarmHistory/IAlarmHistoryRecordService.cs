@@ -1,7 +1,4 @@
-
-using System.Collections;
-
-namespace scada_back.Alarm.AlarmHistory;
+namespace scada_back.AlarmHistory;
 
 public interface IAlarmHistoryRecordService
 {

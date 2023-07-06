@@ -1,7 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace scada_back.Alarm.AlarmHistory;
+namespace scada_back.AlarmHistory;
 
 public class AlarmHistoryRecord
 {
@@ -19,6 +19,23 @@ public class AlarmHistoryRecord
     public AlarmHistoryRecordDTO ToDto()
     {
         return new AlarmHistoryRecordDTO()
+        {
+            Timestamp = Timestamp,
+            AlarmName = AlarmName,
+            TagValue = TagValue
+        };
+    }
+}
+
+public class AlarmHistoryRecordDTO
+{
+    public string AlarmName { get; set; }
+    public DateTime Timestamp { get; set; }
+    public double TagValue { get; set; }
+
+    public AlarmHistoryRecord ToEntity()
+    {
+        return new AlarmHistoryRecord()
         {
             Timestamp = Timestamp,
             AlarmName = AlarmName,

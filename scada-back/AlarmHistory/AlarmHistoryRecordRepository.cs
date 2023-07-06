@@ -1,22 +1,20 @@
-using System.Collections;
 using MongoDB.Driver;
-using scada_back.Database;
-using MongoDB.Driver.Linq;
 using scada_back.Alarm.Enumeration;
+using scada_back.Database;
 
-namespace scada_back.Alarm.AlarmHistory;
+namespace scada_back.AlarmHistory;
 
 public class AlarmHistoryRecordRepository : IAlarmHistoryRecordRepository
 {
     private IMongoCollection<AlarmHistoryRecord> _alarmRecords;
-    private IMongoCollection<Alarm> _alarms;
+    private IMongoCollection<Alarm.Alarm> _alarms;
     private FilterDefinition<AlarmHistoryRecord> empty = Builders<AlarmHistoryRecord>.Filter.Empty;
 
     public AlarmHistoryRecordRepository(IScadaDatabaseSettings settings, IMongoClient mongoClient)
     {
         var _database = mongoClient.GetDatabase(settings.DatabaseName);
         _alarmRecords = _database.GetCollection<AlarmHistoryRecord>(settings.AlarmsHistoryCollectionName);
-        _alarms = _database.GetCollection<Alarm>(settings.AlarmsCollectionName);
+        _alarms = _database.GetCollection<Alarm.Alarm>(settings.AlarmsCollectionName);
     }
 
     public async Task<IEnumerable<AlarmHistoryRecord>> GetByName(string name)
@@ -59,7 +57,7 @@ public class AlarmHistoryRecordRepository : IAlarmHistoryRecordRepository
     public async Task<IEnumerable<AlarmHistoryRecord>> GetByPriority(int priority)
     {
         var filteredAlarms = await _alarms
-            .Find(Builders<Alarm>.Filter.Eq(a => a.AlarmPriority, (AlarmPriority)priority))
+            .Find(Builders<Alarm.Alarm>.Filter.Eq(a => a.AlarmPriority, (AlarmPriority)priority))
             .ToListAsync();
 
         return filteredAlarms.Join(

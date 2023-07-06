@@ -1,7 +1,7 @@
-using System.Collections;
+using scada_back.Alarm;
 using scada_back.Exception;
 
-namespace scada_back.Alarm.AlarmHistory;
+namespace scada_back.AlarmHistory;
 
 public class AlarmHistoryRecordService : IAlarmHistoryRecordService
 {
