@@ -6,5 +6,6 @@ namespace scada_back.Validation;
 public interface IValidationService
 {
     public void ValidateEmptyString(string parameterName, string parameter);
+    public void ValidateSignalType(string signalType);
     public void ValidateTag(TagDto tag);
 }

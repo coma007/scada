@@ -34,10 +34,9 @@ public class TagService : ITagService
     public Task<IEnumerable<string>> GetAllNames(string signalType)
     {
         signalType = signalType.ToLower().Trim();
-        if (signalType != "analog" && signalType != "digital")
-        {
-            throw new InvalidSignalTypeException($"Invalid signal type: {signalType}.");
-        }
+        _validationService.ValidateEmptyString("signalType",signalType);
+        _validationService.ValidateSignalType(signalType);
+        
         return _repository.GetAllNames(signalType);
     }
 
@@ -56,6 +55,8 @@ public class TagService : ITagService
 
     public TagDto Create(TagDto newTag)
     {
+        _validationService.ValidateTag(newTag);
+        
         Model.Abstraction.Tag existingTag = _repository.Get(newTag.TagName).Result;
         if (existingTag != null)
         {
@@ -67,16 +68,24 @@ public class TagService : ITagService
 
     public TagDto Delete(string tagName)
     {
+        tagName = tagName.ToLower().Trim();
+        _validationService.ValidateEmptyString("tagName", tagName);
+
         return _repository.Delete(tagName).Result.ToDto();
     }
 
     public TagDto Update(TagDto updatedTag)
     {
+        _validationService.ValidateTag(updatedTag);
+        
         return _repository.Update(updatedTag.ToEntity()).Result.ToDto();
     }
 
     public TagDto UpdateScan(string tagName)
     {
+        tagName = tagName.ToLower().Trim();
+        _validationService.ValidateEmptyString("tagName", tagName);
+
         Model.Abstraction.Tag tag = _repository.Get(tagName).Result;
         if (tag is IInputTag inputTag)
         {

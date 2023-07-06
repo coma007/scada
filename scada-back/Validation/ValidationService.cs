@@ -9,10 +9,12 @@ public class ValidationService : IValidationService
 {
     private readonly EmptyStringValidator _emptyStringValidator;
     private readonly TagValidator _tagValidator;
+    private readonly SignalTypeValidator _signalTypeValidator;
 
     public ValidationService()
     {
         _emptyStringValidator = new EmptyStringValidator();
+        _signalTypeValidator = new SignalTypeValidator();
         _tagValidator = new TagValidator();
     }
     
@@ -20,6 +22,16 @@ public class ValidationService : IValidationService
     {
         _emptyStringValidator.ParameterName = parameterName;
         ValidationResult result = _emptyStringValidator.Validate(parameter);
+        if (!result.IsValid)
+        {
+            throw new InvalidParameterException(result.Errors.First().ToString());
+        }
+    }
+
+    public void ValidateSignalType(string signalType)
+    {
+        _signalTypeValidator.SignalType = signalType;
+        ValidationResult result = _signalTypeValidator.Validate(signalType);
         if (!result.IsValid)
         {
             throw new InvalidParameterException(result.Errors.First().ToString());
