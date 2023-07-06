@@ -7,7 +7,9 @@ public interface IScadaDatabaseSettings
     string UsersCollectionName { get; set; }
     string DriversStateCollectionName { get; set; }
     string TagsCollectionName { get; set; }
+    string TagsDeletedCollectionName { get; set; }
     string TagsHistoryCollectionName { get; set; }
     string AlarmsCollectionName { get; set; }
+    string AlarmsDeletedCollectionName { get; set; }
     string AlarmsHistoryCollectionName { get; set; }
 }
