@@ -1,13 +1,13 @@
 
 namespace scada_back.Tag.Model.Abstraction;
 
-public interface IOutputTag : IAbstractTag
+public interface IOutputTag 
 {
     public double InitialValue { get; set; }
 
 }
 
-public interface IOutputTagDTO : IAbstractTagDTO
+public interface IOutputTagDto
 {
     public double InitialValue { get; set; }
 

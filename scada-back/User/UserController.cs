@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using scada_back.Exception;
 
 namespace scada_back.User;
 
@@ -17,23 +16,9 @@ public class UserController : ControllerBase
     }
 
     [HttpGet(Name = "Login")]
-    public ActionResult<UserDTO> Login(string username, string password)
+    public ActionResult<UserDto> Login(string username, string password)
     {
-        UserDTO user;
-        try
-        {
-            user = _userService.Login(username, password);
-        }
-        catch (ObjectNotFound e)
-        {
-            return NotFound(e.Message);
-        }
-        catch (System.Exception e)
-        {
-            return BadRequest(e.Message);
-        }
-
-        return user;
+        return Ok(_userService.Login(username, password));
     }
     
 }

@@ -6,25 +6,23 @@ namespace scada_back.Alarm;
 
 public class AlarmRepository: IAlarmRepository
 {
-    private IMongoCollection<Alarm> _alarms;
-    private FilterDefinition<Alarm> empty = Builders<Alarm>.Filter.Empty;
+    private readonly IMongoCollection<Alarm> _alarms;
 
     public AlarmRepository(IScadaDatabaseSettings settings, IMongoClient mongoClient)
     {
-        var _database = mongoClient.GetDatabase(settings.DatabaseName);
-        _alarms = _database.GetCollection<Alarm>(settings.AlarmsCollectionName);
+        var database = mongoClient.GetDatabase(settings.DatabaseName);
+        _alarms = database.GetCollection<Alarm>(settings.AlarmsCollectionName);
     }
-
-    public async Task<Alarm> GetByName(string name)
-    {
-        return await _alarms
-            .Find(Builders<Alarm>.Filter.Eq(x => x.AlarmName, name))
-            .FirstOrDefaultAsync();
-    }
-
     public async Task<IEnumerable<Alarm>> GetAll()
     {
-        return await _alarms.Find(empty).ToListAsync();
+        return (await _alarms.FindAsync(alarm => true)).ToList();
+    }
+    
+    public async Task<Alarm> Get(string alarmName)
+    {
+        return (await _alarms
+                .FindAsync(alarm => alarm.AlarmName == alarmName))
+            .FirstOrDefault();
     }
 
     public async Task<Alarm> Create(Alarm newAlarm)
@@ -32,16 +30,26 @@ public class AlarmRepository: IAlarmRepository
         await _alarms.InsertOneAsync(newAlarm);
         return newAlarm;
     }
-
-    public async Task<Alarm> Delete(string name)
+    
+    public async Task<Alarm> Delete(string alarmName)
     {
-        Alarm toBeDeleted = await GetByName(name);
-        DeleteResult result = await _alarms.DeleteOneAsync(Builders<Alarm>.Filter.Eq(x => x.AlarmName, name));
+        Alarm toBeDeleted = await Get(alarmName);
+        DeleteResult result = await _alarms.DeleteOneAsync(alarm => alarm.AlarmName == alarmName);
         if (result.DeletedCount == 0)
         {
-            throw new NotExecutedException();
+            throw new ActionNotExecutedException("Deletion failed.");
         }
         return toBeDeleted;
     }
-    
+
+    public async Task<Alarm> Update(Alarm updatedAlarm)
+    {
+        ReplaceOneResult result = await _alarms.ReplaceOneAsync(alarm => alarm.AlarmName == updatedAlarm.AlarmName, updatedAlarm);
+        if (result.ModifiedCount == 0)
+        {
+            throw new ActionNotExecutedException("Update failed.");
+        }
+
+        return await Get(updatedAlarm.AlarmName);
+    }
 }

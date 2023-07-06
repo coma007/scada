@@ -34,7 +34,7 @@ public class AlarmHistoryRecordController: ControllerBase
 
     [HttpPost]
     [Route("alarm-record/create")]
-    public ActionResult<AlarmDTO> Create([FromBody]AlarmHistoryRecordDTO createDto)
+    public ActionResult<AlarmHistoryRecordDTO> Create([FromBody]AlarmHistoryRecordDTO createDto)
     {
         AlarmHistoryRecordDTO record = _alarmHistoryRecordService.Create(createDto);
         return Ok(record);

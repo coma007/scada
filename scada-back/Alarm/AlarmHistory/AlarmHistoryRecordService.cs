@@ -16,12 +16,12 @@ public class AlarmHistoryRecordService : IAlarmHistoryRecordService
     public AlarmHistoryRecordDTO GetByName(string name)
     {
         AlarmHistoryRecord result = _repository.GetByName(name).Result; 
-        return result != null ? result.ToDto() : throw new ObjectNotFound("Not found");
+        return result != null ? result.ToDto() : throw new ObjectNotFoundException($"Alarm with '{name}' not found.");
     }
 
     public AlarmHistoryRecordDTO Create(AlarmHistoryRecordDTO createDto)
     {
-        if (_alarmRepository.GetByName(createDto.AlarmName).Result == null)
+        if (_alarmRepository.Get(createDto.AlarmName).Result == null)
             throw new System.Exception("There is no alarm with such name");
         AlarmHistoryRecord newRecord = createDto.ToEntity();
         return _repository.Create(newRecord).Result.ToDto();

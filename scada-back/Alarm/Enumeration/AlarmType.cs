@@ -1,4 +1,4 @@
-namespace scada_back.Alarm;
+namespace scada_back.Alarm.Enumeration;
 
 public enum AlarmType
 {

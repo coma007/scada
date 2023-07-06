@@ -1,17 +1,17 @@
 namespace scada_back.Tag.Model.Abstraction;
 
-public interface IAnalogTag : IAbstractTag
+public interface IAnalogTag
 {
     public double LowLimit { get; set; }
-    public double HightLimit { get; set; }
+    public double HighLimit { get; set; }
     public string Units { get; set; }
 
 }
 
-public interface IAnalogTagDTO : IAbstractTagDTO
+public interface IAnalogTagDto
 {
     public double LowLimit { get; set; }
-    public double HightLimit { get; set; }
+    public double HighLimit { get; set; }
     public string Units { get; set; }
 
 }
