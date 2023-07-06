@@ -30,6 +30,13 @@ public class AlarmHistoryRecordController: ControllerBase
         return Ok(records);
     }
     
+    [HttpGet(Name = "GetAlarmRecordByPriority")]
+    public ActionResult<IEnumerable<AlarmHistoryRecordDTO>> GetByPriority(int priority)
+    {
+        IEnumerable<AlarmHistoryRecordDTO> records = _alarmHistoryRecordService.GetByPriority(priority);
+        return Ok(records);
+    }
+    
     [HttpGet(Name = "GetAlarmRecordBetween")]
     public ActionResult<IEnumerable<AlarmHistoryRecordDTO>> GetBetween(DateTime start, DateTime end)
     {

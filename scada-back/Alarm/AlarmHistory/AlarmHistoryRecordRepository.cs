@@ -2,6 +2,7 @@ using System.Collections;
 using MongoDB.Driver;
 using scada_back.Database;
 using MongoDB.Driver.Linq;
+using scada_back.Alarm.Enumeration;
 
 namespace scada_back.Alarm.AlarmHistory;
 
@@ -52,6 +53,21 @@ public class AlarmHistoryRecordRepository : IAlarmHistoryRecordRepository
                 (alarmHistory, alarm) => new { AlarmHistory = alarmHistory, Alarm = alarm })
             .OrderByDescending(a => a.Alarm.AlarmPriority)
             .ThenByDescending(a => a.AlarmHistory.Timestamp)
+            .Select(a =>a.AlarmHistory).ToList();
+    }
+
+    public async Task<IEnumerable<AlarmHistoryRecord>> GetByPriority(int priority)
+    {
+        var filteredAlarms = await _alarms
+            .Find(Builders<Alarm>.Filter.Eq(a => a.AlarmPriority, (AlarmPriority)priority))
+            .ToListAsync();
+
+        return filteredAlarms.Join(
+                _alarmRecords.AsQueryable(),
+                alarms => alarms.AlarmName,
+                alarmsHistory => alarmsHistory.AlarmName,
+                (alarm, alarmHistory) => new {Alarm = alarm, AlarmHistory = alarmHistory  })
+            .OrderByDescending(a => a.AlarmHistory.Timestamp)
             .Select(a =>a.AlarmHistory).ToList();
     }
 }

@@ -39,5 +39,10 @@ public class AlarmHistoryRecordService : IAlarmHistoryRecordService
         IEnumerable<AlarmHistoryRecord> records = _repository.GetBetween(start, end).Result;
         return records.Count() > 0 ? records.Select(alarm => alarm.ToDto()) : Enumerable.Empty<AlarmHistoryRecordDTO>();
     }
-    
+
+    public IEnumerable<AlarmHistoryRecordDTO> GetByPriority(int priority)
+    {
+        IEnumerable<AlarmHistoryRecord> records = _repository.GetByPriority(priority).Result;
+        return records.Count() > 0 ? records.Select(alarm => alarm.ToDto()) : Enumerable.Empty<AlarmHistoryRecordDTO>();
+    }
 }
