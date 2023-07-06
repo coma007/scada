@@ -1,3 +1,4 @@
+using System.Collections;
 using MongoDB.Driver;
 using scada_back.Database;
 
@@ -14,11 +15,11 @@ public class AlarmHistoryRecordRepository : IAlarmHistoryRecordRepository
         _alarmRecords = _database.GetCollection<AlarmHistoryRecord>(settings.AlarmsHistoryCollectionName);
     }
 
-    public async Task<AlarmHistoryRecord> GetByName(string name)
+    public async Task<IEnumerable<AlarmHistoryRecord>> GetByName(string name)
     {
         return await _alarmRecords
             .Find(Builders<AlarmHistoryRecord>.Filter.Eq(x => x.AlarmName, name))
-            .FirstOrDefaultAsync();
+            .ToListAsync();
     }
 
     public async Task<AlarmHistoryRecord> Create(AlarmHistoryRecord newRecord)

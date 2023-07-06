@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace scada_back.Exception.Filter
 {
-    public abstract class GlobalExceptionFilter : IExceptionFilter
+    public class GlobalExceptionFilter : IExceptionFilter
     {
         public void OnException(ExceptionContext context)
         {

@@ -1,3 +1,4 @@
+using System.Collections;
 using scada_back.Exception;
 
 namespace scada_back.Alarm.AlarmHistory;
@@ -13,10 +14,10 @@ public class AlarmHistoryRecordService : IAlarmHistoryRecordService
         _alarmRepository = alarmRepository;
     }
 
-    public AlarmHistoryRecordDTO GetByName(string name)
+    public IEnumerable<AlarmHistoryRecordDTO> GetByName(string name)
     {
-        AlarmHistoryRecord result = _repository.GetByName(name).Result; 
-        return result != null ? result.ToDto() : throw new ObjectNotFoundException($"Alarm with '{name}' not found.");
+        IEnumerable<AlarmHistoryRecord> result = _repository.GetByName(name).Result; 
+        return result.Count() > 0 ? result.Select(record => record.ToDto()) : Enumerable.Empty<AlarmHistoryRecordDTO>();
     }
 
     public AlarmHistoryRecordDTO Create(AlarmHistoryRecordDTO createDto)
