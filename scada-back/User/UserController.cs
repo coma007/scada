@@ -20,14 +20,7 @@ public class UserController : ControllerBase
     [HttpPost(Name = "Login")]
     public ActionResult<string> Login(LoginDto credentials)
     {
-        try
-        {
-            return Ok(_userService.Login(credentials.Username, credentials.Password));
-        }
-        catch (System.Exception e)
-        {
-            return BadRequest(e.Message);
-        }
+        return Ok(_userService.Login(credentials.Username, credentials.Password));
     }
     
 }
