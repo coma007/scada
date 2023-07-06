@@ -59,6 +59,16 @@ public class AlarmService : IAlarmService
     public AlarmDto Update(AlarmDto updatedAlarm)
     {
         _validationService.ValidateAlarm(updatedAlarm);
+        Alarm oldAlarm = _repository.Get(updatedAlarm.AlarmName).Result;
+        if (oldAlarm == null)
+        {
+            throw new ObjectNotFoundException($"Alarm with name '{updatedAlarm.AlarmName}' not found.");
+        }
+
+        if (oldAlarm.TagName != updatedAlarm.TagName)
+        {
+            throw new System.Exception("Cannot change tag name");
+        }
         return _repository.Update(updatedAlarm.ToEntity()).Result.ToDto();
     }
 }
