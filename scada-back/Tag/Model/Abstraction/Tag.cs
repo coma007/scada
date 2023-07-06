@@ -15,7 +15,7 @@ public abstract class Tag
     [BsonElement("description")]
     public string Description { get; set; } = string.Empty;
     [BsonElement("io_address")]
-    public string IOAddress { get; set; } = string.Empty;
+    public int IOAddress { get; set; }
 
     public abstract TagDto ToDto();
 }
@@ -25,7 +25,7 @@ public abstract class TagDto
     public string TagName { get; set; } = string.Empty;
     public string TagType { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string IOAddress { get; set; } = string.Empty;
+    public int IOAddress { get; set; }
 
     public abstract Tag ToEntity();
 
@@ -35,7 +35,7 @@ public abstract class TagDto
     }
     
     [JsonConstructor]
-    protected TagDto(string tagName, string tagType, string description, string ioAddress)
+    protected TagDto(string tagName, string tagType, string description, int ioAddress)
     {
         TagName = tagName;
         TagType = tagType;

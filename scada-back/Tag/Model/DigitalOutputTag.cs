@@ -44,7 +44,7 @@ public class DigitalOutputTagDto :  TagDto, IDigitalTagDto, IOutputTagDto
     }
 
     [JsonConstructor]
-    public DigitalOutputTagDto(string tagName, string tagType, string description, string ioAddress, double initialValue) : base(tagName, tagType, description, ioAddress)
+    public DigitalOutputTagDto(string tagName, string tagType, string description, int ioAddress, double initialValue) : base(tagName, tagType, description, ioAddress)
     {
         InitialValue = initialValue;
     }

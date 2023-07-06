@@ -82,12 +82,12 @@ public class AnalogInputTagDto :  TagDto, IAnalogTagDto, IInputTagDto
     }
 
     [JsonConstructor]
-    public AnalogInputTagDto(string tagName, string tagType, string description, string ioAddress, double lowLimit, double highLimit, string units, string driver, double scanTime, bool scan) : base(tagName, tagType, description, ioAddress)
+    public AnalogInputTagDto(string tagName, string tagType, string description, int ioAddress, double lowLimit, double highLimit, string units, string? driver, double scanTime, bool scan) : base(tagName, tagType, description, ioAddress)
     {
         LowLimit = lowLimit;
         HighLimit = highLimit;
         Units = units;
-        Driver = driver.ToUpper();
+        Driver = driver?.ToUpper();
         ScanTime = scanTime;
         Scan = scan;
     }

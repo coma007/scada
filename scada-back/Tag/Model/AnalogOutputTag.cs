@@ -60,7 +60,7 @@ public class AnalogOutputTagDto : TagDto, IAnalogTagDto, IOutputTagDto
     }
 
     [JsonConstructor]
-    public AnalogOutputTagDto(string tagName, string tagType, string description, string ioAddress, double lowLimit, double highLimit, string units, double initialValue) : base(tagName, tagType, description, ioAddress)
+    public AnalogOutputTagDto(string tagName, string tagType, string description, int ioAddress, double lowLimit, double highLimit, string units, double initialValue) : base(tagName, tagType, description, ioAddress)
     {
         LowLimit = lowLimit;
         HighLimit = highLimit;

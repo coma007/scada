@@ -47,12 +47,6 @@ public class TagController : ControllerBase
         return Ok(_service.Delete(tagName));
     }
     
-    [HttpPatch(Name = "UpdateTag")]
-    public ActionResult<TagDto> Update([FromBody]TagDto tag)
-    {
-        return Ok(_service.Update(tag));
-    }
-    
     [HttpPatch(Name = "UpdateTagScan")]
     public ActionResult<TagDto> UpdateScan(string tagName)
     {

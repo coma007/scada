@@ -66,7 +66,7 @@ public class DigitalInputTagDto :  TagDto, IDigitalTagDto, IInputTagDto
     }
 
     [JsonConstructor]
-    public DigitalInputTagDto(string tagName, string tagType, string description, string ioAddress, string driver, double scanTime, bool scan) : base(tagName, tagType, description, ioAddress)
+    public DigitalInputTagDto(string tagName, string tagType, string description, int ioAddress, string driver, double scanTime, bool scan) : base(tagName, tagType, description, ioAddress)
     {
         Driver = driver.ToUpper();
         ScanTime = scanTime;

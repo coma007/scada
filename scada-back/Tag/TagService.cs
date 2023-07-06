@@ -1,3 +1,4 @@
+using scada_back.DriverState;
 using scada_back.Exception;
 using scada_back.Tag.Model;
 using scada_back.Tag.Model.Abstraction;
@@ -8,11 +9,13 @@ namespace scada_back.Tag;
 public class TagService : ITagService
 {
     private readonly ITagRepository _repository;
+    private readonly IDriverStateService _driverStateService;
     private readonly IValidationService _validationService;
 
-    public TagService(ITagRepository repository, IValidationService validationService)
+    public TagService(ITagRepository repository, IDriverStateService driverStateService, IValidationService validationService)
     {
         _repository = repository;
+        _driverStateService = driverStateService;
         _validationService = validationService;
     }
     
@@ -56,6 +59,7 @@ public class TagService : ITagService
     public TagDto Create(TagDto newTag)
     {
         _validationService.ValidateTag(newTag);
+        _driverStateService.Get(newTag.IOAddress);
         
         Model.Abstraction.Tag existingTag = _repository.Get(newTag.TagName).Result;
         if (existingTag != null)
