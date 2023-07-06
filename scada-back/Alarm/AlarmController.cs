@@ -20,7 +20,6 @@ public class AlarmController : ControllerBase
         return Ok(_service.GetAll());
     }
     
-
     [HttpGet(Name = "GetAlarmByName")]
     public ActionResult<AlarmDto> Get(string alarmName)
     {

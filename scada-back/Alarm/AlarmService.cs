@@ -1,3 +1,4 @@
+using System.Collections;
 using scada_back.Exception;
 
 namespace scada_back.Alarm;
@@ -10,13 +11,13 @@ public class AlarmService : IAlarmService
     {
         _repository = repository;
     }
-    
+
     public IEnumerable<AlarmDto> GetAll()
     {
         IEnumerable<Alarm> alarms = _repository.GetAll().Result;
         return alarms.Select(alarm => alarm.ToDto());
     }
-
+    
     public AlarmDto Get(string alarmName)
     {
         Alarm alarm = _repository.Get(alarmName).Result;
