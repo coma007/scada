@@ -1,5 +1,5 @@
-using System.Collections;
 using scada_back.Exception;
+using scada_back.Tag;
 using scada_back.Validation;
 
 namespace scada_back.Alarm;
@@ -8,11 +8,14 @@ public class AlarmService : IAlarmService
 {
     private readonly IAlarmRepository _repository;
     private readonly IValidationService _validationService;
+    private readonly ITagRepository _tagRepository;
 
-    public AlarmService(IAlarmRepository repository, IValidationService validationService)
+    public AlarmService(IAlarmRepository repository, IValidationService validationService,
+        ITagRepository tagRepository)
     {
         _repository = repository;
         _validationService = validationService;
+        _tagRepository = tagRepository;
     }
 
     public IEnumerable<AlarmDto> GetAll()
@@ -26,7 +29,7 @@ public class AlarmService : IAlarmService
         Alarm alarm = _repository.Get(alarmName).Result;
         if (alarm == null)
         {
-            throw new ObjectNotFoundException($"Alarm with '{alarmName}' not found.");
+            throw new ObjectNotFoundException($"Alarm with name '{alarmName}' not found.");
         }
         return alarm.ToDto();
     }
@@ -37,6 +40,12 @@ public class AlarmService : IAlarmService
         Alarm existingAlarm = _repository.Get(newAlarm.AlarmName).Result;
         if (existingAlarm != null) {
             throw new ObjectNameTakenException($"Alarm with name '{newAlarm.AlarmName}' already exists.");
+        }
+
+        Tag.Model.Abstraction.Tag tag = _tagRepository.Get(newAlarm.TagName).Result;
+        if (tag == null)
+        {
+            throw new ObjectNotFoundException($"Tag with name '{newAlarm.TagName}' not found.");
         }
         Alarm alarm = newAlarm.ToEntity();
         return _repository.Create(alarm).Result.ToDto();
