@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using scada_back.Tag.Model.Abstraction;
 
 namespace scada_back.User;
 
@@ -15,10 +17,17 @@ public class UserController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet(Name = "Login")]
-    public ActionResult<UserDto> Login(string username, string password)
+    [HttpPost(Name = "Login")]
+    public ActionResult<string> Login(LoginDto credentials)
     {
-        return Ok(_userService.Login(username, password));
+        try
+        {
+            return Ok(_userService.Login(credentials.Username, credentials.Password));
+        }
+        catch (System.Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
     
 }
