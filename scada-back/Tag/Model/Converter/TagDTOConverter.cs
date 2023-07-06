@@ -16,7 +16,7 @@ public class TagDtoConverter : JsonConverter<TagDto>
         var jsonObject = JsonDocument.ParseValue(ref reader).RootElement;
         var discriminatorValue = jsonObject.GetProperty("tagType").GetString();
 
-        return discriminatorValue switch
+        return discriminatorValue.ToLower().Trim() switch
         {
             "analog_input" => JsonSerializer.Deserialize<AnalogInputTagDto>(jsonObject.GetRawText(), options),
             "analog_output" => JsonSerializer.Deserialize<AnalogOutputTagDto>(jsonObject.GetRawText(), options),

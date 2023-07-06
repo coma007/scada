@@ -22,17 +22,21 @@ public class TagValidator : AbstractValidator<TagDto>
             .Must(tag => tag is IInputTagDto inputTag &&
                          (inputTag.Driver.Trim().ToUpper() == "SIMULATION" || inputTag.Driver.Trim().ToUpper() == "REALTIME"))
             .WithMessage("Driver should be either 'SIMULATION' or 'REALTIME' for input tags.")
+            .When(tag => tag is IInputTagDto)
             .Must(tag => tag is IInputTagDto inputTag && inputTag.ScanTime != 0)
-            .WithMessage("Scan time must be positive number of seconds.");
+            .WithMessage("ScanTime must be positive number of seconds.")
+            .When(tag => tag is IInputTagDto);
         
         RuleFor(tag => tag)
             .Must(tag => tag is IAnalogTagDto analogTag && 
                          (analogTag.LowLimit < analogTag.HighLimit))
-            .WithMessage("LowLimit should be lower than HighLimit.");
+            .WithMessage("LowLimit should be lower than HighLimit.")
+            .When(tag => tag is IAnalogTagDto);
          
         RuleFor(tag => tag)
             .Must(tag => tag is DigitalOutputTagDto digitalOutputTag && 
-                         (digitalOutputTag.InitialValue == 0 || Math.Abs(digitalOutputTag.InitialValue - 1.0) < 0))
-            .WithMessage("InitialValue of digital output tag should be 0 or 1.");
+                         (digitalOutputTag.InitialValue == 0 || digitalOutputTag.InitialValue == 1))
+            .WithMessage("InitialValue of digital output tag should be 0 or 1.")
+            .When(tag => tag is DigitalOutputTagDto);   
     }
 }
