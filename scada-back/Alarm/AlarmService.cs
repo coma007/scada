@@ -1,5 +1,6 @@
 using scada_back.Exception;
 using scada_back.Tag;
+using scada_back.Tag.Model;
 using scada_back.Tag.Model.Abstraction;
 using scada_back.Validation;
 
@@ -49,7 +50,7 @@ public class AlarmService : IAlarmService
             throw new ObjectNotFoundException($"Tag with name '{newAlarm.TagName}' not found.");
         }
 
-        if (tag is not IAnalogTag analogTag)
+        if (tag is not AnalogInputTag analogTag)
         {
             throw new System.Exception("Tag for alarm should be analog");
         }
