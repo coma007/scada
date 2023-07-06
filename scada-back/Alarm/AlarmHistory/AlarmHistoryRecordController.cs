@@ -31,6 +31,14 @@ public class AlarmHistoryRecordController: ControllerBase
         IEnumerable<AlarmHistoryRecordDTO> records = _alarmHistoryRecordService.GetAll();
         return Ok(records);
     }
+    
+    [HttpGet]
+    [Route("alarm-records/between")]
+    public ActionResult<IEnumerable<AlarmHistoryRecordDTO>> GetBetween(DateTime start, DateTime end)
+    {
+        IEnumerable<AlarmHistoryRecordDTO> records = _alarmHistoryRecordService.GetBetween(start, end);
+        return Ok(records);
+    }
 
     [HttpPost]
     [Route("alarm-record/create")]

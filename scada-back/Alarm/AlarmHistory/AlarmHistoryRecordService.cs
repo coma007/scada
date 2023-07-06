@@ -32,4 +32,10 @@ public class AlarmHistoryRecordService : IAlarmHistoryRecordService
         IEnumerable<AlarmHistoryRecord> records = _repository.GetAll().Result;
         return records.Count() > 0 ? records.Select(alarm => alarm.ToDto()) : Enumerable.Empty<AlarmHistoryRecordDTO>();
     }
+
+    public IEnumerable<AlarmHistoryRecordDTO> GetBetween(DateTime start, DateTime end)
+    {
+        IEnumerable<AlarmHistoryRecord> records = _repository.GetBetween(start, end).Result;
+        return records.Count() > 0 ? records.Select(alarm => alarm.ToDto()) : Enumerable.Empty<AlarmHistoryRecordDTO>();
+    }
 }

@@ -31,4 +31,13 @@ public class AlarmHistoryRecordRepository : IAlarmHistoryRecordRepository
     {
         return await _alarmRecords.Find(empty).ToListAsync(); 
     }
+
+    public async Task<IEnumerable<AlarmHistoryRecord>> GetBetween(DateTime start, DateTime end)
+    {
+        return await _alarmRecords
+            .Find(
+                Builders<AlarmHistoryRecord>.Filter.Lte(x => x.Timestamp, end) &
+                Builders<AlarmHistoryRecord>.Filter.Gte(x => x.Timestamp, start))
+            .ToListAsync(); 
+    }
 }
