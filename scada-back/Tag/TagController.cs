@@ -7,50 +7,50 @@ namespace scada_back.Tag;
 [Route("Api/[controller]/[action]")]
 public class TagController : ControllerBase
 {
-    private readonly ITagService _tagService;
+    private readonly ITagService _service;
     private readonly ILogger<TagController> _logger;
 
-    public TagController(ITagService tagService, ILogger<TagController> logger)
+    public TagController(ITagService service, ILogger<TagController> logger)
     {
-        _tagService = tagService;
+        _service = service;
         _logger = logger;
     }
 
     [HttpGet(Name = "GetAllTags")]
     public ActionResult<IEnumerable<TagDto>> GetAll()
     {
-        return Ok(_tagService.GetAll());
+        return Ok(_service.GetAll());
     }
     
     [HttpGet(Name = "GetAllTagsByType")]
     public ActionResult<IEnumerable<TagDto>> GetAllByType(string tagType)
     {
-        return Ok(_tagService.GetAll(tagType));
+        return Ok(_service.GetAll(tagType));
     }
     
     [HttpGet(Name = "GetTagByName")]
     public ActionResult<TagDto> Get(string tagName)
     {
-        return Ok(_tagService.Get(tagName));
+        return Ok(_service.Get(tagName));
     }
     
     [HttpPost(Name = "CreateTag")]
     public ActionResult<TagDto> Create([FromBody]TagDto tag)
     {
-        return Ok(_tagService.Create(tag));
+        return Ok(_service.Create(tag));
     }
     
     
     [HttpDelete(Name = "DeleteTag")]
     public ActionResult<TagDto> Delete(string tagName)
     {
-        return Ok(_tagService.Delete(tagName));
+        return Ok(_service.Delete(tagName));
     }
     
     [HttpPatch(Name = "UpdateTag")]
     public ActionResult<TagDto> Update([FromBody]TagDto tag)
     {
-        return Ok(_tagService.Update(tag));
+        return Ok(_service.Update(tag));
     }
 
 }

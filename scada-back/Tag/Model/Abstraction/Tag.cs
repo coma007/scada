@@ -17,7 +17,6 @@ public abstract class Tag
     [BsonElement("io_address")]
     public string IOAddress { get; set; } = string.Empty;
 
-
     public abstract TagDto ToDto();
 }
 

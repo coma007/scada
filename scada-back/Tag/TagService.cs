@@ -20,16 +20,26 @@ public class TagService : ITagService
 
     public IEnumerable<TagDto> GetAll(string discriminator)
     {
-        IEnumerable<Model.Abstraction.Tag> tags = _repository.GetAll(discriminator).Result;
+        IEnumerable<Model.Abstraction.Tag> tags = _repository.GetAll(discriminator.ToLower()).Result;
         return tags.Select(tag => tag.ToDto());
     }
-    
+
+    public Task<IEnumerable<string>> GetAllNames(string signalType)
+    {
+        signalType = signalType.ToLower().Trim();
+        if (signalType != "analog" && signalType != "digital")
+        {
+            throw new InvalidSignalTypeException($"Invalid signal type: {signalType}.");
+        }
+        return _repository.GetAllNames(signalType);
+    }
+
     public TagDto Get(string tagName)
     {
         Model.Abstraction.Tag tag =  _repository.Get(tagName).Result;
         if (tag == null)
         {
-            throw new ObjectNotFoundException($"Tag with '{tagName}' not found.");
+            throw new ObjectNotFoundException($"Tag with name '{tagName}' not found.");
         }
         return tag.ToDto();
     }

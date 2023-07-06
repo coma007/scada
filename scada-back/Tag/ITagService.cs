@@ -6,6 +6,7 @@ public interface ITagService
 {
     IEnumerable<TagDto> GetAll();
     IEnumerable<TagDto> GetAll(string discriminator);
+    Task<IEnumerable<string>> GetAllNames(string signalType);
     TagDto Get(string tagName);
     TagDto Create(TagDto newTag);
     TagDto Delete(string tagName);

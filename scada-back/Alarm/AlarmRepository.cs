@@ -28,7 +28,12 @@ public class AlarmRepository: IAlarmRepository
     public async Task<Alarm> Create(Alarm newAlarm)
     {
         await _alarms.InsertOneAsync(newAlarm);
-        return newAlarm;
+        Alarm alarm = await Get(newAlarm.AlarmName);
+        if (alarm == null)
+        {
+            throw new ActionNotExecutedException("Create failed.");
+        }
+        return alarm;
     }
 
     public async Task<Alarm> Delete(string alarmName)
