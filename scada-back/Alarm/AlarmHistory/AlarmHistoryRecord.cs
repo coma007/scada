@@ -13,6 +13,8 @@ public class AlarmHistoryRecord
     [BsonElement("timestamp")]
     [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     public DateTime Timestamp { get; set; }
+    [BsonElement("tag_value")]
+    public double TagValue { get; set; }
 
     public AlarmHistoryRecordDTO ToDto()
     {
@@ -20,7 +22,8 @@ public class AlarmHistoryRecord
         {
             Id = Id,
             Timestamp = Timestamp,
-            AlarmName = AlarmName
+            AlarmName = AlarmName,
+            TagValue = TagValue
         };
     }
 }
