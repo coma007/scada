@@ -8,6 +8,7 @@ using scada_back.Tag;
 using scada_back.Tag.Model.Converter;
 using scada_back.TagHistory;
 using scada_back.User;
+using scada_back.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,9 +30,12 @@ builder.Services.AddScoped<ITagHistoryService, TagHistoryService>();
 
 builder.Services.AddScoped<IAlarmRepository, AlarmRepository>();
 builder.Services.AddScoped<IAlarmService, AlarmService>();
+
 builder.Services.AddScoped<IAlarmHistoryRecordRepository, AlarmHistoryRecordRepository>();
 builder.Services.AddScoped<IAlarmHistoryRecordService, AlarmHistoryRecordService>();
 
+
+builder.Services.AddScoped<IValidationService, ValidationService>();
 
 builder.Services.AddControllers(options => 
         options.Filters.Add<GlobalExceptionFilter>())

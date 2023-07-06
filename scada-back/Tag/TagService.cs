@@ -1,16 +1,19 @@
 using scada_back.Exception;
 using scada_back.Tag.Model;
 using scada_back.Tag.Model.Abstraction;
+using scada_back.Validation;
 
 namespace scada_back.Tag;
 
 public class TagService : ITagService
 {
     private readonly ITagRepository _repository;
+    private readonly IValidationService _validationService;
 
-    public TagService(ITagRepository repository)
+    public TagService(ITagRepository repository, IValidationService validationService)
     {
         _repository = repository;
+        _validationService = validationService;
     }
     
     public IEnumerable<TagDto> GetAll()
@@ -21,7 +24,10 @@ public class TagService : ITagService
 
     public IEnumerable<TagDto> GetAll(string discriminator)
     {
-        IEnumerable<Model.Abstraction.Tag> tags = _repository.GetAll(discriminator.ToLower()).Result;
+        discriminator = discriminator.ToLower().Trim();
+        _validationService.ValidateEmptyString("tagType", discriminator);
+        
+        IEnumerable<Model.Abstraction.Tag> tags = _repository.GetAll(discriminator).Result;
         return tags.Select(tag => tag.ToDto());
     }
 
@@ -37,6 +43,9 @@ public class TagService : ITagService
 
     public TagDto Get(string tagName)
     {
+        tagName = tagName.ToLower().Trim();
+        _validationService.ValidateEmptyString("tagName", tagName);
+        
         Model.Abstraction.Tag tag =  _repository.Get(tagName).Result;
         if (tag == null)
         {
@@ -75,7 +84,7 @@ public class TagService : ITagService
         }
         else
         {
-            throw new InvalidSignalTypeException($"Tag with {tagName} is not ");
+            throw new InvalidSignalTypeException($"Tag with {tagName} is not input tag.");
         }
         return _repository.Update(tag).Result.ToDto();
 
