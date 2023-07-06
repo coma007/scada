@@ -22,9 +22,14 @@ public class Alarm
 
     public AlarmDto ToDto()
     {
+        string alarmType = "HIGH";
+        if (Type == AlarmType.LOW)
+        {
+            alarmType = "LOW";
+        }
         return new AlarmDto
         {
-            Type = Type,
+            Type = alarmType,
             AlarmName = AlarmName,
             Limit = Limit,
             TagName = TagName,
@@ -36,7 +41,7 @@ public class Alarm
 
 public class AlarmDto
 {
-    public AlarmType Type { get; set; }
+    public string Type { get; set; } = string.Empty;
     public AlarmPriority AlarmPriority { get; set; }
     public double Limit { get; set; }
     public string AlarmName { get; set; } = string.Empty;
@@ -44,10 +49,15 @@ public class AlarmDto
 
     public Alarm ToEntity()
     {
+        AlarmType alarmType = AlarmType.HIGH;
+        if (Type.ToUpper() == "LOW")
+        {
+            alarmType = AlarmType.LOW;
+        }
         return new Alarm()
         {
             AlarmName = AlarmName,
-            Type = Type,
+            Type = alarmType,
             TagName = TagName,
             Limit = Limit,
             AlarmPriority = AlarmPriority

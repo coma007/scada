@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
+using scada_back.Tag.Enumeration;
 using scada_back.Tag.Model.Abstraction;
 
 namespace scada_back.Tag.Model;
@@ -14,7 +15,7 @@ public class AnalogInputTag : Abstraction.Tag, IAnalogTag, IInputTag
     [BsonElement("units")]
     public string Units { get; set; } = string.Empty;
     [BsonElement("driver")]
-    public string Driver { get; set; } = string.Empty;
+    public DriverType Driver { get; set; }
     [BsonElement("scan_time")]
     public double ScanTime { get; set; }
     [BsonElement("scan")]
@@ -23,6 +24,11 @@ public class AnalogInputTag : Abstraction.Tag, IAnalogTag, IInputTag
     
     public override TagDto ToDto()
     {
+        string driver = "DIGITAL";
+        if (this.Driver == DriverType.ANALOG)
+        {
+            driver = "ANALOG";
+        }
         return new AnalogInputTagDto
         {
             TagName = this.TagName,
@@ -32,7 +38,7 @@ public class AnalogInputTag : Abstraction.Tag, IAnalogTag, IInputTag
             LowLimit = this.LowLimit,
             HighLimit = this.HighLimit,
             Units = this.Units,
-            Driver = this.Driver,
+            Driver = driver,
             ScanTime = this.ScanTime,
             Scan = this.Scan
         };
@@ -45,11 +51,17 @@ public class AnalogInputTagDto :  TagDto, IAnalogTagDto, IInputTagDto
     public double LowLimit { get; set; }
     public double HighLimit { get; set; }
     public string Units { get; set; } = string.Empty;
-    public string Driver { get; set; } = string.Empty;
+    public string Driver { get; set; }
     public double ScanTime { get; set; }
     public bool Scan { get; set; }
+    
     public override Tag.Model.Abstraction.Tag ToEntity()
     {
+        DriverType driver = DriverType.DIGITAL;
+        if (this.Driver.ToUpper() == "ANALOG")
+        {
+            driver = DriverType.ANALOG;
+        }
         return new AnalogInputTag
         {
             TagName = this.TagName,
@@ -58,7 +70,7 @@ public class AnalogInputTagDto :  TagDto, IAnalogTagDto, IInputTagDto
             LowLimit = this.LowLimit,
             HighLimit = this.HighLimit,
             Units = this.Units,
-            Driver = this.Driver,
+            Driver = driver,
             ScanTime = this.ScanTime,
             Scan = this.Scan
         };
@@ -75,7 +87,7 @@ public class AnalogInputTagDto :  TagDto, IAnalogTagDto, IInputTagDto
         LowLimit = lowLimit;
         HighLimit = highLimit;
         Units = units;
-        Driver = driver;
+        Driver = driver.ToUpper();
         ScanTime = scanTime;
         Scan = scan;
     }
