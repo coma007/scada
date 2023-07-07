@@ -112,10 +112,9 @@ public class TagRepository : ITagRepository
             catch (System.Exception e) when (!(e is ObjectNotFoundException || e is ActionNotExecutedException))
             {
                 session.AbortTransaction();
+                throw;
             }
         }
-
-        return null;
     }
 
     public async Task<Model.Abstraction.Tag> Update(Model.Abstraction.Tag updatedTag)
