@@ -1,5 +1,6 @@
 using scada_back.DriverState;
 using scada_back.Exception;
+using scada_back.Tag.Model;
 using scada_back.Tag.Model.Abstraction;
 using scada_back.Validation;
 
@@ -99,6 +100,19 @@ public class TagService : ITagService
             throw new InvalidSignalTypeException($"Tag with {tagName} is not input tag.");
         }
         return _repository.Update(tag).Result.ToDto();
+    }
+    
+    public TagDto UpdateOutputValue(string tagName, double value)
+    {
+        tagName = tagName.Trim();
+        _validationService.ValidateEmptyString("tagName", tagName);
+        _validationService.ValidateDigitalValue(value);
 
+        Model.Abstraction.Tag tag = _repository.Get(tagName).Result;
+        if (tag is IInputTag or IAnalogTag)
+        {
+            throw new InvalidSignalTypeException($"Can only change value of digital output tag.");
+        }
+        return _repository.Update(tag).Result.ToDto();
     }
 }

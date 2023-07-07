@@ -11,4 +11,6 @@ public interface ITagService
     TagDto Create(TagDto newTag);
     TagDto Delete(string tagName);
     TagDto UpdateScan(string tagName);
+    TagDto UpdateOutputValue(string tagName, double value);
+
 }

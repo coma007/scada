@@ -12,11 +12,13 @@ public class ValidationService : IValidationService
     private readonly TagValidator _tagValidator;
     private readonly AlarmValidator _alarmValidator;
     private readonly SignalTypeValidator _signalTypeValidator;
+    private readonly DigitalValueValidator _digitalValueValidator;
 
     public ValidationService()
     {
         _emptyStringValidator = new EmptyStringValidator();
         _signalTypeValidator = new SignalTypeValidator();
+        _digitalValueValidator = new DigitalValueValidator();
         _tagValidator = new TagValidator();
         _alarmValidator = new AlarmValidator();
     }
@@ -25,34 +27,37 @@ public class ValidationService : IValidationService
     {
         _emptyStringValidator.ParameterName = parameterName;
         ValidationResult result = _emptyStringValidator.Validate(parameter);
-        if (!result.IsValid)
-        {
-            throw new InvalidParameterException(result.Errors.First().ToString());
-        }
+        ThrowException(result);
     }
 
     public void ValidateSignalType(string signalType)
     {
         _signalTypeValidator.SignalType = signalType;
         ValidationResult result = _signalTypeValidator.Validate(signalType);
-        if (!result.IsValid)
-        {
-            throw new InvalidParameterException(result.Errors.First().ToString());
-        }
+        ThrowException(result);
+    }
+
+    public void ValidateDigitalValue(double value)
+    {
+        ValidationResult result = _digitalValueValidator.Validate(value);
+        ThrowException(result);
     }
 
     public void ValidateTag(TagDto tag)
     {
         ValidationResult result = _tagValidator.Validate(tag);
-        if (!result.IsValid)
-        {
-            throw new InvalidParameterException(result.Errors.First().ToString());
-        }
+        ThrowException(result);
     }
 
     public void ValidateAlarm(AlarmDto alarm)
     {
         ValidationResult result = _alarmValidator.Validate(alarm);
+        ThrowException(result);
+        
+    }
+
+    private static void ThrowException(ValidationResult result)
+    {
         if (!result.IsValid)
         {
             throw new InvalidParameterException(result.Errors.First().ToString());
