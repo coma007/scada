@@ -21,28 +21,10 @@ public class AlarmController : ControllerBase
         return Ok(_service.GetAll());
     }
     
-    [HttpGet(Name = "GetAlarmByName")]
+    [HttpGet(Name = "GetAlarmByAlarmName")]
     public ActionResult<AlarmDto> Get(string alarmName)
     {
         return Ok(_service.Get(alarmName));
-    }
-
-    [HttpPost(Name = "CreateAlarm")]
-    public ActionResult<AlarmDto> Create([FromBody]AlarmDto alarm)
-    {
-        return Ok(_service.Create(alarm));
-    }
-    
-    [HttpDelete(Name = "DeleteAlarm")]
-    public ActionResult<AlarmDto> Delete(string alarmName)
-    {
-        return Ok(_service.Delete(alarmName));
-    }
-    
-    [HttpPatch(Name = "UpdateAlarm")]
-    public ActionResult<AlarmDto> Update([FromBody]AlarmDto alarm)
-    {
-        return Ok(_service.Update(alarm));
     }
 
 }

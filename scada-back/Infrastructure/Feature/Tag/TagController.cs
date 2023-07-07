@@ -22,35 +22,16 @@ public class TagController : ControllerBase
         return Ok(_service.GetAll());
     }
     
-    [HttpGet(Name = "GetAllTagsByType")]
+    [HttpGet(Name = "GetAllByType")]
     public ActionResult<IEnumerable<TagDto>> GetAllByType(string tagType)
     {
         return Ok(_service.GetAll(tagType));
     }
     
-    [HttpGet(Name = "GetTagByName")]
+    [HttpGet(Name = "GetByName")]
     public ActionResult<TagDto> Get(string tagName)
     {
         return Ok(_service.Get(tagName));
-    }
-    
-    [HttpPost(Name = "CreateTag")]
-    public ActionResult<TagDto> Create([FromBody]TagDto tag)
-    {
-        return Ok(_service.Create(tag));
-    }
-    
-    
-    [HttpDelete(Name = "DeleteTag")]
-    public ActionResult<TagDto> Delete(string tagName)
-    {
-        return Ok(_service.Delete(tagName));
-    }
-    
-    [HttpPatch(Name = "UpdateTagScan")]
-    public ActionResult<TagDto> UpdateScan(string tagName)
-    {
-        return Ok(_service.UpdateScan(tagName));
     }
 
 }
