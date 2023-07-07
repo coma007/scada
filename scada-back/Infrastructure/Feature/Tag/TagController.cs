@@ -16,12 +16,6 @@ public class TagController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet(Name = "GetAllTags")]
-    public ActionResult<IEnumerable<TagDto>> GetAll()
-    {
-        return Ok(_service.GetAll());
-    }
-    
     [HttpGet(Name = "GetAllTagsByType")]
     public ActionResult<IEnumerable<TagDto>> GetAllByType(string tagType)
     {

@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using scada_back.Api.ApiKey;
 
 namespace scada_back.Infrastructure.Feature.TagHistory;
 
 [ApiController]
 [Route("Api/[controller]/[action]")]
+[RequireApiKey]
 public class TagHistoryController : ControllerBase
 {
     private readonly ITagHistoryService _service;
@@ -20,12 +22,4 @@ public class TagHistoryController : ControllerBase
     {
         return Ok(_service.GetAll());
     }
-
-    [HttpPost(Name = "CreateTagHistoryRecord")]
-    public ActionResult<TagHistoryRecordDto> Create([FromBody] TagHistoryRecordDto tagRecord)
-    {
-        _service.Create(tagRecord);
-        return Ok();
-    }
-
 }
