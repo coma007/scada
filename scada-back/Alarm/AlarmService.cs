@@ -27,8 +27,9 @@ public class AlarmService : IAlarmService
     
     public AlarmDto Get(string alarmName)
     {
+        alarmName = alarmName.Trim();
         _validationService.ValidateEmptyString("alarmName", alarmName);
-        
+
         Alarm alarm = _repository.Get(alarmName).Result;
         if (alarm == null)
         {
@@ -60,6 +61,7 @@ public class AlarmService : IAlarmService
 
     public AlarmDto Delete(string alarmName)
     {
+        alarmName = alarmName.Trim();
         _validationService.ValidateEmptyString("alarmName", alarmName);
         return _repository.Delete(alarmName).Result.ToDto();
     }
