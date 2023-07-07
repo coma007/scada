@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using scada_back.Infrastructure.Feature.Alarm;
 using scada_back.Infrastructure.Feature.Tag;
@@ -8,6 +9,7 @@ namespace scada_back.Api.Controller;
 
 [ApiController]
 [Route("Api/[controller]/[action]")]
+[Authorize]
 public class DatabaseManager : ControllerBase
 {
     private readonly IUserService _userService;
@@ -23,7 +25,7 @@ public class DatabaseManager : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost(Name = "Login")]
+    [HttpPost(Name = "Login"), AllowAnonymous]
     public ActionResult<string> Login(LoginDto credentials)
     {
         return Ok(_userService.Login(credentials.Username, credentials.Password));
