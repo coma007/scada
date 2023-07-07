@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using scada_back.Infrastructure.Feature.AlarmHistory;
 using scada_back.Infrastructure.Feature.TagHistory;
 
@@ -6,6 +7,7 @@ namespace scada_back.Api.Controller;
 
 [ApiController]
 [Route("Api/[controller]/[action]")]
+[Authorize]
 public class ReportManager : ControllerBase
 {
     private readonly IAlarmHistoryService _alarmHistoryService;
