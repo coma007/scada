@@ -1,19 +1,21 @@
+using System.Collections.Specialized;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
-using scada_back.Alarm;
-using scada_back.AlarmHistory;
-using scada_back.Database;
-using scada_back.DriverState;
-using scada_back.Exception.Filter;
-using scada_back.Tag;
-using scada_back.Tag.Model.Converter;
-using scada_back.TagHistory;
-using scada_back.User;
-using scada_back.Validation;
+using scada_back.Api.ApiKey;
+using scada_back.Infrastructure.Database;
+using scada_back.Infrastructure.Exception.Filter;
+using scada_back.Infrastructure.Feature.Alarm;
+using scada_back.Infrastructure.Feature.AlarmHistory;
+using scada_back.Infrastructure.Feature.DriverState;
+using scada_back.Infrastructure.Feature.Tag;
+using scada_back.Infrastructure.Feature.Tag.Model.Converter;
+using scada_back.Infrastructure.Feature.TagHistory;
+using scada_back.Infrastructure.Feature.User;
+using scada_back.Infrastructure.Validation;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -52,7 +54,11 @@ builder.Services.AddControllers(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new TagDtoConverter());
     });
-
+builder.Services.AddMvc(options =>
+{
+    options.Filters.Add(typeof(RequireApiKeyAttribute));
+});
+builder.Services.AddEndpointsApiExplorer();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -91,12 +97,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
+
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
+app.UseRouting();
+
+app.UseMiddleware<ApiKeyMiddleware>();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.Run();

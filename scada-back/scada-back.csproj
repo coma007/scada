@@ -15,4 +15,9 @@
         <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.6" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Api" />
+      <Folder Include="Infrastructure" />
+    </ItemGroup>
+
 </Project>
