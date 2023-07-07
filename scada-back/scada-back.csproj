@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Api\Controller\" />
       <Folder Include="Infrastructure" />
     </ItemGroup>
 
