@@ -29,20 +29,6 @@ public class AlarmHistoryController: ControllerBase
         IEnumerable<AlarmHistoryRecordDto> records = _alarmHistoryService.Get(alarmName);
         return Ok(records);
     }
-    
-    [HttpGet(Name = "GetAlarmRecordByPriority")]
-    public ActionResult<IEnumerable<AlarmHistoryRecordDto>> GetByAlarmPriority(int priority)
-    {
-        IEnumerable<AlarmHistoryRecordDto> records = _alarmHistoryService.Get(priority);
-        return Ok(records);
-    }
-    
-    [HttpGet(Name = "GetAlarmRecordBetween")]
-    public ActionResult<IEnumerable<AlarmHistoryRecordDto>> GetBetween(DateTime start, DateTime end)
-    {
-        IEnumerable<AlarmHistoryRecordDto> records = _alarmHistoryService.GetBetween(start, end);
-        return Ok(records);
-    }
 
     [HttpPost(Name = "CreateAlarmRecord")]
     public ActionResult<AlarmHistoryRecordDto> Create([FromBody]AlarmHistoryRecordDto alarmRecord)
