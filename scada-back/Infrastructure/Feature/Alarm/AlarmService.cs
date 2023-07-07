@@ -12,7 +12,7 @@ public class AlarmService : IAlarmService
     private readonly ITagService _tagService;
     private readonly IValidationService _validationService;
 
-    public AlarmService(IAlarmRepository repository,ITagService tagService, IValidationService validationService)
+    public AlarmService(IAlarmRepository repository, ITagService tagService, IValidationService validationService)
     {
         _repository = repository;
         _validationService = validationService;
@@ -36,6 +36,12 @@ public class AlarmService : IAlarmService
             throw new ObjectNotFoundException($"Alarm with name '{alarmName}' not found.");
         }
         return alarm.ToDto();
+    }
+
+    public IEnumerable<AlarmDto> GetInvoked(string tagName, double value)
+    {
+        IEnumerable<Alarm> alarms = _repository.GetInvoked(tagName, value).Result;
+        return alarms.Select(alarm => alarm.ToDto());
     }
 
     public AlarmDto Create(AlarmDto newAlarm)

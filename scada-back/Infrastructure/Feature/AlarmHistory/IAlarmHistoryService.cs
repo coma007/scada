@@ -7,4 +7,5 @@ public interface IAlarmHistoryService
     IEnumerable<AlarmHistoryRecordDto> Get(int priority);
     IEnumerable<AlarmHistoryRecordDto> GetBetween(DateTime start, DateTime end);
     void Create(AlarmHistoryRecordDto newRecord);
+    void AlarmIfNeeded(string tagName, double value);
 }
