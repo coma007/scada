@@ -1,4 +1,7 @@
+using scada_back.Infrastructure.Feature.Alarm;
+using scada_back.Infrastructure.Feature.AlarmHistory;
 using scada_back.Infrastructure.Feature.Tag;
+using scada_back.Infrastructure.Feature.Tag.Model.Abstraction;
 
 namespace scada_back.Infrastructure.Feature.TagHistory;
 
@@ -6,11 +9,13 @@ public class TagHistoryService : ITagHistoryService
 {
     private readonly ITagHistoryRepository _repository;
     private readonly ITagService _tagService;
+    private readonly IAlarmHistoryService _alarmHistoryService;
 
-    public TagHistoryService(ITagHistoryRepository repository, ITagService tagService)
+    public TagHistoryService(ITagHistoryRepository repository, IAlarmHistoryService alarmHistoryService, ITagService tagService)
     {
         _repository = repository;
         _tagService = tagService;
+        _alarmHistoryService = alarmHistoryService;
     }
     
     public IEnumerable<TagHistoryRecordDto> GetAll()
@@ -41,7 +46,8 @@ public class TagHistoryService : ITagHistoryService
 
     public void Create(TagHistoryRecordDto newRecord)
     {
-        _tagService.Get(newRecord.TagName);
+        TagDto tag = _tagService.Get(newRecord.TagName);
+        _alarmHistoryService.AlarmIfNeeded(tag.TagName, newRecord.TagValue);
         _repository.Create(newRecord.ToEntity());
     }
 }

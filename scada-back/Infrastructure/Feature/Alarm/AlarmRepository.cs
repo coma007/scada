@@ -30,6 +30,13 @@ public class AlarmRepository: IAlarmRepository
             .FirstOrDefault();
     }
 
+    public async Task<IEnumerable<Alarm>> GetInvoked(string tagName, double value)
+    {
+        return (await _alarms
+                .FindAsync(alarm => alarm.TagName == tagName && alarm.Limit <= value))
+            .ToList();
+    }
+
     private async Task<Alarm> GetDeleted(string alarmName)
     {
         return (await _deletedAlarms

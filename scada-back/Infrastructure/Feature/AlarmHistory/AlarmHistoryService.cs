@@ -48,4 +48,17 @@ public class AlarmHistoryService : IAlarmHistoryService
         _logger.LogToFile(record);
     }
 
+    public void AlarmIfNeeded(string tagName, double value)
+    {
+        IEnumerable<AlarmDto> alarms = _alarmService.GetInvoked(tagName, value);
+        foreach (var alarm in alarms)
+        {
+            Create(new AlarmHistoryRecordDto
+            {
+                AlarmName = alarm.AlarmName,
+                Timestamp = DateTime.Now,
+                TagValue = value
+            });
+        }
+    }
 }
