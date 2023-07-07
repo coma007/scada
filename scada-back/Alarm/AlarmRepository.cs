@@ -7,11 +7,15 @@ namespace scada_back.Alarm;
 public class AlarmRepository: IAlarmRepository
 {
     private readonly IMongoCollection<Alarm> _alarms;
+    private readonly IMongoCollection<Alarm> _deletedAlarms;
+    private readonly IMongoClient _client;
 
     public AlarmRepository(IScadaDatabaseSettings settings, IMongoClient mongoClient)
     {
+        _client = mongoClient;
         var database = mongoClient.GetDatabase(settings.DatabaseName);
         _alarms = database.GetCollection<Alarm>(settings.AlarmsCollectionName);
+        _deletedAlarms = database.GetCollection<Alarm>(settings.AlarmsDeletedCollectionName);
     }
     
     public async Task<IEnumerable<Alarm>> GetAll()
@@ -24,6 +28,12 @@ public class AlarmRepository: IAlarmRepository
         return (await _alarms
                 .FindAsync(alarm => alarm.AlarmName == alarmName))
             .FirstOrDefault();
+    }
+
+    private async Task<Alarm> GetDeleted(string alarmName)
+    {
+        return (await _deletedAlarms
+            .FindAsync(alarm => alarm.AlarmName == alarmName)).FirstOrDefault();
     }
 
     public async Task<Alarm> Create(Alarm newAlarm)
@@ -39,16 +49,40 @@ public class AlarmRepository: IAlarmRepository
     
     public async Task<Alarm> Delete(string alarmName)
     {
-        Alarm toBeDeleted = await Get(alarmName);
-        if (toBeDeleted == null) {
-            throw new ObjectNotFoundException($"Alarm with {alarmName} doesn't exist");
-        }
-        DeleteResult result = await _alarms.DeleteOneAsync(alarm => alarm.AlarmName == alarmName);
-        if (result.DeletedCount == 0)
+        using var session = await _client.StartSessionAsync();
+        session.StartTransaction();
+        try
         {
-            throw new ActionNotExecutedException("Deletion failed.");
+            Alarm toBeDeleted = await Get(alarmName);
+            if (toBeDeleted == null)
+            {
+                throw new ObjectNotFoundException($"Alarm with {alarmName} doesn't exist");
+            }
+
+            DeleteResult result = await _alarms.DeleteOneAsync(session, alarm => alarm.AlarmName == alarmName);
+            await _deletedAlarms.InsertOneAsync(session, toBeDeleted);
+            //Alarm alarm = await GetDeleted(alarmName);
+            if (result.DeletedCount == 0 || toBeDeleted == null)
+            {
+                throw new ActionNotExecutedException("Deletion failed.");
+            }
+
+            await session.CommitTransactionAsync();
+            return toBeDeleted;
         }
-        return toBeDeleted;
+        catch (System.Exception e)
+        {
+            await session.AbortTransactionAsync();
+            switch (e)
+            {
+                case ObjectNotFoundException:
+                    throw new ObjectNotFoundException(e.Message);
+                case ActionNotExecutedException:
+                    throw new ActionNotExecutedException(e.Message);
+                default:
+                    throw;
+            }
+        }
     }
 
     public async Task<Alarm> Update(Alarm updatedAlarm)
