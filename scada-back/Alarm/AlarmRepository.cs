@@ -49,7 +49,7 @@ public class AlarmRepository: IAlarmRepository
     
     public async Task<Alarm> Delete(string alarmName)
     {
-        var session = await _client.StartSessionAsync();
+        using var session = await _client.StartSessionAsync();
         session.StartTransaction();
         try
         {
