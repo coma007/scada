@@ -76,34 +76,40 @@ public class TagRepository : ITagRepository
                 Model.Abstraction.Tag toBeDeleted = await Get(tagName);
                 if (toBeDeleted == null)
                 {
+                    session.AbortTransaction();
                     throw new ObjectNotFoundException($"Tag with {tagName} doesn't exist");
                 }
-
                 DeleteResult result = await _tags.DeleteOneAsync(session, tag => tag.TagName == tagName);
                 await _deletedTags.InsertOneAsync(session, toBeDeleted);
                 //Model.Abstraction.Tag tag = await GetDeleted(tagName);
                 if (result.DeletedCount == 0 || toBeDeleted == null)
                 {
+                    session.AbortTransaction();
                     throw new ActionNotExecutedException("Delete failed.");
                 }
 
-                List<Alarm.Alarm> alarms = (await _alarms.FindAsync(alarm => alarm.TagName == toBeDeleted.TagName)).ToListAsync().Result;
-                IEnumerable<string> alarmNames = alarms.Select(alarms => alarms.AlarmName);
-                int noOfAlarms = alarms.Count;
-                var filter = Builders<Alarm.Alarm>.Filter.In(record => record.AlarmName, alarmNames);
-                result = await _alarms.DeleteManyAsync(session, filter);
-                await _deletedAlarms.InsertManyAsync(session, alarms);
-                //alarms = (await _deletedAlarms.FindAsync(alarm => alarm.TagName == toBeDeleted.TagName)).ToListAsync().Result;
-
-                if (result.DeletedCount < noOfAlarms || alarms.Count < noOfAlarms)
+                List<Alarm.Alarm> alarms = (await _alarms.FindAsync(alarm => alarm.TagName == toBeDeleted.TagName))
+                    .ToListAsync().Result;
+                if (alarms.Count > 0)
                 {
-                    throw new ActionNotExecutedException("Delete failed.");
+                    IEnumerable<string> alarmNames = alarms.Select(alarms => alarms.AlarmName);
+                    int noOfAlarms = alarms.Count;
+                    var filter = Builders<Alarm.Alarm>.Filter.In(record => record.AlarmName, alarmNames);
+                    result = await _alarms.DeleteManyAsync(session, filter);
+                    await _deletedAlarms.InsertManyAsync(session, alarms);
+                    //alarms = (await _deletedAlarms.FindAsync(alarm => alarm.TagName == toBeDeleted.TagName)).ToListAsync().Result;
+
+                    if (result.DeletedCount < noOfAlarms || alarms.Count < noOfAlarms)
+                    {
+                        session.AbortTransaction();
+                        throw new ActionNotExecutedException("Delete failed.");
+                    }
                 }
 
                 session.CommitTransaction();
                 return toBeDeleted;
             }
-            catch (System.Exception e)
+            catch (System.Exception e) when (!(e is ObjectNotFoundException || e is ActionNotExecutedException))
             {
                 session.AbortTransaction();
             }
