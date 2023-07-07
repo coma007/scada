@@ -73,8 +73,14 @@ public class TagService : ITagService
     {
         tagName = tagName.Trim();
         _validationService.ValidateEmptyString("tagName", tagName);
-
-        return _repository.Delete(tagName).Result.ToDto();
+        try
+        {
+            return _repository.Delete(tagName).Result.ToDto();
+        }
+        catch (AggregateException e)
+        {
+            throw e.InnerException!;
+        }
     }
 
     public TagDto Update(TagDto updatedTag)

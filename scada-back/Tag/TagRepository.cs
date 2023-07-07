@@ -68,51 +68,57 @@ public class TagRepository : ITagRepository
 
     public async Task<Model.Abstraction.Tag> Delete(string tagName)
     {
-        using (var session = _client.StartSession())
+        using var session = await _client.StartSessionAsync();
+        session.StartTransaction();
+        
+        Model.Abstraction.Tag toBeDeleted = await Get(tagName);
+        try
         {
-            session.StartTransaction();
-            try
+            if (toBeDeleted == null)
             {
-                Model.Abstraction.Tag toBeDeleted = await Get(tagName);
-                if (toBeDeleted == null)
+                throw new ObjectNotFoundException($"Tag with {tagName} doesn't exist");
+            }
+            
+            DeleteResult result = await _tags.DeleteOneAsync(session, tag => tag.TagName == tagName);
+            await _deletedTags.InsertOneAsync(session, toBeDeleted);
+            //Model.Abstraction.Tag tag = await GetDeleted(tagName);
+            if (result.DeletedCount == 0 || toBeDeleted == null)
+            {
+                throw new ActionNotExecutedException("Delete failed.");
+            }
+
+            List<Alarm.Alarm> alarms = (await _alarms.FindAsync(alarm => alarm.TagName == toBeDeleted.TagName))
+                .ToListAsync().Result;
+            if (alarms.Count > 0)
+            {
+                IEnumerable<string> alarmNames = alarms.Select(alarms => alarms.AlarmName);
+                int noOfAlarms = alarms.Count;
+                var filter = Builders<Alarm.Alarm>.Filter.In(record => record.AlarmName, alarmNames);
+                result = await _alarms.DeleteManyAsync(session, filter);
+                await _deletedAlarms.InsertManyAsync(session, alarms);
+                //alarms = (await _deletedAlarms.FindAsync(alarm => alarm.TagName == toBeDeleted.TagName)).ToListAsync().Result;
+
+                if (result.DeletedCount < noOfAlarms || alarms.Count < noOfAlarms)
                 {
-                    session.AbortTransaction();
-                    throw new ObjectNotFoundException($"Tag with {tagName} doesn't exist");
-                }
-                DeleteResult result = await _tags.DeleteOneAsync(session, tag => tag.TagName == tagName);
-                await _deletedTags.InsertOneAsync(session, toBeDeleted);
-                //Model.Abstraction.Tag tag = await GetDeleted(tagName);
-                if (result.DeletedCount == 0 || toBeDeleted == null)
-                {
-                    session.AbortTransaction();
+                    await session.AbortTransactionAsync();
                     throw new ActionNotExecutedException("Delete failed.");
                 }
-
-                List<Alarm.Alarm> alarms = (await _alarms.FindAsync(alarm => alarm.TagName == toBeDeleted.TagName))
-                    .ToListAsync().Result;
-                if (alarms.Count > 0)
-                {
-                    IEnumerable<string> alarmNames = alarms.Select(alarms => alarms.AlarmName);
-                    int noOfAlarms = alarms.Count;
-                    var filter = Builders<Alarm.Alarm>.Filter.In(record => record.AlarmName, alarmNames);
-                    result = await _alarms.DeleteManyAsync(session, filter);
-                    await _deletedAlarms.InsertManyAsync(session, alarms);
-                    //alarms = (await _deletedAlarms.FindAsync(alarm => alarm.TagName == toBeDeleted.TagName)).ToListAsync().Result;
-
-                    if (result.DeletedCount < noOfAlarms || alarms.Count < noOfAlarms)
-                    {
-                        session.AbortTransaction();
-                        throw new ActionNotExecutedException("Delete failed.");
-                    }
-                }
-
-                session.CommitTransaction();
-                return toBeDeleted;
             }
-            catch (System.Exception e) when (!(e is ObjectNotFoundException || e is ActionNotExecutedException))
+
+            await session.CommitTransactionAsync();
+            return toBeDeleted;
+        }
+        catch (System.Exception e)
+        {
+            await session.AbortTransactionAsync();
+            switch (e)
             {
-                session.AbortTransaction();
-                throw;
+                case ObjectNotFoundException:
+                    throw new ObjectNotFoundException(e.Message);
+                case ActionNotExecutedException:
+                    throw new ActionNotExecutedException(e.Message);
+                default:
+                    throw;
             }
         }
     }
