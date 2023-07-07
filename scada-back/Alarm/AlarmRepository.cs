@@ -49,35 +49,40 @@ public class AlarmRepository: IAlarmRepository
     
     public async Task<Alarm> Delete(string alarmName)
     {
-        using (var session = _client.StartSession())
+        var session = await _client.StartSessionAsync();
+        session.StartTransaction();
+        try
         {
-            session.StartTransaction();
-            try
+            Alarm toBeDeleted = await Get(alarmName);
+            if (toBeDeleted == null)
             {
-                Alarm toBeDeleted = await Get(alarmName);
-                if (toBeDeleted == null)
-                {
-                    throw new ObjectNotFoundException($"Alarm with {alarmName} doesn't exist");
-                }
-
-                DeleteResult result = await _alarms.DeleteOneAsync(session, alarm => alarm.AlarmName == alarmName);
-                await _deletedAlarms.InsertOneAsync(session, toBeDeleted);
-                //Alarm alarm = await GetDeleted(alarmName);
-                if (result.DeletedCount == 0 || toBeDeleted == null)
-                {
-                    throw new ActionNotExecutedException("Deletion failed.");
-                }
-
-                session.CommitTransaction();
-                return toBeDeleted;
+                throw new ObjectNotFoundException($"Alarm with {alarmName} doesn't exist");
             }
-            catch (System.Exception e)
+
+            DeleteResult result = await _alarms.DeleteOneAsync(session, alarm => alarm.AlarmName == alarmName);
+            await _deletedAlarms.InsertOneAsync(session, toBeDeleted);
+            //Alarm alarm = await GetDeleted(alarmName);
+            if (result.DeletedCount == 0 || toBeDeleted == null)
             {
-                session.AbortTransaction();
+                throw new ActionNotExecutedException("Deletion failed.");
+            }
+
+            await session.CommitTransactionAsync();
+            return toBeDeleted;
+        }
+        catch (System.Exception e)
+        {
+            await session.AbortTransactionAsync();
+            switch (e)
+            {
+                case ObjectNotFoundException:
+                    throw new ObjectNotFoundException(e.Message);
+                case ActionNotExecutedException:
+                    throw new ActionNotExecutedException(e.Message);
+                default:
+                    throw;
             }
         }
-
-        return null;
     }
 
     public async Task<Alarm> Update(Alarm updatedAlarm)
