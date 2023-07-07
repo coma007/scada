@@ -44,7 +44,7 @@ public class TagService : ITagService
 
     public TagDto Get(string tagName)
     {
-        tagName = tagName.ToLower().Trim();
+        tagName = tagName.Trim();
         _validationService.ValidateEmptyString("tagName", tagName);
         
         Model.Abstraction.Tag tag =  _repository.Get(tagName).Result;
@@ -71,7 +71,7 @@ public class TagService : ITagService
 
     public TagDto Delete(string tagName)
     {
-        tagName = tagName.ToLower().Trim();
+        tagName = tagName.Trim();
         _validationService.ValidateEmptyString("tagName", tagName);
 
         return _repository.Delete(tagName).Result.ToDto();
@@ -86,7 +86,7 @@ public class TagService : ITagService
 
     public TagDto UpdateScan(string tagName)
     {
-        tagName = tagName.ToLower().Trim();
+        tagName = tagName.Trim();
         _validationService.ValidateEmptyString("tagName", tagName);
 
         Model.Abstraction.Tag tag = _repository.Get(tagName).Result;
