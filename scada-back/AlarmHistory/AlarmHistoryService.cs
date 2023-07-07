@@ -6,11 +6,13 @@ public class AlarmHistoryService : IAlarmHistoryService
 {
     private readonly IAlarmHistoryRepository _repository;
     private readonly IAlarmService _alarmService;
+    private readonly IAlarmHistoryLogger _logger;
 
-    public AlarmHistoryService(IAlarmHistoryRepository repository, IAlarmService alarmService)
+    public AlarmHistoryService(IAlarmHistoryRepository repository, IAlarmService alarmService, IAlarmHistoryLogger logger)
     {
         _repository = repository;
         _alarmService = alarmService;
+        _logger = logger;
     }
 
     public IEnumerable<AlarmHistoryRecordDto> GetAll()
@@ -43,6 +45,7 @@ public class AlarmHistoryService : IAlarmHistoryService
         
         AlarmHistoryRecord record = newRecord.ToEntity();
         _repository.Create(record);
+        _logger.LogToFile(record);
     }
 
 }

@@ -1,0 +1,2 @@
+name	timestamp		value
+asd	07/07/2023 15:06:04	0

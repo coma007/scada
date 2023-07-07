@@ -39,10 +39,10 @@ builder.Services.AddScoped<IAlarmService, AlarmService>();
 
 builder.Services.AddScoped<IAlarmHistoryRepository, AlarmHistoryRepository>();
 builder.Services.AddScoped<IAlarmHistoryService, AlarmHistoryService>();
+builder.Services.AddScoped<IAlarmHistoryLogger, AlarmHistoryLogger>();
 
 builder.Services.AddScoped<IDriverStateRepository, DriverStateRepository>();
 builder.Services.AddScoped<IDriverStateService, DriverStateService>();
-
 
 builder.Services.AddScoped<IValidationService, ValidationService>();
 
