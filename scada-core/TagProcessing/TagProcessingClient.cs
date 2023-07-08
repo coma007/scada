@@ -28,13 +28,13 @@ namespace scada_core.TagProcessing
             _createDriverStateUrl = apiUrl + apiValues["CreateDriverStateUrl"];
             _updateDriverStateUrl = apiUrl + apiValues["UpdateDriverStateUrl"];
             _getDriverStateUrl = apiUrl + apiValues["GetDriverStateUrl"];
-            _getAllTagsUrl = apiUrl + apiValues["GetAllTagsUrl"];
+            _getAllTagsUrl = apiUrl + apiValues["GetAllTagsByTypeUrl"];
             _createTagRecordUrl = apiUrl + apiValues["CreateTagRecordUrl"];
         }
 
-        public   JToken  GetAllTags()
+        public   JToken  GetAllTags(string tagType)
         {
-            return _apiClient.MakeApiRequest(_getAllTagsUrl).Result;
+            return _apiClient.MakeApiRequest(_getAllTagsUrl+tagType).Result;
         }
         
         public   JToken  CreateTagRecord(JObject newRecord)

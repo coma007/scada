@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
 namespace scada_core.TagProcessing
@@ -12,9 +13,9 @@ namespace scada_core.TagProcessing
             _client = new TagProcessingClient();
         }
         
-        public JToken GetAllTags()
+        public Dictionary<string, Dictionary<string, object>> GetAllTags(string tagType)
         {
-            return _client.GetAllTags();
+            return ExtractTagsProperties(_client.GetAllTags(tagType));
         }
         
         public   JToken  CreateTagRecord(string tagName, double tagValue)
@@ -48,6 +49,37 @@ namespace scada_core.TagProcessing
                 new JProperty("value", value)
             );
             return _client.UpdateDriverState(updatedState);
+        }
+        
+        private Dictionary<string, Dictionary<string, object>> ExtractTagsProperties(JToken analogTags)
+        {
+            Dictionary<string, Dictionary<string, object>> tagProperties = new Dictionary<string, Dictionary<string, object>>();
+
+            foreach (var tag in analogTags)
+            {
+                string? tagName = tag["tagName"]?.ToString();
+                string? tagType = tag["tagType"]?.ToString();
+                int? ioAddress = tag["ioAddress"]?.ToObject<int>();
+                bool? scan = tag["scan"]?.ToObject<bool>();
+                int? scanTime = tag["scanTime"]?.ToObject<int>();
+                var tagData = new Dictionary<string, object>
+                {
+                    { "ioAddress", ioAddress },
+                    { "scan", scan },
+                    { "scanTime", scanTime }
+                };
+                if (tagType != null && tagType.Contains("analog"))
+                {
+                    double? lowLimit = tag["lowLimit"]?.ToObject<double>();
+                    double? highLimit = tag["highLimit"]?.ToObject<double>();
+                    tagData.Add("lowLimit", lowLimit);
+                    tagData.Add("highLimit", highLimit);
+                }
+
+                tagProperties.Add(tagName, tagData);
+            }
+
+            return tagProperties;
         }
     }
 }

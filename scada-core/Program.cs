@@ -10,9 +10,8 @@ namespace scada_core
     {
         static void Main(string[] args)
         {
-            TagProcessingService tagProcessingService = new TagProcessingService();
-            Console.WriteLine(tagProcessingService.CreateDriverState(456, 10));
-            Console.WriteLine(tagProcessingService.UpdateDriverState(456, 15));
+            TagProcessor tagProcessingService = new TagProcessor();
+            tagProcessingService.InitializeTagThreads();
         }
     }
 }
