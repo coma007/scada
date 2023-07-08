@@ -44,6 +44,7 @@ public class AlarmHistoryService : IAlarmHistoryService
         _alarmService.Get(newRecord.AlarmName);
         
         AlarmHistoryRecord record = newRecord.ToEntity();
+        newRecord.Timestamp = DateTime.Now;
         _repository.Create(record);
         _logger.LogToFile(record);
     }

@@ -48,6 +48,7 @@ public class TagHistoryService : ITagHistoryService
     {
         TagDto tag = _tagService.Get(newRecord.TagName);
         _alarmHistoryService.AlarmIfNeeded(tag.TagName, newRecord.TagValue);
+        newRecord.Timestamp = DateTime.Now;
         _repository.Create(newRecord.ToEntity());
     }
 }
