@@ -35,6 +35,9 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="Microsoft.Extensions.Configuration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>packages\Microsoft.Extensions.Configuration.7.0.0\lib\net462\Microsoft.Extensions.Configuration.dll</HintPath>
+        </Reference>
         <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
           <HintPath>packages\Microsoft.Extensions.Configuration.Abstractions.8.0.0-preview.5.23280.8\lib\net462\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
         </Reference>
