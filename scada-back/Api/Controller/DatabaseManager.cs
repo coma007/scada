@@ -17,10 +17,10 @@ public class DatabaseManager : ControllerBase
     private readonly ITagService _tagService;
     private readonly IAlarmService _alarmService;
     private readonly ILogger<DatabaseManager> _logger;
-    private readonly IWebSocketServer _webSocketServer;
+    private readonly WebSocketServer _webSocketServer;
 
     public DatabaseManager(IUserService userService, ITagService tagService, IAlarmService alarmService, ILogger<DatabaseManager> logger,
-        IWebSocketServer webSocketServer)
+        WebSocketServer webSocketServer)
     {
         _userService = userService;
         _tagService = tagService;

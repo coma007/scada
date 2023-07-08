@@ -20,6 +20,7 @@ using scada_back.Infrastructure.Validation;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSignalR();
 
 // Add services to the container.
 builder.Services.Configure<ScadaDatabaseSettings>(builder.Configuration.GetSection(nameof(ScadaDatabaseSettings)));
@@ -49,7 +50,7 @@ builder.Services.AddScoped<IDriverStateService, DriverStateService>();
 
 builder.Services.AddScoped<IValidationService, ValidationService>();
 
-builder.Services.AddScoped<IWebSocketServer, WebSocketServer>();
+builder.Services.AddSingleton<WebSocketServer>();
 
 builder.Services.AddControllers(options => 
         options.Filters.Add<GlobalExceptionFilter>())
@@ -114,5 +115,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
 });
+
+app.MapHub<WebSocketServer>("/signalr-hub");
 
 app.Run();

@@ -11,6 +11,7 @@ namespace scada_core
         static void Main(string[] args)
         {
             TagProcessor tagProcessingService = new TagProcessor();
+            WebSocketClient webSocketClient = new WebSocketClient();
             tagProcessingService.InitializeTagThreads();
         }
     }
