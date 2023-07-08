@@ -21,13 +21,12 @@ namespace scada_core.ApiClient
         {
             _apiKeyName = ConfigurationSettings.AppSettings["ApiKeyName"];
             _apiKeyValue = ConfigurationSettings.AppSettings["ApiKeyValue"];
-            _apiUrl = ConfigurationSettings.AppSettings["ApiUrl"];
             ConfigureHttpClient();
         }
 
         public async Task<JToken> MakeApiRequest(string endpointUrl)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(_apiUrl + endpointUrl);
+            HttpResponseMessage response = await _httpClient.GetAsync(endpointUrl);
 
             if (response.IsSuccessStatusCode)
             {
@@ -46,7 +45,7 @@ namespace scada_core.ApiClient
         
         public async Task<JToken> MakeApiRequest(string endpointUrl, HttpMethod httpMethod, HttpContent? requestBody = null)
         {
-            HttpRequestMessage request = new HttpRequestMessage(httpMethod, _apiUrl + endpointUrl);
+            HttpRequestMessage request = new HttpRequestMessage(httpMethod, endpointUrl);
             request.Content = requestBody;
 
             HttpResponseMessage response = await _httpClient.SendAsync(request);

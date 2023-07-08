@@ -40,7 +40,7 @@ namespace scada_core.TagProcessing
                     {
                         while (true)
                         {
-                            Thread.Sleep(scanTime * 1000);
+                            Thread.Sleep(scanTime * 10);
                             ProcessTag(tag);
                         }
                     });
