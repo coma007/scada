@@ -42,12 +42,13 @@ public class TagProcessing : ControllerBase
         return Ok(_driverStateService.Get(address));
     }
 
-    [HttpGet(Name = "GetAllTags")]
-    public ActionResult<IEnumerable<TagDto>> GetAllTags()
+   
+    [HttpGet(Name = "GetAllTagsByType")]
+    public ActionResult<IEnumerable<TagDto>> GetAllTagsByType(string tagType)
     {
-        return Ok(_tagService.GetAll());
+        return Ok(_tagService.GetAll(tagType));
     }
-
+    
     [HttpPost(Name = "CreateTagHistoryRecord")]
     public ActionResult<TagHistoryRecordDto> CreateTagRecord([FromBody] TagHistoryRecordDto tagRecord)
     {
