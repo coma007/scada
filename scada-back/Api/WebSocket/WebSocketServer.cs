@@ -13,13 +13,13 @@ public class WebSocketServer : Hub, IWebSocketServer
     {
         _context = context;
     }
-    public void NotifyClientAboutNewRecord(TagHistoryRecordDto record)
+    public async void NotifyClientAboutNewRecord(TagHistoryRecordDto record)
     {
-        _context.Clients.All.SendAsync("NewRecordAdded", record);
+        await _context.Clients.All.SendAsync("NewRecordAdded", record);
     }
 
-    public void NotifyProcessingAppAboutNewTag(TagDto tag)
+    public async void NotifyProcessingAppAboutNewTag(TagDto tag)
     {
-        _context.Clients.All.SendAsync("NewTagCreated", tag);
+        await _context.Clients.All.SendAsync("NewTagCreated", tag);
     }
 }

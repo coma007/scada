@@ -25,9 +25,20 @@ public class WebSocketClient
 
         await _webSocket.ConnectAsync(new Uri(webSocketUrl), CancellationToken.None);
 
-        Console.WriteLine("WebSocket connection established.");
+        //Console.WriteLine("WebSocket connection established.");
 
-        await ReceiveWebSocketMessages();
+        if (_webSocket.State == WebSocketState.Open)
+        {
+            Console.WriteLine(_webSocket.State);
+            Console.WriteLine("WebSocket connection established.");
+        }
+        else
+        {
+            Console.WriteLine("Failed to establish WebSocket connection.");
+            return;
+        }
+
+        _ = ReceiveWebSocketMessages();
 
         //var connection = new HubConnectionBuilder()
         //    .WithUrl(webSocketUrl)
@@ -52,11 +63,11 @@ public class WebSocketClient
         {
             WebSocketReceiveResult result = await _webSocket.ReceiveAsync(arraySegment, CancellationToken.None);
 
-            // Process the received message
-            string message = System.Text.Encoding.UTF8.GetString(buffer, 0, result.Count);
-            Console.WriteLine($"Received message: {message}");
+                // Process the received message
+                string message = System.Text.Encoding.UTF8.GetString(buffer, 0, result.Count);
+                Console.WriteLine($"Received message: {message}");
 
-            // Clear the buffer
+                // Clear the buffer
             Array.Clear(buffer, 0, buffer.Length);
         }
     }
