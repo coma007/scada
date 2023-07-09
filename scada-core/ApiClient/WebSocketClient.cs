@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
-using System;
+﻿using System;
 using System.Configuration;
 using System.Data.Common;
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace scada_core.ApiClient;
 
@@ -14,7 +14,6 @@ public class WebSocketClient
 
     public WebSocketClient()
     {
-
         _webSocket = new ClientWebSocket();
         EstablishConnection().Wait();
     }
@@ -40,18 +39,18 @@ public class WebSocketClient
 
         _ = ReceiveWebSocketMessages();
 
-        //var connection = new HubConnectionBuilder()
-        //    .WithUrl(webSocketUrl)
-        //    .Build();
+        var connection = new HubConnectionBuilder()
+            .WithUrl(webSocketUrl)
+            .Build();
 
-        //await connection.StartAsync();
+        await connection.StartAsync();
 
-        //connection.On<string>("NewTagCreated", tag =>
-        //{
-        //    Console.WriteLine("New tag created:");
-        //    //Console.WriteLine($"Tag Id: {tag.Id}");
-        //    //Console.WriteLine($"Tag Name: {tag.Name}");
-        //});
+        connection.On<string>("NewTagCreated", tag =>
+        {
+            Console.WriteLine("New tag created:");
+            //Console.WriteLine($"Tag Id: {tag.Id}");
+            //Console.WriteLine($"Tag Name: {tag.Name}");
+        });
     }
 
     private async Task ReceiveWebSocketMessages()
