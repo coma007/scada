@@ -114,8 +114,8 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
+    endpoints.MapHub<WebSocketServer>("/signalr-hub");
 });
 
-app.MapHub<WebSocketServer>("/signalr-hub");
 
 app.Run();

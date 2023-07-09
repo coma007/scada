@@ -15,11 +15,11 @@ public class WebSocketServer : Hub, IWebSocketServer
     }
     public async void NotifyClientAboutNewRecord(TagHistoryRecordDto record)
     {
-        await _context.Clients.All.SendAsync("NewRecordAdded", record);
+        await Clients.All.SendAsync("NewRecordAdded", record);
     }
 
     public async void NotifyProcessingAppAboutNewTag(TagDto tag)
     {
-        await _context.Clients.All.SendAsync("NewTagCreated", tag);
+        await Clients.All.SendAsync("NewTagCreated", tag);
     }
 }
