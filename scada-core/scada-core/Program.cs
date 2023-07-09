@@ -9,18 +9,20 @@ namespace scada_core
     {
         static void Main(string[] args)
         {
+            // TODO change order
             ApiClient apiClient = new ApiClient();
-            TagProcessor tagProcessingService = new TagProcessor(apiClient);
-            tagProcessingService.InitializeTagThreads();
             
             SimulationDriver.SimulationDriver sd = new SimulationDriver.SimulationDriver(apiClient);
             Task simulation = Task.Run(() => sd.Simulate());
 
-            RealTimeDriver rtd = new RealTimeDriver(apiClient);
-            Task realTime = Task.Run(() => rtd.Simulate());
-
+            // RealTimeDriver rtd = new RealTimeDriver(apiClient);
+            // Task realTime = Task.Run(() => rtd.Simulate());
+            
             simulation.Wait();
-            realTime.Wait();
+            // realTime.Wait();
+            // TagProcessor tagProcessingService = new TagProcessor(apiClient);
+            // tagProcessingService.InitializeTagThreads();
+
         }
     }
 }

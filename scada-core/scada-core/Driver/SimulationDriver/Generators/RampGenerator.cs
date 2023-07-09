@@ -4,7 +4,7 @@ public class RampGenerator : SignalGenerator
 {
     public RampGenerator(int ioAddress)
     {
-        this.ioAddress = base.ioAddress;
+        this.ioAddress = ioAddress;
     }
 
     protected override double Get()

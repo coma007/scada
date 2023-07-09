@@ -10,13 +10,14 @@ public class TrigGenerator : SignalGenerator
 
     private TrigFunction func;
 
-    public TrigGenerator(TrigFunction func, double ioAddress)
+    public TrigGenerator(TrigFunction func, int ioAddress)
     {
         amplitude = 1;
         frequency = 1 / (2f * Math.PI);
         phase = 0;
         
         this.func = func;
+        this.ioAddress = ioAddress;
     }
 
     public TrigGenerator(double amplitude, double frequency, double phase, TrigFunction func, int ioAddress)

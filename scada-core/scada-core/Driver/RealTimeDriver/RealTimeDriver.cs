@@ -17,9 +17,12 @@ public class RealTimeDriver
         
         _rtus = new List<RTU>();
         _tasks = new List<Task>();
-        
-        for(int i = 11; i < 21; i++)
+
+        for (int i = 10; i < 21; i++)
+        {
             _rtus.Add(new RTU(0, 10, i));
+            // JToken token = _service.CreateDriverState(i, 0);
+        }
     }
 
     public void Simulate()
