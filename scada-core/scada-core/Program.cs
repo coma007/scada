@@ -1,4 +1,5 @@
 ﻿
+using scada_core_6.ApiClient;
 using scada_core.TagProcessing;
 
 namespace scada_core
@@ -7,7 +8,8 @@ namespace scada_core
     {
         static void Main(string[] args)
         {
-            TagProcessor tagProcessingService = new TagProcessor();
+            ApiClient apiClient = new ApiClient();
+            TagProcessor tagProcessingService = new TagProcessor(apiClient);
             tagProcessingService.InitializeTagThreads();
         }
     }
