@@ -10,7 +10,7 @@ public class TrigGenerator : SignalGenerator
 
     private TrigFunction func;
 
-    public TrigGenerator(TrigFunction func)
+    public TrigGenerator(TrigFunction func, double ioAddress)
     {
         amplitude = 1;
         frequency = 1 / (2f * Math.PI);
@@ -19,13 +19,14 @@ public class TrigGenerator : SignalGenerator
         this.func = func;
     }
 
-    public TrigGenerator(double amplitude, double frequency, double phase, TrigFunction func)
+    public TrigGenerator(double amplitude, double frequency, double phase, TrigFunction func, int ioAddress)
     {
         this.amplitude = amplitude;
         this.frequency = frequency;
         this.phase = phase;
         
         this.func = func;
+        this.ioAddress = ioAddress;
     }
 
     protected override double Get()
