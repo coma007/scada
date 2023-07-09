@@ -7,6 +7,7 @@ namespace scada_core
     {
         static void Main(string[] args)
         {
+            // qwe
             TagProcessor tagProcessingService = new TagProcessor();
             tagProcessingService.InitializeTagThreads();
         }
