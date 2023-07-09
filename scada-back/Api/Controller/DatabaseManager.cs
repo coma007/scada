@@ -17,16 +17,13 @@ public class DatabaseManager : ControllerBase
     private readonly ITagService _tagService;
     private readonly IAlarmService _alarmService;
     private readonly ILogger<DatabaseManager> _logger;
-    private readonly WebSocketServer _webSocketServer;
 
-    public DatabaseManager(IUserService userService, ITagService tagService, IAlarmService alarmService, ILogger<DatabaseManager> logger,
-        WebSocketServer webSocketServer)
+    public DatabaseManager(IUserService userService, ITagService tagService, IAlarmService alarmService, ILogger<DatabaseManager> logger)
     {
         _userService = userService;
         _tagService = tagService;
         _alarmService = alarmService;
         _logger = logger;
-        _webSocketServer = webSocketServer;
     }
 
     [HttpPost(Name = "Login"), AllowAnonymous]
@@ -45,7 +42,9 @@ public class DatabaseManager : ControllerBase
     public ActionResult<TagDto> CreateTag([FromBody]TagDto tag)
     {
         tag = _tagService.Create(tag);
-        _webSocketServer.NotifyProcessingAppAboutNewTag(tag);
+        // _webSocketServer.NotifyProcessingAppAboutNewTag(tag);
+        WebSocketHandler handler = new WebSocketHandler();
+        handler.SendMessage("NewTag", tag);
         return Ok(tag);
     }
     

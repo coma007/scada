@@ -1,73 +1,43 @@
-﻿using System;
+using System;
 using System.Configuration;
-using System.Data.Common;
 using System.Net.WebSockets;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR.Client;
-
-namespace scada_core.ApiClient;
+using System.Text;
 
 public class WebSocketClient
 {
-    private readonly ClientWebSocket _webSocket;
+    private ClientWebSocket webSocket;
 
-    public WebSocketClient()
+    public async Task Connect()
     {
-        _webSocket = new ClientWebSocket();
-        EstablishConnection().Wait();
+        string url = ConfigurationManager.AppSettings["WebSocketUrl"];
+        
+        webSocket = new ClientWebSocket();
+        await webSocket.ConnectAsync(new Uri(url), CancellationToken.None);
+        await SendMessage("subscribe:NewTag");
+
+        Task receiveTask = ReceiveMessage();
+
+        await receiveTask;
     }
 
-    private async Task EstablishConnection()
+    private async Task ReceiveMessage()
     {
-        string webSocketUrl = ConfigurationSettings.AppSettings["WebSocketUrl"];
+        byte[] buffer = new byte[1024];
+        WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 
-        await _webSocket.ConnectAsync(new Uri(webSocketUrl), CancellationToken.None);
-
-        //Console.WriteLine("WebSocket connection established.");
-
-        if (_webSocket.State == WebSocketState.Open)
+        while (!result.CloseStatus.HasValue)
         {
-            Console.WriteLine(_webSocket.State);
-            Console.WriteLine("WebSocket connection established.");
-        }
-        else
-        {
-            Console.WriteLine("Failed to establish WebSocket connection.");
-            return;
+            string receivedMessage = Encoding.UTF8.GetString(buffer, 0, result.Count);
+            Console.WriteLine("Received message: " + receivedMessage);
+            result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
         }
 
-        _ = ReceiveWebSocketMessages();
-
-        var connection = new HubConnectionBuilder()
-            .WithUrl(webSocketUrl)
-            .Build();
-
-        await connection.StartAsync();
-
-        connection.On<string>("NewTagCreated", tag =>
-        {
-            Console.WriteLine("New tag created:");
-            //Console.WriteLine($"Tag Id: {tag.Id}");
-            //Console.WriteLine($"Tag Name: {tag.Name}");
-        });
+        await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
     }
 
-    private async Task ReceiveWebSocketMessages()
+    private async Task SendMessage(string message)
     {
-        var buffer = new byte[1024];
-        var arraySegment = new ArraySegment<byte>(buffer);
-
-        while (_webSocket.State == WebSocketState.Open)
-        {
-            WebSocketReceiveResult result = await _webSocket.ReceiveAsync(arraySegment, CancellationToken.None);
-
-                // Process the received message
-                string message = System.Text.Encoding.UTF8.GetString(buffer, 0, result.Count);
-                Console.WriteLine($"Received message: {message}");
-
-                // Clear the buffer
-            Array.Clear(buffer, 0, buffer.Length);
-        }
+        byte[] buffer = Encoding.UTF8.GetBytes(message);
+        await webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
     }
 }

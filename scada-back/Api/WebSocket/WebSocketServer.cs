@@ -20,6 +20,6 @@ public class WebSocketServer : Hub, IWebSocketServer
 
     public async void NotifyProcessingAppAboutNewTag(TagDto tag)
     {
-        await Clients.All.SendAsync("NewTagCreated", tag);
+            await Clients.Caller.SendAsync("NewTagCreated", tag);
     }
 }

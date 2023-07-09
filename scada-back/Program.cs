@@ -1,4 +1,5 @@
 using System.Collections.Specialized;
+using System.Net.WebSockets;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
@@ -49,8 +50,6 @@ builder.Services.AddScoped<IDriverStateRepository, DriverStateRepository>();
 builder.Services.AddScoped<IDriverStateService, DriverStateService>();
 
 builder.Services.AddScoped<IValidationService, ValidationService>();
-
-builder.Services.AddSingleton<WebSocketServer>();
 
 builder.Services.AddControllers(options => 
         options.Filters.Add<GlobalExceptionFilter>())
@@ -114,8 +113,11 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
-    endpoints.MapHub<WebSocketServer>("/signalr-hub");
 });
 
+// app.MapHub<WebSocketServer>("/signalr-hub");
+app.UseWebSockets();
+
+app.Use(WebSocketMiddleware.Middleware());
 
 app.Run();

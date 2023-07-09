@@ -10,12 +10,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "ssl": {
-        "certificate": {
-          "path": "Certificate/dotnet-devcert.crt",
-          "password": ""
-        }
-      }
+      "websockets" : true
     },
     "IIS Express": {
       "commandName": "IISExpress",
