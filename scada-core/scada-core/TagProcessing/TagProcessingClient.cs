@@ -10,23 +10,19 @@ namespace scada_core.TagProcessing
     public class TagProcessingClient
     {
         private readonly ApiClient _apiClient;
-        private string _createDriverStateUrl;
-        private string _updateDriverStateUrl;
         private string _getDriverStateUrl;
         private string _getAllTagsUrl;
         private string _createTagRecordUrl;
 
-        public TagProcessingClient()
+        public TagProcessingClient(ApiClient apiClient)
         {
-            _apiClient = new ApiClient();
+            _apiClient = apiClient;
             ConfigureUrls();
         }
 
         private void ConfigureUrls()
         {
             string apiUrl = ConfigurationManager.AppSettings["ApiUrl"];;
-            _createDriverStateUrl = apiUrl +  ConfigurationManager.AppSettings["CreateDriverStateUrl"];
-            _updateDriverStateUrl = apiUrl +  ConfigurationManager.AppSettings["UpdateDriverStateUrl"];
             _getDriverStateUrl = apiUrl +  ConfigurationManager.AppSettings["GetDriverStateUrl"];
             _getAllTagsUrl = apiUrl +  ConfigurationManager.AppSettings["GetAllTagsByTypeUrl"];
             _createTagRecordUrl = apiUrl +  ConfigurationManager.AppSettings["CreateTagRecordUrl"];
@@ -46,18 +42,6 @@ namespace scada_core.TagProcessing
         public   JToken  GetDriverState(int ioAddress)
         {
             return _apiClient.MakeApiRequest(_getDriverStateUrl+ioAddress).Result;
-        }
-        
-        public  JToken CreateDriverState(JObject newState)
-        {
-            HttpContent requestBody = new StringContent(newState.ToString(), Encoding.UTF8, "application/json");
-            return _apiClient.MakeApiRequest(_createDriverStateUrl, HttpMethod.Post, requestBody).Result;
-        }
-        
-        public   JToken UpdateDriverState(JObject updatedState)
-        {
-            HttpContent requestBody = new StringContent(updatedState.ToString(), Encoding.UTF8, "application/json");
-            return _apiClient.MakeApiRequest(_updateDriverStateUrl, new HttpMethod("PATCH"), requestBody).Result;
         }
     }
 }

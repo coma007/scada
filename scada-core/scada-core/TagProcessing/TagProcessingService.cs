@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using scada_core_6.ApiClient;
 
 namespace scada_core.TagProcessing
 {
@@ -8,9 +9,9 @@ namespace scada_core.TagProcessing
     {
         private readonly TagProcessingClient _client;
 
-        public TagProcessingService()
+        public TagProcessingService(ApiClient apiClient)
         {
-            _client = new TagProcessingClient();
+            _client = new TagProcessingClient(apiClient);
         }
         
         public Dictionary<string, Dictionary<string, object>> GetAllTags(string tagType)
@@ -28,34 +29,16 @@ namespace scada_core.TagProcessing
             return _client.CreateTagRecord(newRecord);
         }
         
-        public   JToken  GetDriverStateUrl(int ioAddress)
+        public   JToken  GetDriverState(int ioAddress)
         {
             return _client.GetDriverState(ioAddress);
         }
         
-        public  JToken CreateDriverState(int ioAddress, double value)
-        {
-            JObject newState = new JObject(
-                new JProperty("ioAddress", ioAddress),
-                new JProperty("value", value)
-            );
-            return _client.CreateDriverState(newState);
-        }
-        
-        public   JToken UpdateDriverState(int ioAddress, double value)
-        {
-            JObject updatedState = new JObject(
-                new JProperty("ioAddress", ioAddress),
-                new JProperty("value", value)
-            );
-            return _client.UpdateDriverState(updatedState);
-        }
-        
-        private Dictionary<string, Dictionary<string, object>> ExtractTagsProperties(JToken analogTags)
+        private Dictionary<string, Dictionary<string, object>> ExtractTagsProperties(JToken tags)
         {
             Dictionary<string, Dictionary<string, object>> tagProperties = new Dictionary<string, Dictionary<string, object>>();
 
-            foreach (var tag in analogTags)
+            foreach (var tag in tags)
             {
                 string? tagName = tag["tagName"]?.ToString();
                 string? tagType = tag["tagType"]?.ToString();
