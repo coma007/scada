@@ -24,9 +24,10 @@ public class RealTimeDriver
 
     public void Simulate()
     {
-        for (int i = 0; i < _rtus.Count(); i++)
+        for (int i = 0; i < _rtus.Count; i++)
         {
-            _tasks.Add(Task.Run(() => Generate(_rtus[i])));
+            RTU rtu = _rtus[i];
+            _tasks.Add(Task.Run(() => Generate(rtu)));
         }
 
         Task.WaitAll(_tasks.ToArray());

@@ -33,12 +33,14 @@ public class SimulationDriver
 
     public void Simulate()
     {
-        for (int i = 0; i < _generators.Count(); i++)
+        for (int i = 0; i < _generators.Count; i++)
         {
-            _tasks.Add(Task.Run(() => Generate(_generators[i])));
+            SignalGenerator sg = _generators[i];
+            _tasks.Add(Task.Run(() => Generate(sg)));
         }
 
-        Task.WaitAll(_tasks.ToArray());
+        var arr = _tasks.ToArray();
+        Task.WaitAll(arr);
     }
 
     private async Task Generate(SignalGenerator generator)
