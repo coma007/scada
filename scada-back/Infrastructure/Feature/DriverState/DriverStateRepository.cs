@@ -43,10 +43,10 @@ public class DriverStateRepository : IDriverStateRepository
             throw new ObjectNotFoundException($"Driver state with address {driverState.IOAddress} doesn't exist");
         driverState.Id = oldState.Id;
         ReplaceOneResult result = await _states.ReplaceOneAsync(state => state.IOAddress == driverState.IOAddress, driverState);
-        if (result.ModifiedCount == 0)
-        {
-            throw new ActionNotExecutedException("Update failed.");
-        }
+        // if (result.ModifiedCount == 0)
+        // {
+        //     throw new ActionNotExecutedException("Update failed.");
+        // }
 
         return await Get(driverState.IOAddress);
     }
