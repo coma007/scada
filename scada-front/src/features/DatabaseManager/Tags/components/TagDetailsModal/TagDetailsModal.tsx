@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Modal } from 'react-bootstrap';
 
+// TODO scan on empty
 const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, selectedTag: any }) => {
     return (
         <Modal show={props.showModal} onHide={props.handleCloseModal}>

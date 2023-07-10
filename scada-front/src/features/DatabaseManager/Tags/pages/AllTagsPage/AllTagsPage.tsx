@@ -45,8 +45,10 @@ const AllTagsPage: React.FC = () => {
     };
 
     // Function to handle tag removal (to be implemented)
-    const handleRemoveTag = (tagName: string) => {
+    const handleRemoveTag = async (tagName: string) => {
         // Make HTTP request to remove the tag using the provided tagId
+        let tag: Tag = await TagService.delete(tagName);
+        console.log(tag);
         console.log(`Remove tag with ID: ${tagName}`);
     };
 
