@@ -3,15 +3,17 @@ using scada_core.SimulationDriver;
 
 namespace scada_core.Driver.RealTimeDriver;
 
-public class RealTimeDriver
+public class RealTimeDriver : Driver
 {
     private List<RTU> _rtus;
     private List<Task> _tasks;
-    private readonly DriverService _service;
 
-    public RealTimeDriver(ApiClient.ApiClient apiClient)
+    private readonly IBatchMediator _batchMediator;
+
+    public RealTimeDriver(IBatchMediator batchMediator)
     {
-        _service = new DriverService(apiClient);
+
+        _batchMediator = batchMediator;
         
         _rtus = new List<RTU>();
         _tasks = new List<Task>();
@@ -23,7 +25,7 @@ public class RealTimeDriver
         }
     }
 
-    public void Simulate()
+    public override void Simulate()
     {
         for (int i = 0; i < _rtus.Count; i++)
         {
@@ -43,14 +45,15 @@ public class RealTimeDriver
             double value = r.NextDouble() * range + rtu.Min;
             try
             {
-                JToken token = _service.UpdateDriverState(rtu.IoAddress, value);
+                _batchMediator.notify(this, rtu.IoAddress, value);
+                // JToken token = _service.UpdateDriverState(rtu.IoAddress, value);
             }
             catch (System.Exception ex)
             {
                 Console.WriteLine($"An error occurred while sending the random number: {ex.Message}");
             }
 
-            Thread.Sleep(1000);
+            Thread.Sleep(waitTime);
         }
     }
 }

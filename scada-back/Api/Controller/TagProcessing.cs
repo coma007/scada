@@ -35,6 +35,12 @@ public class TagProcessing : ControllerBase
     {
         return Ok(_driverStateService.Update(driverState));
     }
+    
+    [HttpPatch(Name = "UpdateDriverStates")]
+    public ActionResult<DriverStateDto> UpdateDriverStates([FromBody] DriverStatesDto driverStates)
+    {
+        return Ok(_driverStateService.Update(driverStates));
+    }
 
     [HttpGet(Name = "GetDriverState")]
     public ActionResult<DriverStateDto> GetDriverState(int address)

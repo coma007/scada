@@ -37,3 +37,13 @@ public class DriverStateDto
         };
     }
 }
+
+public class DriverStatesDto
+{
+    public DriverStatesDto(IEnumerable<DriverStateDto> list)
+    {
+        this.list = list;
+    }
+
+    public IEnumerable<DriverStateDto> list { get; set; }
+}

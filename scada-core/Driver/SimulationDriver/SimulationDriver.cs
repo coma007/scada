@@ -3,15 +3,16 @@ using scada_core.Driver.SimulationDriver.Generator;
 
 namespace scada_core.Driver.SimulationDriver;
 
-public class SimulationDriver
+public class SimulationDriver : Driver
 {
+    private readonly IBatchMediator _batchMediator;
+    
     private List<SignalGenerator> _generators;
     private List<Task> _tasks;
-    private readonly DriverService _service;
 
-    public SimulationDriver(ApiClient.ApiClient apiClient)
+    public SimulationDriver(IBatchMediator batchMediator)
     {
-        _service = new DriverService(apiClient);
+        _batchMediator = batchMediator;
         
         _generators = new List<SignalGenerator>();
         _tasks = new List<Task>();
@@ -35,7 +36,7 @@ public class SimulationDriver
         // }
     }
 
-    public void Simulate()
+    public override void Simulate()
     {
         for (int i = 0; i < _generators.Count; i++)
         {
@@ -54,14 +55,15 @@ public class SimulationDriver
             double value = gen.GetAndNext();
             try
             {
-                JToken token = _service.UpdateDriverState(gen.IoAddress, value);
+                _batchMediator.notify(this, gen.IoAddress, value);
+                // JToken token = _service.UpdateDriverState(gen.IoAddress, value);
             }
             catch (System.Exception ex)
             {
                 Console.WriteLine($"SignalGenerator: An error occurred while sending the random number: {ex.Message}");
             }
 
-            Thread.Sleep(1000);
+            Thread.Sleep(waitTime);
         }
     }
 }
