@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Form, Modal } from 'react-bootstrap';
-import style from './TagCreateModal.module.css';
 import { AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag, Tag } from "../../types/Tag";
+import style from './TagCreateModal.module.css';
 
 const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) => {
     const [name, setName] = React.useState('');
@@ -73,7 +73,7 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
     };
 
     return (
-        <Modal dialogClassName="dialog" show={props.showModal} onHide={handleCloseModal}>
+        <Modal dialogClassName="create-dialog" show={props.showModal} onHide={handleCloseModal}>
             <Modal.Header closeButton>
                 <Modal.Title>Create new tag</Modal.Title>
             </Modal.Header>
@@ -189,7 +189,7 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
                 <Button variant="primary" onClick={handleCloseModal}>
                     Save
                 </Button>
-                <Button variant="secondary" onClick={handleCloseModal}>
+                <Button variant="secondary" onClick={() => props.handleCloseModal()}>
                     Close
                 </Button>
             </Modal.Footer>

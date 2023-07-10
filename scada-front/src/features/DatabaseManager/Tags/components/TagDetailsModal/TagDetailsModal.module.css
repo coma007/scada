@@ -1,0 +1,15 @@
+.inline {
+    display: flex;
+    justify-content: end;
+    align-content: center;
+}
+
+.inline span,
+.inline input {
+    margin-right: 10px;
+}
+
+.inline input {
+    width: 50px;
+    border-radius: 10px;
+}
