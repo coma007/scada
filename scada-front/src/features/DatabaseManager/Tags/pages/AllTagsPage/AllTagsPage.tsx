@@ -50,6 +50,8 @@ const AllTagsPage: React.FC = () => {
         let tag: Tag = await TagService.delete(tagName);
         console.log(tag);
         console.log(`Remove tag with ID: ${tagName}`);
+        let updatedList = tags.filter(tag => tag.tagName !== tagName);
+        setTags(updatedList);
     };
 
     // Function to handle scan button click (to be implemented)
@@ -58,6 +60,11 @@ const AllTagsPage: React.FC = () => {
         let tag: Tag = await TagService.updateScan(tagName);
         console.log(tag);
         console.log(`Toggle scan for tag with ID: ${tagName}`);
+        let index = tags.findIndex(tag => tag.tagName === tagName);
+
+        let updatedTags = [...tags];
+        updatedTags[index] = tag;
+        setTags(updatedTags);
     };
 
 
