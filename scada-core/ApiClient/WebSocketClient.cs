@@ -27,8 +27,8 @@ public class WebSocketClient
 
         while (!result.CloseStatus.HasValue)
         {
-            // string receivedMessage = Encoding.UTF8.GetString(buffer, 0, result.Count);
-            // Console.WriteLine("Received message: " + receivedMessage);
+            string receivedMessage = Encoding.UTF8.GetString(buffer, 0, result.Count);
+            Console.WriteLine("Received message: " + receivedMessage);
             result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
         }
 
