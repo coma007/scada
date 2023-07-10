@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import style  from './Menu.module.css'; // Import the CSS file for styling
+import style  from './Menu.module.css'; 
 
 const Menu: React.FC = () => {
     return (
