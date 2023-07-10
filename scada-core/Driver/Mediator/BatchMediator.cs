@@ -23,12 +23,12 @@ public class BatchMediator : IBatchMediator
             Console.WriteLine($"20 is in batch, NEW 20 value: {value} after batch end");
         if (!_pauseEvent.IsSet)
         {
-            Console.WriteLine($"{ioAddress} CEKA");
+            Console.WriteLine($"{ioAddress} WAITS");
         }
         _pauseEvent.Wait();
         if (_pauseEvent.IsSet)
         {
-            Console.WriteLine($"UPDATE VREDNOSTI, {ioAddress}: {value}");
+            Console.WriteLine($"UPDATE VALUE, {ioAddress}: {value}");
             _states.AddOrUpdate(ioAddress, value,
                 // Update factory delegate for updating an existing key-value pair
                 (k, oldValue) => value);
@@ -40,17 +40,18 @@ public class BatchMediator : IBatchMediator
 
             if (Interlocked.CompareExchange(ref counter, 0, Int32.MaxValue) > limit)
             {
-                Console.WriteLine("USO U USLOV");
+                Console.WriteLine("IN CONDITION");
                 // pause adding new elements
                 _pauseEvent.Reset();
-                Console.WriteLine("POCELA PAUZA");
+                Console.WriteLine("PAUSE STARTED");
 
                 var toSave = _states.ToArray();
                 _states.Clear();
                 ResetCounter();
                 JToken token = _service.UpdateDriverStates(toSave);
+                // Thread.Sleep(3000);
 
-                Console.WriteLine("ZAVRSILA PAUZA");
+                Console.WriteLine("PAUSE ENDED");
                 // resume adding new elements
                 _pauseEvent.Set();
             }
