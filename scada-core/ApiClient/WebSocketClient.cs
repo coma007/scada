@@ -13,7 +13,7 @@ public class WebSocketClient
         
         webSocket = new ClientWebSocket();
         await webSocket.ConnectAsync(new Uri(url), CancellationToken.None);
-        await SendMessage("subscribe:NewTagCreatedgi");
+        await SendMessage("subscribe:NewTagCreated");
 
         Task receiveTask = ReceiveMessage();
 
