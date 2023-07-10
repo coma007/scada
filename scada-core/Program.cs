@@ -13,7 +13,7 @@ namespace scada_core
             IBatchMediator mediator = new BatchMediator(apiClient);
             TagProcessor tagProcessingService = new TagProcessor(apiClient);
             WebSocketClient webSocketClient = new WebSocketClient();
-            await webSocketClient.ConnectToWebSocket(tagProcessingService);
+            webSocketClient.ConnectToWebSocket(tagProcessingService);
 
             tagProcessingService.InitializeTagThreads();
             
