@@ -7,4 +7,5 @@ public interface IDriverStateService
     DriverStateDto Get(int ioAddress);
     DriverStateDto Create(DriverStateDto driverState);
     DriverStateDto Update(DriverStateDto driverState);
+    DriverStatesDto Update(DriverStatesDto driverStates);
 }
