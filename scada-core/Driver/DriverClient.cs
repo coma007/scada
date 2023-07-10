@@ -43,7 +43,7 @@ public class DriverClient
     public JToken UpdateDriverStates(JObject toUpdate)
     {
         HttpContent requestBody = new StringContent(toUpdate.ToString(), Encoding.UTF8, "application/json");
-        var res = _apiClient.MakeApiRequest(_updateDriverStateUrl, new HttpMethod("PATCH"), requestBody).Result;
+        var res = _apiClient.MakeApiRequest(_updateDriverStatesUrl, new HttpMethod("PATCH"), requestBody).Result;
         return res;
     }
 }
