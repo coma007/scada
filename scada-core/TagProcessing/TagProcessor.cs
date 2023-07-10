@@ -25,7 +25,7 @@ namespace scada_core.TagProcessing
             CreateThreads();
         }
 
-        public void AddThread(Dictionary<string, object> newTag)
+        public void AddTag(Dictionary<string, object> newTag)
         {
             _tagProperties.Add((string)newTag["tagName"], newTag);
             foreach (var tag in _tagProperties)
@@ -33,6 +33,18 @@ namespace scada_core.TagProcessing
                 if (tag.Key.Equals(newTag["tagName"]))
                 {
                     CreateThread(tag);
+                    break;
+                }
+            }
+        }
+
+        public void RemoveTag(Dictionary<string, object> deletedTag)
+        {
+            foreach (var tag in _tagProperties)
+            {
+                if (tag.Key.Equals(deletedTag["tagName"]))
+                {
+                    RemoveThread(tag);
                     break;
                 }
             }

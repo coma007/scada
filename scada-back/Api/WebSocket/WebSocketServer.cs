@@ -33,5 +33,10 @@ public class WebSocketServer : IWebSocketServer
     {
         await _handler.SendMessage("TagScanUpdated", tag);
     }
-    
+
+    public async void NotifyClientAboutTagDelete(TagDto tag)
+    {
+        await _handler.SendMessage("TagDeleted", tag);
+    }
+
 }

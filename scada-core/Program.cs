@@ -11,10 +11,8 @@ namespace scada_core
             ApiClient.ApiClient apiClient = new ApiClient.ApiClient();
 
             TagProcessor tagProcessingService = new TagProcessor(apiClient);
-            WebSocketClient newTagWebSocketClient = new WebSocketClient();
-            newTagWebSocketClient.ConnectToNewTagSocket(tagProcessingService);
-            WebSocketClient tagScanWebSocketClient = new WebSocketClient();
-            tagScanWebSocketClient.ConnectToUpdatedScanTagSocket(tagProcessingService);
+            WebSocketClient webSocketClient = new WebSocketClient();
+            await webSocketClient.ConnectToWebSocket(tagProcessingService);
 
             tagProcessingService.InitializeTagThreads();
             

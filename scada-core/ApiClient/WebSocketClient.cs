@@ -12,36 +12,26 @@ public class WebSocketClient
     private enum WebSocketClientType
     {
         NewTag,
-        TagScan
+        TagScan,
+        TagDelete
     }
 
-    private ClientWebSocket webSocket;
-    private WebSocketClientType type;
-
+    private ClientWebSocket _webSocket;
+    
     private async Task CreateClient()
     {
         string url = ConfigurationManager.AppSettings["WebSocketUrl"];
 
-        webSocket = new ClientWebSocket();
-        await webSocket.ConnectAsync(new Uri(url), CancellationToken.None);
+        _webSocket = new ClientWebSocket();
+        await _webSocket.ConnectAsync(new Uri(url), CancellationToken.None);
     }
 
-    public async Task ConnectToNewTagSocket(TagProcessor processor)
+    public async Task ConnectToWebSocket(TagProcessor processor)
     {
-        if (webSocket == null) await CreateClient();
+        if (_webSocket == null) await CreateClient();
         await SendMessage("subscribe:NewTagCreated");
-        type = WebSocketClientType.NewTag;
-
-        Task receiveTask = ReceiveMessage(processor);
-
-        await receiveTask;
-    }
-
-    public async Task ConnectToUpdatedScanTagSocket(TagProcessor processor)
-    {
-        if (webSocket == null) await CreateClient();
         await SendMessage("subscribe:TagScanUpdated");
-        type = WebSocketClientType.TagScan;
+        await SendMessage("subscribe:TagDeleted");
 
         Task receiveTask = ReceiveMessage(processor);
 
@@ -51,27 +41,31 @@ public class WebSocketClient
     private async Task ReceiveMessage(TagProcessor processor)
     {
         byte[] buffer = new byte[1024];
-        WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+        WebSocketReceiveResult result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 
         while (!result.CloseStatus.HasValue)
         {
             string receivedMessage = Encoding.UTF8.GetString(buffer, 0, result.Count);
+            string[] tokens = receivedMessage.Split(" ");
+            string topic = tokens[0];
+            receivedMessage = tokens[1];
             JToken tag = JToken.Parse(receivedMessage);
             Dictionary<string, object> tagData;
             string tagName = TagProcessingService.ExtractProperties(tag, out tagData);
             tagData.Add("tagName", tagName);
             Console.WriteLine("Received message: " + receivedMessage);
-            if (type == WebSocketClientType.NewTag) processor.AddThread(tagData);
+            if (topic.Equals("NewTagCreated")) processor.AddTag(tagData);
+            else if (topic.Equals("TagDeleted")) processor.RemoveTag(tagData);
             else processor.ChangeScan(tagData);
-            result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+            result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
         }
 
-        await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+        await _webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
     }
 
     private async Task SendMessage(string message)
     {
         byte[] buffer = Encoding.UTF8.GetBytes(message);
-        await webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
+        await _webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
     }
 }

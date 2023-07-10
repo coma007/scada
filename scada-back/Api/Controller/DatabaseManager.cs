@@ -53,7 +53,9 @@ public class DatabaseManager : ControllerBase
     [HttpDelete(Name = "DeleteTag")]
     public ActionResult<TagDto> DeleteTag(string tagName)
     {
-        return Ok(_tagService.Delete(tagName));
+        TagDto tag = _tagService.Delete(tagName);
+        if (tag.TagType.Contains("_input")) _webSocketServer.NotifyClientAboutTagDelete(tag);
+        return Ok(tag);
     }
     
     [HttpPatch(Name = "UpdateTagScan")]

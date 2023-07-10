@@ -10,4 +10,5 @@ public interface IWebSocketServer
     void NotifyClientAboutNewAlarmRecord(IEnumerable<AlarmHistoryRecordDto> records);
     void NotifyClientAboutNewTag(TagDto tag);
     void NotifyClientAboutTagScan(TagDto tag);
+    void NotifyClientAboutTagDelete(TagDto tag);
 }
