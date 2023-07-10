@@ -7,7 +7,7 @@ namespace scada_back.Api.WebSocket;
 public interface IWebSocketServer
 {
     void NotifyClientAboutNewTagRecord(TagHistoryRecordDto record);
-    void NotifyClientAboutNewAlarmRecord(AlarmHistoryRecordDto record);
+    void NotifyClientAboutNewAlarmRecord(IEnumerable<AlarmHistoryRecordDto> records);
     void NotifyClientAboutNewTag(TagDto tag);
     void NotifyClientAboutTagScan(TagDto tag);
 }

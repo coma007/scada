@@ -44,7 +44,7 @@ public class DatabaseManager : ControllerBase
     public ActionResult<TagDto> CreateTag([FromBody]TagDto tag)
     {
         tag = _tagService.Create(tag);
-        _webSocketServer.NotifyClientAboutNewTag(tag);
+        if (tag.TagType.Contains("_input")) _webSocketServer.NotifyClientAboutNewTag(tag);
         // WebSocketHandler handler = new WebSocketHandler();
         // handler.SendMessage("NewTag", tag);
         return Ok(tag);
@@ -59,7 +59,9 @@ public class DatabaseManager : ControllerBase
     [HttpPatch(Name = "UpdateTagScan")]
     public ActionResult<TagDto> UpdateTagScan(string tagName)
     {
-        return Ok(_tagService.UpdateScan(tagName));
+        TagDto updatedTag = _tagService.UpdateScan(tagName);
+        _webSocketServer.NotifyClientAboutTagScan(updatedTag);
+        return Ok(updatedTag);
     }
     
     [HttpPatch(Name = "UpdateOutputTagValue")]
