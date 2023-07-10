@@ -8,6 +8,7 @@ public class BatchMediator : IBatchMediator
     private readonly DriverService _service;
     private ManualResetEventSlim _pauseEvent = new ManualResetEventSlim(true);
     private static int counter = 0;
+    // private static readonly object consoleLock = new object(); 
     public BatchMediator(ApiClient.ApiClient apiClient)
     {
         _service = new DriverService(apiClient);
@@ -23,12 +24,18 @@ public class BatchMediator : IBatchMediator
         if (_pauseEvent.IsSet)
         {
             _states.TryAdd(ioAddress, value);
+            // lock (consoleLock)
+            // {
+            //     Console.WriteLine(counter);
+            // }
             IncrementCounter();
             
-            if (_states.Count > 100)
+            if (Interlocked.CompareExchange(ref counter, 0, 0) > 10)
             {
                 // pause adding new elements
                 _pauseEvent.Reset();
+                
+                // Console.WriteLine($"WRITING after {counter} ");
             
                 var toSave = _states.ToArray();
                 _states.Clear();
@@ -36,6 +43,7 @@ public class BatchMediator : IBatchMediator
                 _service.UpdateDriverStates(toSave);
             
                 // resume adding new elements
+                // Thread.Sleep(10000);
                 _pauseEvent.Set();
             }
         }

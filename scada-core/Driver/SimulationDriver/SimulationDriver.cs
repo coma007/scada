@@ -36,7 +36,7 @@ public class SimulationDriver : Driver
         // }
     }
 
-    public void Simulate()
+    public override void Simulate()
     {
         for (int i = 0; i < _generators.Count; i++)
         {
@@ -63,7 +63,7 @@ public class SimulationDriver : Driver
                 Console.WriteLine($"SignalGenerator: An error occurred while sending the random number: {ex.Message}");
             }
 
-            Thread.Sleep(1000);
+            Thread.Sleep(waitTime);
         }
     }
 }

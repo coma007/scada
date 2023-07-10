@@ -25,7 +25,7 @@ public class RealTimeDriver : Driver
         }
     }
 
-    public void Simulate()
+    public override void Simulate()
     {
         for (int i = 0; i < _rtus.Count; i++)
         {
@@ -53,7 +53,7 @@ public class RealTimeDriver : Driver
                 Console.WriteLine($"An error occurred while sending the random number: {ex.Message}");
             }
 
-            Thread.Sleep(1000);
+            Thread.Sleep(waitTime);
         }
     }
 }
