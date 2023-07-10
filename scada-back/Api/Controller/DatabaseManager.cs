@@ -17,12 +17,14 @@ public class DatabaseManager : ControllerBase
     private readonly ITagService _tagService;
     private readonly IAlarmService _alarmService;
     private readonly ILogger<DatabaseManager> _logger;
+    private readonly IWebSocketServer _webSocketServer;
 
-    public DatabaseManager(IUserService userService, ITagService tagService, IAlarmService alarmService, ILogger<DatabaseManager> logger)
+    public DatabaseManager(IUserService userService, ITagService tagService, IAlarmService alarmService, IWebSocketServer webSocketServer, ILogger<DatabaseManager> logger)
     {
         _userService = userService;
         _tagService = tagService;
         _alarmService = alarmService;
+        _webSocketServer = webSocketServer;
         _logger = logger;
     }
 
@@ -42,9 +44,9 @@ public class DatabaseManager : ControllerBase
     public ActionResult<TagDto> CreateTag([FromBody]TagDto tag)
     {
         tag = _tagService.Create(tag);
-        // _webSocketServer.NotifyProcessingAppAboutNewTag(tag);
-        WebSocketHandler handler = new WebSocketHandler();
-        handler.SendMessage("NewTag", tag);
+        _webSocketServer.NotifyClientAboutNewTag(tag);
+        // WebSocketHandler handler = new WebSocketHandler();
+        // handler.SendMessage("NewTag", tag);
         return Ok(tag);
     }
     

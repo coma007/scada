@@ -1,25 +1,37 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging.Abstractions;
+using scada_back.Infrastructure.Feature.AlarmHistory;
 using scada_back.Infrastructure.Feature.Tag.Model.Abstraction;
 using scada_back.Infrastructure.Feature.TagHistory;
 
 namespace scada_back.Api.WebSocket;
 
-public class WebSocketServer : Hub, IWebSocketServer
+public class WebSocketServer : IWebSocketServer
 {
-    private readonly IHubContext<WebSocketServer> _context;
+    private readonly WebSocketHandler _handler;
 
-    public WebSocketServer(IHubContext<WebSocketServer> context)
+    public WebSocketServer(WebSocketHandler handler)
     {
-        _context = context;
+        _handler = handler;
     }
-    public async void NotifyClientAboutNewRecord(TagHistoryRecordDto record)
+    public async void NotifyClientAboutNewTagRecord(TagHistoryRecordDto record)
     {
-        await Clients.All.SendAsync("NewRecordAdded", record);
+        await _handler.SendMessage("NewTagRecordCreated", record);
+    }
+    
+    public async void NotifyClientAboutNewAlarmRecord(AlarmHistoryRecordDto record)
+    {
+        await _handler.SendMessage("NewAlarmRecordCreated", record);
     }
 
-    public async void NotifyProcessingAppAboutNewTag(TagDto tag)
+    public async void NotifyClientAboutNewTag(TagDto tag)
     {
-            await Clients.Caller.SendAsync("NewTagCreated", tag);
+        await _handler.SendMessage("NewTagCreated", tag);
     }
+    
+    public async void NotifyClientAboutTagScan(TagDto tag)
+    {
+        await _handler.SendMessage("TagScanUpdated", tag);
+    }
+    
 }

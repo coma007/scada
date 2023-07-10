@@ -8,8 +8,8 @@ public static class WebSocketMiddleware
         {
             if (context.Request.Path == "/Api/Websocket")
             {
-                WebSocketHandler webSocketHandler = new WebSocketHandler();
-                await webSocketHandler.HandleWebSocketRequest(context);
+                WebSocketHandler? webSocketHandler = context.RequestServices.GetService<WebSocketHandler>();
+                await webSocketHandler!.HandleWebSocketRequest(context);
             }
             else
             {
