@@ -29,4 +29,10 @@ public class DriverService
         return _client.UpdateDriverState(updatedState);
     }
 
+    public JToken UpdateDriverStates(KeyValuePair<int, double>[] toSave)
+    {
+        JObject json = new JObject();
+        json["list"] = JToken.FromObject(toSave);
+        return _client.UpdateDriverStates(json);
+    }
 }
