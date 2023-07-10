@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Form, Modal } from 'react-bootstrap';
-import style from './TagCreateModal.module.css';
 import { AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag, Tag } from "../../types/Tag";
+import style from './TagCreateModal.module.css';
 
 const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) => {
     const [name, setName] = React.useState('');
