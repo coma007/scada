@@ -4,22 +4,32 @@ import TagDetailsModal from '../../components/TagDetailsModal/TagDetailsModal';
 import TagCreateModal from '../../components/TagCreateModal/TagCreateModal';
 import style from './AllTagsPage.module.css';
 import { AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag, Tag } from '../../types/Tag';
+import TagService from '../../services/TagService';
 
 const AllTagsPage: React.FC = () => {
 
     // Replace this with  actual data (useState)
 
-    let dummyTags: Tag[] = [
-        new AnalogInputTag('AnalogInput1', 'analog_input', 'Analog Input Tag 1', 1001, 1000, true, 0, 100, 'V'),
-        new AnalogOutputTag('AnalogOutput1', 'analog_output', 'Analog Output Tag 1', 2001, 50, 0, 100, 'mA'),
-        new DigitalInputTag('DigitalInput1', 'digital_input', 'Digital Input Tag 1', 3001, 500, true),
-        new DigitalOutputTag('DigitalOutput1', 'digital_output', 'Digital Output Tag 1', 4001, 1),
-        new AnalogInputTag('AnalogInput2', 'analog_input', 'Analog Input Tag 2', 1002, 1000, true, 0, 100, 'V'),
-    ];
+    // let dummyTags: Tag[] = [
+    //     new AnalogInputTag('AnalogInput1', 'analog_input', 'Analog Input Tag 1', 1001, 1000, true, 0, 100, 'V'),
+    //     new AnalogOutputTag('AnalogOutput1', 'analog_output', 'Analog Output Tag 1', 2001, 50, 0, 100, 'mA'),
+    //     new DigitalInputTag('DigitalInput1', 'digital_input', 'Digital Input Tag 1', 3001, 500, true),
+    //     new DigitalOutputTag('DigitalOutput1', 'digital_output', 'Digital Output Tag 1', 4001, 1),
+    //     new AnalogInputTag('AnalogInput2', 'analog_input', 'Analog Input Tag 2', 1002, 1000, true, 0, 100, 'V'),
+    // ];
     const [tags, setTags] = React.useState<Tag[]>([]);
 
+    const fetchData = async () => {
+        try {
+          let tags = await TagService.getAll();
+          setTags(tags);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+
     React.useEffect(() => {
-        setTags(dummyTags);
+        fetchData();
     }, [])
 
     const [showDetailsModal, setShowDetailsModal] = React.useState(false);
