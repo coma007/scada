@@ -1,13 +1,14 @@
 import React from 'react';
 import './App.css';
 import Menu from './components/Menu/Menu';
-import LoginComponent from './features/DatabaseManager/Login/LoginComponent';
+import AllTagsPage from './features/DatabaseManager/Tags/pages/AllTagsPage/AllTagsPage';
+
 
 function App() {
   return (
     <div>
       <Menu></Menu>
-      <LoginComponent></LoginComponent>
+      <AllTagsPage></AllTagsPage>
     </div>
   );
 }

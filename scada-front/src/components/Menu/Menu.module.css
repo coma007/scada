@@ -4,5 +4,5 @@
 }
 
 .menuLink:hover {
-    color: #3E86C4;
+    color: #3E86C4 !important;
 }

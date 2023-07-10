@@ -1,0 +1,26 @@
+.content {
+    margin: 2% 10%;
+    font-size: 17px;
+}
+
+.titleLine {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.nameColumn {
+    width: 20%;
+}
+
+.descriptionColumn {
+    width: 42%;
+}
+
+.typeColumn {
+    width: 12%;
+}
+
+td {
+    vertical-align: middle;
+}
