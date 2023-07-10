@@ -10,29 +10,30 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
             <Modal.Body>
                 <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                     <div style={{ textAlign: 'left' }}>
-                        <p><strong>Name:</strong></p>
-                        <p><strong>Type:</strong></p>
+                        <p><strong>Name</strong></p>
+                        <p><strong>Type</strong></p>
                         <p><strong>I/O Address:</strong></p>
                         {props.selectedTag.type === 'digital_input' && (
                             <>
-                                <p><strong>Scan Time:</strong></p>
-                                <p><strong>Scan On:</strong></p>
+                                <p><strong>Scan Time</strong></p>
+                                <p><strong>Scan On</strong></p>
                             </>
                         )}
                         {props.selectedTag.type === 'analog_input' && (
                             <>
-                                <p><strong>Scan Time:</strong></p>
-                                <p><strong>Scan On:</strong></p>
-                                <p><strong>Low Limit:</strong></p>
-                                <p><strong>High Limit:</strong></p>
-                                <p><strong>Units:</strong></p>
+                                <p><strong>Scan Time</strong></p>
+                                <p><strong>Scan On</strong></p>
+                                <p><strong>Low Limit</strong></p>
+                                <p><strong>High Limit</strong></p>
+                                <p><strong>Units</strong></p>
                             </>
                         )}
                         {props.selectedTag.type === 'analog_output' && (
                             <>
-                                <p><strong>Low Limit:</strong></p>
-                                <p><strong>High Limit:</strong></p>
-                                <p><strong>Units:</strong></p>
+                                <p><strong>Low Limit</strong></p>
+                                <p><strong>High Limit</strong></p>
+                                <p><strong>Units</strong></p>
+                                <p><strong>InitialValue</strong></p>
                             </>
                         )}
                     </div>
@@ -46,6 +47,11 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
                                 <p>{props.selectedTag.scanOn}</p>
                             </>
                         )}
+                        {props.selectedTag.type === 'digital_output' && (
+                            <>
+                                <p>{props.selectedTag.initialValue}</p>
+                            </>
+                        )}
                         {props.selectedTag.type === 'analog_input' && (
                             <>
                                 <p>{props.selectedTag.scanTime}</p>
@@ -60,6 +66,7 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
                                 <p>{props.selectedTag.lowLimit}</p>
                                 <p>{props.selectedTag.highLimit}</p>
                                 <p>{props.selectedTag.units}</p>
+                                <p>{props.selectedTag.initialValue}</p>
                             </>
                         )}
                     </div>

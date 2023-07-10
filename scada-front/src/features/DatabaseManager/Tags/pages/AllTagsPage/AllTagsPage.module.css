@@ -3,6 +3,12 @@
     font-size: 17px;
 }
 
+.titleLine {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
 .nameColumn {
     width: 20%;
 }
