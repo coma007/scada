@@ -54,7 +54,7 @@ namespace scada_core.TagProcessing
         {
             string tagName = tag.Key;
             var tagAttributes = tag.Value;
-            // Console.WriteLine(tagName);
+            Console.WriteLine(tagName);
         }
 
         private void GetAllTags()
