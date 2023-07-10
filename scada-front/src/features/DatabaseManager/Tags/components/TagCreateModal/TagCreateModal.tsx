@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Form, Modal } from 'react-bootstrap';
 import style from './TagCreateModal.module.css';
 import { AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag, Tag } from "../../types/Tag";
+import TagService from "../../services/TagService";
 
 const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) => {
     const [name, setName] = React.useState('');
@@ -14,14 +15,20 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
     const [highLimit, setHighLimit] = React.useState('');
     const [units, setUnits] = React.useState('');
     const [initialValue, setInitialValue] = React.useState('');
+    const [driver, setDriver] = React.useState('SIMULATION');
 
     const handleTypeChange = (event: any) => {
         setType(event.target.value);
     };
 
-    const handleCloseModal = () => {
+    const handleDriverChange = (event: any) => {
+        setDriver(event.target.value);
+    };
+
+    const handleCloseModal = async () => {
         let tag: Tag = createTag();
         // Close the modal and perform any necessary actions
+        let newTag: Tag = await TagService.create(tag);
         props.handleCloseModal(tag);
     };
 
@@ -34,7 +41,8 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
                     description,
                     Number(ioAddress),
                     Number(scanTime),
-                    scanOn === 'true'
+                    scanOn === 'true',
+                    driver
                 );
             case 'digital_output':
                 return new DigitalOutputTag(
@@ -54,7 +62,8 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
                     scanOn === 'true',
                     Number(lowLimit),
                     Number(highLimit),
-                    units
+                    units,
+                    driver
                 );
             case 'analog_output':
                 return new AnalogOutputTag(
@@ -73,7 +82,7 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
     };
 
     return (
-        <Modal dialogClassName="dialog" show={props.showModal} onHide={handleCloseModal}>
+        <Modal dialogClassName="dialog" show={props.showModal} onHide={props.handleCloseModal}>
             <Modal.Header closeButton>
                 <Modal.Title>Create new tag</Modal.Title>
             </Modal.Header>
@@ -121,6 +130,13 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
                                         <option value="false">False</option>
                                     </Form.Control>
                                 </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Driver</Form.Label>
+                                    <Form.Control as="select" value={driver} onChange={handleDriverChange} required>
+                                        <option value="SIMULATION">Simulation</option>
+                                        <option value="REALTIME">RealTime</option>
+                                    </Form.Control>
+                                </Form.Group>
                             </>
                         )}
 
@@ -158,6 +174,13 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
                                     <Form.Label>Units</Form.Label>
                                     <Form.Control type="text" value={units} onChange={(e) => setUnits(e.target.value)} />
                                 </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Driver</Form.Label>
+                                    <Form.Control as="select" value={driver} onChange={handleDriverChange} required>
+                                        <option value="SIMULATION">Simulation</option>
+                                        <option value="REALTIME">RealTime</option>
+                                    </Form.Control>
+                                </Form.Group>
                             </>
                         )}
 
@@ -189,7 +212,7 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
                 <Button variant="primary" onClick={handleCloseModal}>
                     Save
                 </Button>
-                <Button variant="secondary" onClick={handleCloseModal}>
+                <Button variant="secondary" onClick={props.handleCloseModal}>
                     Close
                 </Button>
             </Modal.Footer>

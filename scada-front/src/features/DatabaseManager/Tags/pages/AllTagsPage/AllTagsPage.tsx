@@ -97,11 +97,11 @@ const AllTagsPage: React.FC = () => {
                 </thead>
                 <tbody>
                     {tags.map((tag) => (
-                        <tr key={tag.name}>
-                            <td >{tag.name}</td>
+                        <tr key={tag.tagName}>
+                            <td >{tag.tagName}</td>
                             <td >{tag.description}</td>
                             <td >{tag.ioAddress}</td>
-                            <td >{tag.type}</td>
+                            <td >{tag.tagType}</td>
                             <td >
                                 <Button variant="info" size="sm" onClick={() => handleOpenDetailsModal(tag)}>
                                     <OverlayTrigger
@@ -111,7 +111,7 @@ const AllTagsPage: React.FC = () => {
                                         <i className="bi bi-info-circle"></i>
                                     </OverlayTrigger>
                                 </Button>{' '}
-                                <Button variant="danger" size="sm" onClick={() => handleRemoveTag(tag.name)}>
+                                <Button variant="danger" size="sm" onClick={() => handleRemoveTag(tag.tagName)}>
                                     <OverlayTrigger
                                         placement="bottom"
                                         overlay={<Tooltip id="remove-tooltip">Remove tag</Tooltip>}
@@ -119,9 +119,9 @@ const AllTagsPage: React.FC = () => {
                                         <i className="bi bi-trash"></i>
                                     </OverlayTrigger>
                                 </Button>{' '}
-                                {(tag.type == "analog_input" || tag.type == "digital_input") && <>
+                                {(tag.tagType == "analog_input" || tag.tagType == "digital_input") && <>
                                     {((tag as AnalogInputTag).scan) ? <>
-                                        <Button variant="dark" size="sm" onClick={() => handleScanTag(tag.name)}>
+                                        <Button variant="dark" size="sm" onClick={() => handleScanTag(tag.tagName)}>
                                             <OverlayTrigger
                                                 placement="bottom"
                                                 overlay={<Tooltip id="scan-tooltip">Turn off scan</Tooltip>}
@@ -130,7 +130,7 @@ const AllTagsPage: React.FC = () => {
                                             </OverlayTrigger>
                                         </Button>{' '}
                                     </> : <>
-                                        <Button variant="primary" size="sm" onClick={() => handleScanTag(tag.name)}>
+                                        <Button variant="primary" size="sm" onClick={() => handleScanTag(tag.tagName)}>
                                             <OverlayTrigger
                                                 placement="bottom"
                                                 overlay={<Tooltip id="scan-tooltip">Turn on scan</Tooltip>}
@@ -142,7 +142,7 @@ const AllTagsPage: React.FC = () => {
                                     }
                                 </>
                                 }
-                                {(tag.type == "analog_input") && <Button variant="warning" size="sm" onClick={() => handleOpenDetailsModal(tag)}>
+                                {(tag.tagType == "analog_input") && <Button variant="warning" size="sm" onClick={() => handleOpenDetailsModal(tag)}>
                                     <OverlayTrigger
                                         placement="bottom"
                                         overlay={<Tooltip id="info-tooltip">View alarms</Tooltip>}
