@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR.Client;
-using scada_core.ApiClient;
+﻿using scada_core.Driver.RealTimeDriver;
+using scada_core.Driver.SimulationDriver;
 using scada_core.TagProcessing;
 
 namespace scada_core
@@ -10,14 +8,19 @@ namespace scada_core
     {
         static async Task Main(string[] args)
         {
-            System.Net.ServicePointManager.ServerCertificateValidationCallback +=
-                (sender, certificate, chain, sslPolicyErrors) => true;
-            TagProcessor tagProcessingService = new TagProcessor();
+            ApiClient.ApiClient apiClient = new ApiClient.ApiClient();
             
+            TagProcessor tagProcessingService = new TagProcessor(apiClient);
             tagProcessingService.InitializeTagThreads();
             
-            WebSocketClient client = new WebSocketClient();
-            await client.Connect();
+            Driver.SimulationDriver.SimulationDriver simulationDriver = new Driver.SimulationDriver.SimulationDriver(apiClient);
+            Task simulation = Task.Run(() => simulationDriver.Simulate());
+            
+            RealTimeDriver realTimeDriver = new RealTimeDriver(apiClient);
+            Task realTime = Task.Run(() => realTimeDriver.Simulate());
+            
+            // WebSocketClient client = new WebSocketClient();
+            // await client.Connect();
 
         }
     }

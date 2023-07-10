@@ -12,9 +12,9 @@ namespace scada_core.TagProcessing
         private Dictionary<string, Dictionary<string, object>> _tagProperties;
         private Dictionary<string, Thread> _tagThreads;
 
-        public TagProcessor()
+        public TagProcessor(ApiClient.ApiClient apiClient)
         {
-            _service = new TagProcessingService();
+            _service = new TagProcessingService(apiClient);
             _tagProperties = new Dictionary<string, Dictionary<string, object>>();
             _tagThreads = new Dictionary<string, Thread>();
         }

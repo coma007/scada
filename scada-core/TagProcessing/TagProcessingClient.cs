@@ -15,9 +15,9 @@ namespace scada_core.TagProcessing
         private string _getAllTagsUrl;
         private string _createTagRecordUrl;
 
-        public TagProcessingClient()
+        public TagProcessingClient(ApiClient.ApiClient apiClient)
         {
-            _apiClient = new ApiClient.ApiClient();
+            _apiClient = apiClient;
             ConfigureUrls();
         }
 
@@ -45,18 +45,6 @@ namespace scada_core.TagProcessing
         public   JToken  GetDriverState(int ioAddress)
         {
             return _apiClient.MakeApiRequest(_getDriverStateUrl+ioAddress).Result;
-        }
-        
-        public  JToken CreateDriverState(JObject newState)
-        {
-            HttpContent requestBody = new StringContent(newState.ToString(), Encoding.UTF8, "application/json");
-            return _apiClient.MakeApiRequest(_createDriverStateUrl, HttpMethod.Post, requestBody).Result;
-        }
-        
-        public   JToken UpdateDriverState(JObject updatedState)
-        {
-            HttpContent requestBody = new StringContent(updatedState.ToString(), Encoding.UTF8, "application/json");
-            return _apiClient.MakeApiRequest(_updateDriverStateUrl, new HttpMethod("PATCH"), requestBody).Result;
         }
     }
 }

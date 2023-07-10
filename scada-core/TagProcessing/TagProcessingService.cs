@@ -8,9 +8,9 @@ namespace scada_core.TagProcessing
     {
         private readonly TagProcessingClient _client;
 
-        public TagProcessingService()
+        public TagProcessingService(ApiClient.ApiClient apiClient)
         {
-            _client = new TagProcessingClient();
+            _client = new TagProcessingClient(apiClient);
         }
         
         public Dictionary<string, Dictionary<string, object>> GetAllTags(string tagType)
@@ -31,24 +31,6 @@ namespace scada_core.TagProcessing
         public   JToken  GetDriverStateUrl(int ioAddress)
         {
             return _client.GetDriverState(ioAddress);
-        }
-        
-        public  JToken CreateDriverState(int ioAddress, double value)
-        {
-            JObject newState = new JObject(
-                new JProperty("ioAddress", ioAddress),
-                new JProperty("value", value)
-            );
-            return _client.CreateDriverState(newState);
-        }
-        
-        public   JToken UpdateDriverState(int ioAddress, double value)
-        {
-            JObject updatedState = new JObject(
-                new JProperty("ioAddress", ioAddress),
-                new JProperty("value", value)
-            );
-            return _client.UpdateDriverState(updatedState);
         }
         
         private Dictionary<string, Dictionary<string, object>> ExtractTagsProperties(JToken analogTags)
