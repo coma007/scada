@@ -9,8 +9,13 @@ namespace scada_core
         static async Task Main(string[] args)
         {
             ApiClient.ApiClient apiClient = new ApiClient.ApiClient();
-            
+
             TagProcessor tagProcessingService = new TagProcessor(apiClient);
+            WebSocketClient newTagWebSocketClient = new WebSocketClient();
+            newTagWebSocketClient.ConnectToNewTagSocket(tagProcessingService);
+            WebSocketClient tagScanWebSocketClient = new WebSocketClient();
+            tagScanWebSocketClient.ConnectToUpdatedScanTagSocket(tagProcessingService);
+
             tagProcessingService.InitializeTagThreads();
             
             Driver.SimulationDriver.SimulationDriver simulationDriver = new Driver.SimulationDriver.SimulationDriver(apiClient);
