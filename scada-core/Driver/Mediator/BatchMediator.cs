@@ -21,7 +21,12 @@ public class BatchMediator : IBatchMediator
     {
         if (_pauseEvent.IsSet)
         {
-            _states.TryAdd(ioAddress, value);
+            _states.AddOrUpdate(ioAddress,
+                // Value factory delegate for adding a new key-value pair
+                k => value,
+
+                // Update factory delegate for updating an existing key-value pair
+                (k, oldValue) => value);
             IncrementCounter();
             // lock (consoleLock)
             // {
@@ -35,7 +40,6 @@ public class BatchMediator : IBatchMediator
                 
                 var toSave = _states.ToArray();
                 _states.Clear();
-                ResetCounter();
                 JToken token =  _service.UpdateDriverStates(toSave);
             
                 // resume adding new elements

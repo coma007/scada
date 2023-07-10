@@ -32,7 +32,13 @@ public class DriverService
     public JToken UpdateDriverStates(KeyValuePair<int, double>[] toSave)
     {
         JObject json = new JObject();
-        json["list"] = JToken.FromObject(toSave);
+        IEnumerable<JObject> list = toSave.Select(pair =>
+            new JObject(
+                new JProperty("ioAddress", pair.Key),
+                new JProperty("value", pair.Value)
+            )
+        );
+        json["list"] = JToken.FromObject(list);
         return _client.UpdateDriverStates(json);
     }
 }
