@@ -1,0 +1,20 @@
+.content {
+    margin: 2% 10%;
+    font-size: 17px;
+}
+
+.nameColumn {
+    width: 20%;
+}
+
+.descriptionColumn {
+    width: 45%;
+}
+
+.typeColumn {
+    width: 12%;
+}
+
+td {
+    vertical-align: middle;
+}
