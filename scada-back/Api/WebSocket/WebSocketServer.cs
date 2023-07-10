@@ -19,9 +19,9 @@ public class WebSocketServer : IWebSocketServer
         await _handler.SendMessage("NewTagRecordCreated", record);
     }
     
-    public async void NotifyClientAboutNewAlarmRecord(AlarmHistoryRecordDto record)
+    public async void NotifyClientAboutNewAlarmRecord(IEnumerable<AlarmHistoryRecordDto> record)
     {
-        await _handler.SendMessage("NewAlarmRecordCreated", record);
+        await _handler.SendMessage("NewAlarmRecordsCreated", record);
     }
 
     public async void NotifyClientAboutNewTag(TagDto tag)
@@ -33,5 +33,10 @@ public class WebSocketServer : IWebSocketServer
     {
         await _handler.SendMessage("TagScanUpdated", tag);
     }
-    
+
+    public async void NotifyClientAboutTagDelete(TagDto tag)
+    {
+        await _handler.SendMessage("TagDeleted", tag);
+    }
+
 }
