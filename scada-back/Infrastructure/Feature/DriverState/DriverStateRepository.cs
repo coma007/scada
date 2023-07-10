@@ -58,8 +58,9 @@ public class DriverStateRepository : IDriverStateRepository
 
     public async Task<IEnumerable<DriverState>> Update(IEnumerable<DriverState> driverStates)
     {
+        Console.WriteLine(driverStates.Count());
         var bulkOps = new List<WriteModel<DriverState>>();
-
+        driverStates.Where(x => x.IOAddress == 20).ToList().ForEach(x =>  Console.WriteLine("VALUE OF 20 IS: " +x.Value));
         bulkOps.AddRange(driverStates.Select(driverState =>
         {
             SetId(driverState);
@@ -71,7 +72,8 @@ public class DriverStateRepository : IDriverStateRepository
 
         if (bulkOps.Count > 0)
         {
-            await _states.BulkWriteAsync(bulkOps);
+            var options = new BulkWriteOptions { IsOrdered = false }; 
+            await _states.BulkWriteAsync(bulkOps, options);
         }
 
         return driverStates;
