@@ -1,3 +1,4 @@
+using scada_back.Api.WebSocket;
 using scada_back.Infrastructure.Feature.Alarm;
 using scada_back.Infrastructure.Feature.AlarmHistory;
 using scada_back.Infrastructure.Feature.Tag;
@@ -10,12 +11,15 @@ public class TagHistoryService : ITagHistoryService
     private readonly ITagHistoryRepository _repository;
     private readonly ITagService _tagService;
     private readonly IAlarmHistoryService _alarmHistoryService;
+    private readonly IWebSocketServer _webSocketServer;
 
-    public TagHistoryService(ITagHistoryRepository repository, IAlarmHistoryService alarmHistoryService, ITagService tagService)
+    public TagHistoryService(ITagHistoryRepository repository, IAlarmHistoryService alarmHistoryService, ITagService tagService,
+        IWebSocketServer webSocketServer)
     {
         _repository = repository;
         _tagService = tagService;
         _alarmHistoryService = alarmHistoryService;
+        _webSocketServer = webSocketServer;
     }
     
     public IEnumerable<TagHistoryRecordDto> GetAll()
@@ -47,8 +51,10 @@ public class TagHistoryService : ITagHistoryService
     public void Create(TagHistoryRecordDto newRecord)
     {
         TagDto tag = _tagService.Get(newRecord.TagName);
-        _alarmHistoryService.AlarmIfNeeded(tag.TagName, newRecord.TagValue);
+        IEnumerable<AlarmHistoryRecordDto> alarms = _alarmHistoryService.AlarmIfNeeded(tag.TagName, newRecord.TagValue);
         newRecord.Timestamp = DateTime.Now;
         _repository.Create(newRecord.ToEntity());
+        _webSocketServer.NotifyClientAboutNewTagRecord(newRecord);
+        if (alarms.Any()) _webSocketServer.NotifyClientAboutNewAlarmRecord(alarms);
     }
 }

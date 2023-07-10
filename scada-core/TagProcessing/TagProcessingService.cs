@@ -44,7 +44,7 @@ namespace scada_core.TagProcessing
                 int? ioAddress = tag["ioAddress"]?.ToObject<int>();
                 bool? scan = tag["scan"]?.ToObject<bool>();
                 int? scanTime = tag["scanTime"]?.ToObject<int>();
-                var tagData = new Dictionary<string, object>
+                Dictionary<string, object> tagData = new Dictionary<string, object>
                 {
                     { "ioAddress", ioAddress },
                     { "scan", scan },
@@ -62,6 +62,30 @@ namespace scada_core.TagProcessing
             }
 
             return tagProperties;
+        }
+
+        public static string? ExtractProperties(JToken tag, out Dictionary<string, object> tagData)
+        {
+            string? tagName = tag["TagName"]?.ToString();
+            string? tagType = tag["TagType"]?.ToString();
+            int? ioAddress = tag["IOAddress"]?.ToObject<int>();
+            bool? scan = tag["Scan"]?.ToObject<bool>();
+            int? scanTime = tag["ScanTime"]?.ToObject<int>();
+            tagData = new Dictionary<string, object>
+            {
+                { "ioAddress", ioAddress },
+                { "scan", scan },
+                { "scanTime", scanTime }
+            };
+            if (tagType != null && tagType.Contains("analog"))
+            {
+                double? lowLimit = tag["LowLimit"]?.ToObject<double>();
+                double? highLimit = tag["HighLimit"]?.ToObject<double>();
+                tagData.Add("lowLimit", lowLimit);
+                tagData.Add("highLimit", highLimit);
+            }
+
+            return tagName;
         }
     }
 }

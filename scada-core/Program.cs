@@ -11,8 +11,10 @@ namespace scada_core
         {
             ApiClient.ApiClient apiClient = new ApiClient.ApiClient();
             IBatchMediator mediator = new BatchMediator(apiClient);
-            
             TagProcessor tagProcessingService = new TagProcessor(apiClient);
+            WebSocketClient webSocketClient = new WebSocketClient();
+            await webSocketClient.ConnectToWebSocket(tagProcessingService);
+
             tagProcessingService.InitializeTagThreads();
             
             Driver.SimulationDriver.SimulationDriver simulationDriver = new Driver.SimulationDriver.SimulationDriver(mediator);
