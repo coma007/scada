@@ -23,13 +23,12 @@ namespace scada_core.TagProcessing
 
         private void ConfigureUrls()
         {
-            NameValueCollection apiValues = ConfigurationSettings.GetConfig("apiEndpoints") as NameValueCollection;
-            string apiUrl = apiValues["ApiUrl"];
-            _createDriverStateUrl = apiUrl + apiValues["CreateDriverStateUrl"];
-            _updateDriverStateUrl = apiUrl + apiValues["UpdateDriverStateUrl"];
-            _getDriverStateUrl = apiUrl + apiValues["GetDriverStateUrl"];
-            _getAllTagsUrl = apiUrl + apiValues["GetAllTagsByTypeUrl"];
-            _createTagRecordUrl = apiUrl + apiValues["CreateTagRecordUrl"];
+            string apiUrl = ConfigurationSettings.AppSettings["ApiUrl"];
+            _createDriverStateUrl = apiUrl + ConfigurationSettings.AppSettings["CreateDriverStateUrl"];
+            _updateDriverStateUrl = apiUrl + ConfigurationSettings.AppSettings["UpdateDriverStateUrl"];
+            _getDriverStateUrl = apiUrl + ConfigurationSettings.AppSettings["GetDriverStateUrl"];
+            _getAllTagsUrl = apiUrl + ConfigurationSettings.AppSettings["GetAllTagsByTypeUrl"];
+            _createTagRecordUrl = apiUrl + ConfigurationSettings.AppSettings["CreateTagRecordUrl"];
         }
 
         public   JToken  GetAllTags(string tagType)

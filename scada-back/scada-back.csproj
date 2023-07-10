@@ -10,6 +10,7 @@
     <ItemGroup>
         <PackageReference Include="FluentValidation" Version="11.6.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
         <PackageReference Include="MongoDB.Driver" Version="2.20.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.6" />
@@ -17,6 +18,7 @@
 
     <ItemGroup>
       <Folder Include="Api\Controller\" />
+      <Folder Include="Api\WebSocket\" />
       <Folder Include="Infrastructure" />
     </ItemGroup>
 

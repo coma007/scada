@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scada-core", "scada-core\scada-core.csproj", "{A8AB0ED0-3A2E-4DCB-BCCB-74BA9B0AA09B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scada-core", "scada-core.csproj", "{3AFDBF2D-5E96-4E93-A143-E5ABAFB1F52C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +8,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A8AB0ED0-3A2E-4DCB-BCCB-74BA9B0AA09B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A8AB0ED0-3A2E-4DCB-BCCB-74BA9B0AA09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A8AB0ED0-3A2E-4DCB-BCCB-74BA9B0AA09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A8AB0ED0-3A2E-4DCB-BCCB-74BA9B0AA09B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AFDBF2D-5E96-4E93-A143-E5ABAFB1F52C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AFDBF2D-5E96-4E93-A143-E5ABAFB1F52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AFDBF2D-5E96-4E93-A143-E5ABAFB1F52C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AFDBF2D-5E96-4E93-A143-E5ABAFB1F52C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,5 @@
 using System.Collections.Specialized;
+using System.Net.WebSockets;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
@@ -6,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using scada_back.Api.ApiKey;
+using scada_back.Api.WebSocket;
 using scada_back.Infrastructure.Database;
 using scada_back.Infrastructure.Exception.Filter;
 using scada_back.Infrastructure.Feature.Alarm;
@@ -48,17 +50,22 @@ builder.Services.AddScoped<IDriverStateService, DriverStateService>();
 
 builder.Services.AddScoped<IValidationService, ValidationService>();
 
+builder.Services.AddSingleton<WebSocketHandler>();
+builder.Services.AddScoped<IWebSocketServer, WebSocketServer>();
+
 builder.Services.AddControllers(options => 
         options.Filters.Add<GlobalExceptionFilter>())
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new TagDtoConverter());
     });
+
 builder.Services.AddMvc(options =>
 {
     options.Filters.Add(typeof(RequireApiKeyAttribute));
 });
 builder.Services.AddEndpointsApiExplorer();
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -111,5 +118,9 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
 });
+
+app.UseWebSockets();
+
+app.Use(WebSocketMiddleware.Middleware());
 
 app.Run();
