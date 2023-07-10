@@ -53,8 +53,10 @@ const AllTagsPage: React.FC = () => {
     };
 
     // Function to handle scan button click (to be implemented)
-    const handleScanTag = (tagName: string) => {
+    const handleScanTag = async (tagName: string) => {
         // Make HTTP request to toggle scan for the tag using the provided tagId
+        let tag: Tag = await TagService.updateScan(tagName);
+        console.log(tag);
         console.log(`Toggle scan for tag with ID: ${tagName}`);
     };
 
