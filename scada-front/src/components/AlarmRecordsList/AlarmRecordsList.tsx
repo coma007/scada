@@ -5,7 +5,7 @@ import { AlarmHistoryRecord } from '../../features/AlarmDisplay/LatestAlarms/typ
 import { formatDate } from '../../utils/DateFormatter';
 import style from './AlarmRecordsList.module.css';
 
-const AlarmRecordsList = (props: { alarmRecords: AlarmHistoryRecord[], setAlarmRecords: any }) => {
+const AlarmRecordsList = (props: { alarmRecords: AlarmHistoryRecord[], setAlarmRecords: any, canSnooze: boolean }) => {
 
     const [selectedRecord, setSelectedRecord] = React.useState<AlarmHistoryRecord | undefined>();
     const [showDetailsModal, setShowDetailsModal] = React.useState(false);
@@ -46,14 +46,18 @@ const AlarmRecordsList = (props: { alarmRecords: AlarmHistoryRecord[], setAlarmR
                             <td >{alarmRecord.tagValue}</td>
                             <td >{alarmRecord.message}</td>
                             <td >
-                                <Button variant="danger" size="sm" onClick={() => handleSnoozeAlarm(alarmRecord)}>
-                                    <OverlayTrigger
-                                        placement="bottom"
-                                        overlay={<Tooltip id="info-tooltip">Snooze alarm</Tooltip>}
-                                    >
-                                        <i className="bi bi-alarm"></i>
-                                    </OverlayTrigger>
-                                </Button>{' '}
+                                {props.canSnooze &&
+                                    <>
+                                        <Button variant="danger" size="sm" onClick={() => handleSnoozeAlarm(alarmRecord)}>
+                                            <OverlayTrigger
+                                                placement="bottom"
+                                                overlay={<Tooltip id="info-tooltip">Snooze alarm</Tooltip>}
+                                            >
+                                                <i className="bi bi-alarm"></i>
+                                            </OverlayTrigger>
+                                        </Button>{' '}
+                                    </>
+                                }
                                 <Button variant="info" size="sm" onClick={() => handleOpenDetailsModal(alarmRecord)}>
                                     <OverlayTrigger
                                         placement="bottom"

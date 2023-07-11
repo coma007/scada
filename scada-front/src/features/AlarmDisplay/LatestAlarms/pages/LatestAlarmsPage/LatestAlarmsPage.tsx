@@ -26,7 +26,7 @@ const LatestAlarmsPage = () => {
             <div className={style.titleLine}>
                 <h3>Alarm Display</h3>
             </div>
-            <AlarmRecordsList alarmRecords={alarmRecords} setAlarmRecords={setAlarmRecords}></AlarmRecordsList>
+            <AlarmRecordsList alarmRecords={alarmRecords} setAlarmRecords={setAlarmRecords} canSnooze={false}></AlarmRecordsList>
         </div >
     );
 }
