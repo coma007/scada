@@ -35,27 +35,29 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
                         <p><strong>Name</strong></p>
                         <p><strong>Type</strong></p>
                         <p><strong>I/O Address:</strong></p>
-                        {props.selectedTag.type === 'digital_input' && (
+                        {props.selectedTag.tagType === 'digital_input' && (
                             <>
                                 <p><strong>Scan Time</strong></p>
                                 <p><strong>Scan On</strong></p>
+                                <p><strong>Driver</strong></p>
                             </>
                         )}
-                        {props.selectedTag.type === 'digital_output' && (
+                        {props.selectedTag.tagType === 'digital_output' && (
                             <>
                                 <p><strong>Value</strong></p>
                             </>
                         )}
-                        {props.selectedTag.type === 'analog_input' && (
+                        {props.selectedTag.tagType === 'analog_input' && (
                             <>
                                 <p><strong>Scan Time</strong></p>
                                 <p><strong>Scan On</strong></p>
                                 <p><strong>Low Limit</strong></p>
                                 <p><strong>High Limit</strong></p>
                                 <p><strong>Units</strong></p>
+                                <p><strong>Driver</strong></p>
                             </>
                         )}
-                        {props.selectedTag.type === 'analog_output' && (
+                        {props.selectedTag.tagType === 'analog_output' && (
                             <>
                                 <p><strong>Low Limit</strong></p>
                                 <p><strong>High Limit</strong></p>
@@ -65,16 +67,17 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
                         )}
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                        <p>{props.selectedTag.name}</p>
-                        <p>{props.selectedTag.type}</p>
+                        <p>{props.selectedTag.tagName}</p>
+                        <p>{props.selectedTag.tagType}</p>
                         <p>{props.selectedTag.ioAddress}</p>
-                        {props.selectedTag.type === 'digital_input' && (
+                        {props.selectedTag.tagType === 'digital_input' && (
                             <>
                                 <p>{props.selectedTag.scanTime}</p>
                                 <p>{props.selectedTag.scanOn}</p>
+                                <p>{props.selectedTag.driver}</p>
                             </>
                         )}
-                        {props.selectedTag.type === 'digital_output' && (
+                        {props.selectedTag.tagType === 'digital_output' && (
                             <>
                                 {editMode ? (
                                     <div className={style.inline}>
@@ -107,16 +110,17 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
                                 )}
                             </>
                         )}
-                        {props.selectedTag.type === 'analog_input' && (
+                        {props.selectedTag.tagType === 'analog_input' && (
                             <>
                                 <p>{props.selectedTag.scanTime}</p>
                                 <p>{props.selectedTag.scanOn}</p>
                                 <p>{props.selectedTag.lowLimit}</p>
                                 <p>{props.selectedTag.highLimit}</p>
                                 <p>{props.selectedTag.units}</p>
+                                <p>{props.selectedTag.driver}</p>
                             </>
                         )}
-                        {props.selectedTag.type === 'analog_output' && (
+                        {props.selectedTag.tagType === 'analog_output' && (
                             <>
                                 <p>{props.selectedTag.lowLimit}</p>
                                 <p>{props.selectedTag.highLimit}</p>
