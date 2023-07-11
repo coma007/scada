@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import TagDetailsModal from '../../components/TagDetailsModal/TagDetailsModal';
 import TagCreateModal from '../../components/TagCreateModal/TagCreateModal';
@@ -190,3 +190,4 @@ const AllTagsPage: React.FC = () => {
 }
 
 export default AllTagsPage;
+

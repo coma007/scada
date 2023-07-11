@@ -106,4 +106,9 @@ public class AlarmRepository: IAlarmRepository
         }
         return await Get(updatedAlarm.AlarmName);
     }
+
+    public async Task<IEnumerable<Alarm>> getByTagName(string name)
+    {
+        return await _alarms.Find(alarm => alarm.TagName == name).ToListAsync();
+    }
 }

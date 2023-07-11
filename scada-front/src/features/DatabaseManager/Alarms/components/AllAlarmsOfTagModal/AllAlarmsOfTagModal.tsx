@@ -2,21 +2,24 @@ import React, { useEffect } from 'react'
 import { Button, Form, Modal, OverlayTrigger, Table, Tooltip } from 'react-bootstrap'
 import style from './AllAlarmsOfTagModal.module.css';
 import { Alarm } from '../../types/Alarm';
+import AlarmsService from '../../services/AlarmService';
+import { Tag } from '../../../Tags/types/Tag';
 
 const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any, selectedTag: any }) => {
-  const dummyAlarms: Alarm[] = [
-    new Alarm('High', 1, 100, 'Alarm 1', 'Tag 1'),
-    new Alarm('Medium', 2, 200, 'Alarm 2', 'Tag 2'),
-    new Alarm('Low', 3, 300, 'Alarm 3', 'Tag 3'),
-    new Alarm('Medium', 1, 150, 'Alarm 4', 'Tag 1'),
-    new Alarm('High', 2, 250, 'Alarm 5', 'Tag 2'),
-  ];
-
   const [alarms, setAlarms] = React.useState<Alarm[]>([]);
 
-  useEffect(() => {
-    setAlarms(dummyAlarms);
-  }, [])
+  const fetchData = async () => {
+    try {
+      let alarms = await AlarmsService.getByTagName(props.selectedTag.tagName);
+      setAlarms(alarms);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  React.useEffect(() => {
+      fetchData();
+  }, [props.selectedTag])
 
   const [newAlarm, setNewAlarm] = React.useState(new Alarm('', 0, 0, '', props.selectedTag.name));
   const [isAddingActive, setIsAddingActive] = React.useState(false);
