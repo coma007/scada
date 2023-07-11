@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import style from './TagDetailsModal.module.css';
 
+// TODO scan on empty
 const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, selectedTag: any }) => {
     const [editMode, setEditMode] = React.useState(false);
     const [editedValue, setEditedValue] = React.useState(props.selectedTag.initialValue);
