@@ -1,26 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import TagDetailsModal from '../../components/TagDetailsModal/TagDetailsModal';
 import TagCreateModal from '../../components/TagCreateModal/TagCreateModal';
 import { AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag, Tag } from '../../types/Tag';
+import TagService from '../../services/TagService';
 import AllAlarmsOfTagModal from '../../../Alarms/components/AllAlarmsOfTagModal/AllAlarmsOfTagModal';
 import style from './AllTagsPage.module.css';
 
 const AllTagsPage: React.FC = () => {
-
-    // Replace this with  actual data (useState)
-
-    let dummyTags: Tag[] = [
-        new AnalogInputTag('AnalogInput1', 'analog_input', 'Analog Input Tag 1', 1001, 1000, true, 0, 100, 'V'),
-        new AnalogOutputTag('AnalogOutput1', 'analog_output', 'Analog Output Tag 1', 2001, 50, 0, 100, 'mA'),
-        new DigitalInputTag('DigitalInput1', 'digital_input', 'Digital Input Tag 1', 3001, 500, true),
-        new DigitalOutputTag('DigitalOutput1', 'digital_output', 'Digital Output Tag 1', 4001, 1),
-        new AnalogInputTag('AnalogInput2', 'analog_input', 'Analog Input Tag 2', 1002, 1000, true, 0, 100, 'V'),
-    ];
     const [tags, setTags] = React.useState<Tag[]>([]);
 
+    const fetchData = async () => {
+        try {
+          let tags = await TagService.getAll();
+          setTags(tags);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+
     React.useEffect(() => {
-        setTags(dummyTags);
+        fetchData();
     }, [])
 
     const [showDetailsModal, setShowDetailsModal] = React.useState(false);
@@ -45,16 +45,32 @@ const AllTagsPage: React.FC = () => {
         setShowDetailsModal(false);
     };
 
-    // Function to handle tag removal (to be implemented)
-    const handleRemoveTag = (tagName: string) => {
-        // Make HTTP request to remove the tag using the provided tagId
-        console.log(`Remove tag with ID: ${tagName}`);
+    const handleRemoveTag = async (tagName: string) => {
+        try{
+            let tag: Tag = await TagService.delete(tagName);
+            console.log(tag);
+            console.log(`Remove tag with ID: ${tagName}`);
+            let updatedList = tags.filter(tag => tag.tagName !== tagName);
+            setTags(updatedList);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+
     };
 
-    // Function to handle scan button click (to be implemented)
-    const handleScanTag = (tagName: string) => {
-        // Make HTTP request to toggle scan for the tag using the provided tagId
-        console.log(`Toggle scan for tag with ID: ${tagName}`);
+    const handleScanTag = async (tagName: string) => {
+        try{
+            let tag: Tag = await TagService.updateScan(tagName);
+            console.log(tag);
+            console.log(`Toggle scan for tag with ID: ${tagName}`);
+            let index = tags.findIndex(tag => tag.tagName === tagName);
+
+            let updatedTags = [...tags];
+            updatedTags[index] = tag;
+            setTags(updatedTags);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
     };
 
 
@@ -94,11 +110,11 @@ const AllTagsPage: React.FC = () => {
                 </thead>
                 <tbody>
                     {tags.map((tag) => (
-                        <tr key={tag.name}>
-                            <td >{tag.name}</td>
+                        <tr key={tag.tagName}>
+                            <td >{tag.tagName}</td>
                             <td >{tag.description}</td>
                             <td >{tag.ioAddress}</td>
-                            <td >{tag.type}</td>
+                            <td >{tag.tagType}</td>
                             <td >
                                 <Button variant="info" size="sm" onClick={() => handleOpenDetailsModal(tag)}>
                                     <OverlayTrigger
@@ -108,7 +124,7 @@ const AllTagsPage: React.FC = () => {
                                         <i className="bi bi-info-circle"></i>
                                     </OverlayTrigger>
                                 </Button>{' '}
-                                <Button variant="danger" size="sm" onClick={() => handleRemoveTag(tag.name)}>
+                                <Button variant="danger" size="sm" onClick={() => handleRemoveTag(tag.tagName)}>
                                     <OverlayTrigger
                                         placement="bottom"
                                         overlay={<Tooltip id="remove-tooltip">Remove tag</Tooltip>}
@@ -116,9 +132,9 @@ const AllTagsPage: React.FC = () => {
                                         <i className="bi bi-trash"></i>
                                     </OverlayTrigger>
                                 </Button>{' '}
-                                {(tag.type == "analog_input" || tag.type == "digital_input") && <>
+                                {(tag.tagType == "analog_input" || tag.tagType == "digital_input") && <>
                                     {((tag as AnalogInputTag).scan) ? <>
-                                        <Button variant="dark" size="sm" onClick={() => handleScanTag(tag.name)}>
+                                        <Button variant="dark" size="sm" onClick={() => handleScanTag(tag.tagName)}>
                                             <OverlayTrigger
                                                 placement="bottom"
                                                 overlay={<Tooltip id="scan-tooltip">Turn off scan</Tooltip>}
@@ -127,7 +143,7 @@ const AllTagsPage: React.FC = () => {
                                             </OverlayTrigger>
                                         </Button>{' '}
                                     </> : <>
-                                        <Button variant="primary" size="sm" onClick={() => handleScanTag(tag.name)}>
+                                        <Button variant="primary" size="sm" onClick={() => handleScanTag(tag.tagName)}>
                                             <OverlayTrigger
                                                 placement="bottom"
                                                 overlay={<Tooltip id="scan-tooltip">Turn on scan</Tooltip>}
@@ -139,7 +155,7 @@ const AllTagsPage: React.FC = () => {
                                     }
                                 </>
                                 }
-                                {(tag.type == "analog_input") && <Button variant="warning" size="sm" onClick={() => handleOpenAlarmsModal(tag)}>
+                                {(tag.tagType == "analog_input") && <Button variant="warning" size="sm" onClick={() => handleOpenAlarmsModal(tag)}>
                                     <OverlayTrigger
                                         placement="bottom"
                                         overlay={<Tooltip id="info-tooltip">View alarms</Tooltip>}
@@ -174,3 +190,4 @@ const AllTagsPage: React.FC = () => {
 }
 
 export default AllTagsPage;
+

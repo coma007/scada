@@ -1,12 +1,12 @@
 export abstract class Tag {
-    name: string;
-    type: string;
+    tagName: string;
+    tagType: string;
     description: string;
     ioAddress: number;
 
-    constructor(name: string, type: string, description: string, ioAddress: number) {
-        this.name = name;
-        this.type = type;
+    constructor(tagName: string, tagType: string, description: string, ioAddress: number) {
+        this.tagName = tagName;
+        this.tagType = tagType;
         this.description = description;
         this.ioAddress = ioAddress;
     }
@@ -15,19 +15,21 @@ export abstract class Tag {
 export class DigitalInputTag extends Tag {
     scanTime: number;
     scan: boolean;
+    driver: string;
 
-    constructor(name: string, type: string, description: string, ioAddress: number, scanTime: number, scan: boolean) {
-        super(name, type, description, ioAddress);
+    constructor(tagName: string, tagType: string, description: string, ioAddress: number, scanTime: number, scan: boolean, driver: string) {
+        super(tagName, tagType, description, ioAddress);
         this.scanTime = scanTime;
         this.scan = scan;
+        this.driver = driver;
     }
 }
 
 export class DigitalOutputTag extends Tag {
     initialValue: number;
 
-    constructor(name: string, type: string, description: string, ioAddress: number, initialValue: number) {
-        super(name, type, description, ioAddress);
+    constructor(tagName: string, tagType: string, description: string, ioAddress: number, initialValue: number) {
+        super(tagName, tagType, description, ioAddress);
         this.initialValue = initialValue;
     }
 }
@@ -37,25 +39,28 @@ export class AnalogInputTag extends Tag {
     scan: boolean;
     lowLimit: number;
     highLimit: number;
+    driver: string;
     units: string;
 
     constructor(
-        name: string,
-        type: string,
+        tagName: string,
+        tagType: string,
         description: string,
         ioAddress: number,
         scanTime: number,
         scan: boolean,
         lowLimit: number,
         highLimit: number,
-        units: string
+        units: string,
+        driver: string
     ) {
-        super(name, type, description, ioAddress);
+        super(tagName, tagType, description, ioAddress);
         this.scanTime = scanTime;
         this.scan = scan;
         this.lowLimit = lowLimit;
         this.highLimit = highLimit;
         this.units = units;
+        this.driver = driver;
     }
 }
 
@@ -66,8 +71,8 @@ export class AnalogOutputTag extends Tag {
     units: string;
 
     constructor(
-        name: string,
-        type: string,
+        tagName: string,
+        tagType: string,
         description: string,
         ioAddress: number,
         initialValue: number,
@@ -75,7 +80,7 @@ export class AnalogOutputTag extends Tag {
         highLimit: number,
         units: string
     ) {
-        super(name, type, description, ioAddress);
+        super(tagName, tagType, description, ioAddress);
         this.initialValue = initialValue;
         this.lowLimit = lowLimit;
         this.highLimit = highLimit;

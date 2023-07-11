@@ -8,4 +8,5 @@ public interface IAlarmService
     public AlarmDto Create(AlarmDto newAlarm);
     public AlarmDto Delete(string alarmName);
     public AlarmDto Update(AlarmDto updatedAlarm);
+    public IEnumerable<AlarmDto> GetByTag(string name);
 }

@@ -8,7 +8,7 @@ function App() {
   return (
     <div>
       <Menu></Menu>
-      <ReportsPage></ReportsPage>
+      <AllTagsPage></AllTagsPage>
     </div>
   );
 }

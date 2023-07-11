@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic.CompilerServices;
 using scada_back.Infrastructure.Exception;
 using scada_back.Infrastructure.Feature.DriverState;
 using scada_back.Infrastructure.Feature.Tag.Model.Abstraction;
@@ -10,12 +11,14 @@ public class TagService : ITagService
     private readonly ITagRepository _repository;
     private readonly IDriverStateService _driverStateService;
     private readonly IValidationService _validationService;
+    private readonly IConfiguration _configuration;
 
-    public TagService(ITagRepository repository, IDriverStateService driverStateService, IValidationService validationService)
+    public TagService(ITagRepository repository, IDriverStateService driverStateService, IValidationService validationService, IConfiguration configuration)
     {
         _repository = repository;
         _driverStateService = driverStateService;
         _validationService = validationService;
+        _configuration = configuration;
     }
     
     public IEnumerable<TagDto> GetAll()
@@ -59,12 +62,28 @@ public class TagService : ITagService
     {
         _validationService.ValidateTag(newTag);
         _driverStateService.Get(newTag.IOAddress);
-        
+
         Model.Abstraction.Tag existingTag = _repository.Get(newTag.TagName).Result;
         if (existingTag != null)
         {
             throw new ObjectNameTakenException($"Tag with name '{newTag.TagName}' already exists.");
         }
+
+        if (newTag is IInputTagDto inputTagDto)
+        {
+             int limit = Int32.Parse(_configuration.GetSection("Driver:SimulationAddressLimit").Value);
+             if (inputTagDto.Driver.ToUpper() == "SIMULATION" && newTag.IOAddress >= limit)
+             {
+                 throw new InvalidParameterException(
+                     $"You are trying to write simulation tag to address that is for reserved for realtime, try value less than {limit}");
+             }
+             if (inputTagDto.Driver.ToUpper() == "REALTIME" && newTag.IOAddress < limit)
+             {
+                 throw new InvalidParameterException(
+                     $"You are trying to write real time tag to address that is for reserved for simulation, try value bigger or equal than {limit}");
+             }
+        }
+
         Model.Abstraction.Tag tag = newTag.ToEntity();
         return _repository.Create(tag).Result.ToDto();
     }
