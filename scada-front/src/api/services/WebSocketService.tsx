@@ -6,7 +6,7 @@ import { WEBSOCKET } from "..";
 //   WebSocketService.createSocket(setSocket);
 // }, []);
 // useEffect(() => {
-//   WebSocketService.defineSocket(socket, "NewTagRecordCreated");
+//   WebSocketService.defineSocket(socket, "NewTagRecordCreated", (message : string) => console.log(message));
 // }, [socket]);
 
 
@@ -25,7 +25,7 @@ export const WebSocketService = {
       };
     },
 
-    defineSocket: function(socket : WebSocket | null, topic : string) {
+    defineSocket: function(socket : WebSocket | null, topic : string, processMessage : any) {
         if (socket) {
             // WebSocket event listener for when the connection is opened
             socket.onopen = () => {
@@ -36,8 +36,12 @@ export const WebSocketService = {
       
             // WebSocket event listener for when a message is received
             socket.onmessage = async (event) => {
-              let message = await event.data.text();
+              let message : string = await event.data.text();
+              let tokens = message.split(" ");
+              topic = tokens[0];
+              message = tokens[1];
               console.log('Received message:', message);
+              processMessage(message)
               // Process the received message
             };
       
