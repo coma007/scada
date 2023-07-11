@@ -28,8 +28,12 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
     const handleCloseModal = async () => {
         let tag: Tag = createTag();
         // Close the modal and perform any necessary actions
-        let newTag: Tag = await TagService.create(tag);
-        props.handleCloseModal(tag);
+        try{
+            let newTag: Tag = await TagService.create(tag);
+            props.handleCloseModal(tag);
+        } catch(error){
+            console.log(error);
+        }
     };
 
     const createTag = (): Tag => {
@@ -82,7 +86,7 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
     };
 
     return (
-        <Modal dialogClassName="dialog" show={props.showModal} onHide={props.handleCloseModal}>
+        <Modal dialogClassName="dialog" show={props.showModal} onHide={() => props.handleCloseModal()}>
             <Modal.Header closeButton>
                 <Modal.Title>Create new tag</Modal.Title>
             </Modal.Header>
@@ -212,7 +216,7 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
                 <Button variant="primary" onClick={handleCloseModal}>
                     Save
                 </Button>
-                <Button variant="secondary" onClick={props.handleCloseModal}>
+                <Button variant="secondary" onClick={() => props.handleCloseModal()}>
                     Close
                 </Button>
             </Modal.Footer>

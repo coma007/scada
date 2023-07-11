@@ -7,16 +7,6 @@ import { AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag, Tag
 import TagService from '../../services/TagService';
 
 const AllTagsPage: React.FC = () => {
-
-    // Replace this with  actual data (useState)
-
-    // let dummyTags: Tag[] = [
-    //     new AnalogInputTag('AnalogInput1', 'analog_input', 'Analog Input Tag 1', 1001, 1000, true, 0, 100, 'V'),
-    //     new AnalogOutputTag('AnalogOutput1', 'analog_output', 'Analog Output Tag 1', 2001, 50, 0, 100, 'mA'),
-    //     new DigitalInputTag('DigitalInput1', 'digital_input', 'Digital Input Tag 1', 3001, 500, true),
-    //     new DigitalOutputTag('DigitalOutput1', 'digital_output', 'Digital Output Tag 1', 4001, 1),
-    //     new AnalogInputTag('AnalogInput2', 'analog_input', 'Analog Input Tag 2', 1002, 1000, true, 0, 100, 'V'),
-    // ];
     const [tags, setTags] = React.useState<Tag[]>([]);
 
     const fetchData = async () => {
@@ -44,27 +34,32 @@ const AllTagsPage: React.FC = () => {
         setShowDetailsModal(false);
     };
 
-    // Function to handle tag removal (to be implemented)
     const handleRemoveTag = async (tagName: string) => {
-        // Make HTTP request to remove the tag using the provided tagId
-        let tag: Tag = await TagService.delete(tagName);
-        console.log(tag);
-        console.log(`Remove tag with ID: ${tagName}`);
-        let updatedList = tags.filter(tag => tag.tagName !== tagName);
-        setTags(updatedList);
+        try{
+            let tag: Tag = await TagService.delete(tagName);
+            console.log(tag);
+            console.log(`Remove tag with ID: ${tagName}`);
+            let updatedList = tags.filter(tag => tag.tagName !== tagName);
+            setTags(updatedList);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+
     };
 
-    // Function to handle scan button click (to be implemented)
     const handleScanTag = async (tagName: string) => {
-        // Make HTTP request to toggle scan for the tag using the provided tagId
-        let tag: Tag = await TagService.updateScan(tagName);
-        console.log(tag);
-        console.log(`Toggle scan for tag with ID: ${tagName}`);
-        let index = tags.findIndex(tag => tag.tagName === tagName);
+        try{
+            let tag: Tag = await TagService.updateScan(tagName);
+            console.log(tag);
+            console.log(`Toggle scan for tag with ID: ${tagName}`);
+            let index = tags.findIndex(tag => tag.tagName === tagName);
 
-        let updatedTags = [...tags];
-        updatedTags[index] = tag;
-        setTags(updatedTags);
+            let updatedTags = [...tags];
+            updatedTags[index] = tag;
+            setTags(updatedTags);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
     };
 
 

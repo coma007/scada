@@ -31,7 +31,7 @@ const TagService = {
             })
             .catch(error => {
                 console.log(error)
-                return error;
+                throw new Error(error);
             });
     },
 
@@ -46,7 +46,7 @@ const TagService = {
             })
             .catch(error => {
                 console.log(error)
-                return error;
+                throw new Error(error);
             });
     },
 
@@ -60,7 +60,7 @@ const TagService = {
             })
             .catch(error => {
                 console.log(error)
-                return error;
+                throw new Error(error);
             });
     },
 
@@ -74,7 +74,7 @@ const TagService = {
             })
             .catch(error => {
                 console.log(error)
-                return error;
+                throw new Error(error);
             });
     }
 }
