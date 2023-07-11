@@ -1,26 +1,11 @@
-import React, { useEffect } from 'react'
-import style from './LatestAlarms.module.css';
-import { Button, OverlayTrigger, Table, Tooltip } from 'react-bootstrap';
-import { AlarmHistoryRecord } from '../../types/AlarmHistoryRecord';
-import AlarmDetailsModal from '../../components/AlarmDetailsModal/AlarmDetailsModal';
-import AlarmRecordsList from '../../../../../components/AlarmRecordsList/AlarmRecordsList';
-import { formatDate } from '../../../../../utils/DateFormatter';
+import React from 'react'
+import { Table, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import AlarmDetailsModal from '../../features/AlarmDisplay/LatestAlarms/components/AlarmDetailsModal/AlarmDetailsModal';
+import { AlarmHistoryRecord } from '../../features/AlarmDisplay/LatestAlarms/types/AlarmHistoryRecord';
+import { formatDate } from '../../utils/DateFormatter';
+import style from './AlarmRecordsList.module.css';
 
-const LatestAlarmsPage = () => {
-
-    const [alarmRecords, setAlarmRecords] = React.useState<AlarmHistoryRecord[]>([]);
-
-    const dummyAlarmRecords: AlarmHistoryRecord[] = [
-        new AlarmHistoryRecord("Alarm 1", new Date(), 10, "Value of tag {tagName} ({tagValue}) is critically {relation} than limit ({alarmLimit})"),
-        new AlarmHistoryRecord("Alarm 2", new Date(), 15, "Value of tag {tagName} ({tagValue}) is critically {relation} than limit ({alarmLimit})"),
-        new AlarmHistoryRecord("Alarm 3", new Date(), 20, "Value of tag {tagName} ({tagValue}) is critically {relation} than limit ({alarmLimit})"),
-        new AlarmHistoryRecord("Alarm 4", new Date(), 25, "Value of tag {tagName} ({tagValue}) is critically {relation} than limit ({alarmLimit})"),
-        new AlarmHistoryRecord("Alarm 5", new Date(), 30, "Value of tag {tagName} ({tagValue}) is critically {relation} than limit ({alarmLimit})"),
-    ];
-
-    useEffect(() => {
-        setAlarmRecords(dummyAlarmRecords)
-    }, [])
+const AlarmRecordsList = (props: { alarmRecords: AlarmHistoryRecord[], setAlarmRecords: any }) => {
 
     const [selectedRecord, setSelectedRecord] = React.useState<AlarmHistoryRecord | undefined>();
     const [showDetailsModal, setShowDetailsModal] = React.useState(false);
@@ -37,16 +22,12 @@ const LatestAlarmsPage = () => {
 
     const handleSnoozeAlarm = (snoozedRecord: AlarmHistoryRecord) => {
         // do logic for same alarm, differen priority if exists
-        let updatedList = alarmRecords.filter(record => record != snoozedRecord);
-        setAlarmRecords(updatedList);
+        let updatedList = props.alarmRecords.filter(record => record != snoozedRecord);
+        props.setAlarmRecords(updatedList);
     };
-    
 
     return (
-        <div className={style.content}>
-            <div className={style.titleLine}>
-                <h3>Alarm Display</h3>
-            </div>
+        <div>
             <Table striped bordered hover responsive>
                 <thead>
                     <tr>
@@ -58,7 +39,7 @@ const LatestAlarmsPage = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {alarmRecords.map((alarmRecord) => (
+                    {props.alarmRecords.map((alarmRecord) => (
                         <tr key={alarmRecord.alarmName}>
                             <td >{alarmRecord.alarmName}</td>
                             <td >{formatDate(alarmRecord.timestamp)}</td>
@@ -95,10 +76,8 @@ const LatestAlarmsPage = () => {
                     handleCloseModal={handleCloseDetailsModal} />
             )}
 
-
-            <AlarmRecordsList alarmRecords={alarmRecords} setAlarmRecords={setAlarmRecords}></AlarmRecordsList>
-        </div >
+        </div>
     );
 }
 
-export default LatestAlarmsPage
+export default AlarmRecordsList
