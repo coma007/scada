@@ -46,7 +46,7 @@ public class WebSocketClient
         while (!result.CloseStatus.HasValue)
         {
             string receivedMessage = Encoding.UTF8.GetString(buffer, 0, result.Count);
-            string[] tokens = receivedMessage.Split(" ");
+            string[] tokens = receivedMessage.Split("=>");
             string topic = tokens[0];
             receivedMessage = tokens[1];
             JToken tag = JToken.Parse(receivedMessage);
