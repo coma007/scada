@@ -52,4 +52,10 @@ public class TagHistoryRepository : ITagHistoryRepository
             throw new ActionNotExecutedException("Create failed.");
         }
     }
+
+    public async Task<TagHistoryRecord> GetLastForTag(string tagName)
+    {
+        var filter = Builders<TagHistoryRecord>.Filter.Eq(record => record.TagName, tagName);
+        return await _tagRecords.Find(filter).SortByDescending(record => record.Timestamp).FirstOrDefaultAsync();
+    }
 }

@@ -57,4 +57,11 @@ public class TagHistoryService : ITagHistoryService
         _webSocketServer.NotifyClientAboutNewTagRecord(newRecord);
         if (alarms.Any()) _webSocketServer.NotifyClientAboutNewAlarmRecord(alarms);
     }
+
+    public string GetLastValueForTag(string tagName)
+    {
+        TagHistoryRecord tagValue = _repository.GetLastForTag(tagName).Result;
+        if (tagValue == null) return "NaN";
+        return tagValue.TagValue.ToString();
+    }
 }
