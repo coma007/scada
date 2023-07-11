@@ -5,7 +5,7 @@ import { Alarm } from '../../types/Alarm';
 import AlarmsService from '../../services/AlarmService';
 import { Tag } from '../../../Tags/types/Tag';
 
-const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any, selectedTag: any }) => {
+const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any, selectedTag: Tag }) => {
   const [alarms, setAlarms] = React.useState<Alarm[]>([]);
 
   const fetchData = async () => {
@@ -19,34 +19,45 @@ const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any,
 
   React.useEffect(() => {
       fetchData();
+      let updatedNameAlarm = {...newAlarm, tagName: props.selectedTag?.tagName};
+      setNewAlarm(updatedNameAlarm);
   }, [props.selectedTag])
 
-  const [newAlarm, setNewAlarm] = React.useState(new Alarm('', 0, 0, '', props.selectedTag.name));
+  const [newAlarm, setNewAlarm] = React.useState(new Alarm('', 0, 0, '', props.selectedTag.tagName));
   const [isAddingActive, setIsAddingActive] = React.useState(false);
 
   const handleAddNewAlarm = () => {
     setIsAddingActive(true);
-    setNewAlarm(new Alarm('', 0, 0, '', props.selectedTag.name));
+    setNewAlarm(new Alarm('', 0, 0, '', props.selectedTag.tagName));
   };
 
   const handleCloseNewAlarm = () => {
     setIsAddingActive(false);
   };
 
-  const handleCreateAlarm = () => {
-    // Api request
-    // ...
-
-    alarms.push(newAlarm);
-    setAlarms(alarms);
+  const handleCreateAlarm = async () => {
+    // Close the modal and perform any necessary actions
+    try{
+        let createdAlarm: Alarm = await AlarmsService.create(newAlarm);
+        props.handleCloseModal(newAlarm);
+        alarms.push(newAlarm);
+        setAlarms(alarms);
+    } catch(error){
+        console.log(error);
+    }
   };
 
-  const handleRemoveAlarm = (selectedAlarm: Alarm) => {
-    // Api request
-    // ...
 
-    let updatedList = alarms.filter(alarm => alarm !== selectedAlarm);
-    setAlarms(updatedList);
+  const handleRemoveAlarm = async (selectedAlarm: Alarm) => {
+    try{
+      let alarm: Alarm = await AlarmsService.delete(selectedAlarm.alarmName);
+      console.log(alarm);
+      console.log(`Remove tag with ID: ${alarm.alarmName}`);
+      let updatedList = alarms.filter(alarm => alarm !== selectedAlarm);
+      setAlarms(updatedList);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
 
 
@@ -54,7 +65,7 @@ const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any,
     <Modal dialogClassName='alarms-dialog' show={props.showModal} onHide={props.handleCloseModal}>
       <Modal.Header closeButton>
         <div className="title-line">
-          <Modal.Title>Alarms of tag '{props.selectedTag.name}'</Modal.Title>
+          <Modal.Title>Alarms of tag '{props.selectedTag.tagName}'</Modal.Title>
           {!isAddingActive &&
             <Button variant="primary" onClick={handleAddNewAlarm}>
               Add new alarm
