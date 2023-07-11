@@ -7,4 +7,5 @@ public interface ITagHistoryService
     IEnumerable<TagHistoryRecordDto> GetBetween(DateTime startDateTime, DateTime endDateTime);
     IEnumerable<TagHistoryRecordDto> GetLast(string signalType);
     void Create(TagHistoryRecordDto newRecord);
+    string GetLastValueForTag(string tagName);
 }

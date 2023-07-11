@@ -1,23 +1,33 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import style  from './LoginComponent.module.css'; 
+import { AuthService } from './services/AuthService';
 
 const LoginComponent: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // Perform your API request here to submit the login credentials to the server
+        try {
+            const jwt = await AuthService.login({ Username: username, Password: password});
+            console.log(jwt);
+            localStorage.setItem("token", jwt)
 
-        // Validate response
-        if (true) {
             setErrorMessage('');
             console.log('Logged in successfully!');
-        } else {
-            setErrorMessage('e.Message()');
         }
+        catch (error : any) {
+            setErrorMessage(error.response.data);
+        }
+        // Validate response
+        // if (true) {
+            
+        // } else {
+
+        // }
     };
 
     return (

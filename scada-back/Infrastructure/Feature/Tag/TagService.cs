@@ -137,6 +137,8 @@ public class TagService : ITagService
         {
             throw new InvalidSignalTypeException($"Can only change value of digital output tag.");
         }
+
+        ((IOutputTag)tag).InitialValue = value;
         return _repository.Update(tag).Result.ToDto();
     }
 }

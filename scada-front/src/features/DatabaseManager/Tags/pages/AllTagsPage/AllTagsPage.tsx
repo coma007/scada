@@ -2,9 +2,10 @@ import React from 'react';
 import { Table, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import TagDetailsModal from '../../components/TagDetailsModal/TagDetailsModal';
 import TagCreateModal from '../../components/TagCreateModal/TagCreateModal';
-import style from './AllTagsPage.module.css';
 import { AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag, Tag } from '../../types/Tag';
 import TagService from '../../services/TagService';
+import AllAlarmsOfTagModal from '../../../Alarms/components/AllAlarmsOfTagModal/AllAlarmsOfTagModal';
+import style from './AllTagsPage.module.css';
 
 const AllTagsPage: React.FC = () => {
     const [tags, setTags] = React.useState<Tag[]>([]);
@@ -23,7 +24,17 @@ const AllTagsPage: React.FC = () => {
     }, [])
 
     const [showDetailsModal, setShowDetailsModal] = React.useState(false);
-    const [selectedTag, setSelectedTag] = React.useState<any>(null);
+    const [showAlarmsModal, setShowAlarmsModal] = React.useState(false);
+    const [selectedTag, setSelectedTag] = React.useState<Tag|undefined>();
+
+    const handleOpenAlarmsModal = (tag: Tag) => {
+        setSelectedTag(tag);
+        setShowAlarmsModal(true);
+    };
+
+    const handleCloseAlarmsModal = () => {
+        setShowAlarmsModal(false);
+    };
 
     const handleOpenDetailsModal = (tag: Tag) => {
         setSelectedTag(tag);
@@ -144,7 +155,7 @@ const AllTagsPage: React.FC = () => {
                                     }
                                 </>
                                 }
-                                {(tag.tagType == "analog_input") && <Button variant="warning" size="sm" onClick={() => handleOpenDetailsModal(tag)}>
+                                {(tag.type == "analog_input") && <Button variant="warning" size="sm" onClick={() => handleOpenAlarmsModal(tag)}>
                                     <OverlayTrigger
                                         placement="bottom"
                                         overlay={<Tooltip id="info-tooltip">View alarms</Tooltip>}
@@ -164,6 +175,12 @@ const AllTagsPage: React.FC = () => {
                     selectedTag={selectedTag}
                     showModal={showDetailsModal}
                     handleCloseModal={handleCloseDetailsModal} />
+            )}
+            {selectedTag && (
+                <AllAlarmsOfTagModal
+                    selectedTag={selectedTag}
+                    showModal={showAlarmsModal}
+                    handleCloseModal={handleCloseAlarmsModal} />
             )}
             <TagCreateModal
                 showModal={showCreateModal}
