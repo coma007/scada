@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
-import { AlarmHistoryRecord } from '../../types/AlarmHistoryRecord';
-import style from './LatestAlarms.module.css';
+import { AlarmHistoryRecord } from '../../../../../types/AlarmHistoryRecord';
 import AlarmRecordsList from '../../../../../components/AlarmRecordsList/AlarmRecordsList';
 
 const LatestAlarmsPage = () => {
@@ -19,11 +18,11 @@ const LatestAlarmsPage = () => {
         setAlarmRecords(dummyAlarmRecords)
     }, [])
 
-    
+
 
     return (
-        <div className={style.content}>
-            <div className={style.titleLine}>
+        <div className="content">
+            <div className="titleLine">
                 <h3>Alarm Display</h3>
             </div>
             <AlarmRecordsList alarmRecords={alarmRecords} setAlarmRecords={setAlarmRecords} canSnooze={false}></AlarmRecordsList>

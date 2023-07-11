@@ -12,6 +12,18 @@ code {
     monospace;
 }
 
+
+.content {
+  margin: 2% 10%;
+  font-size: 17px;
+}
+
+.titleLine {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
 .create-dialog {
   width: 60% !important;
   max-width: 60% !important;
@@ -27,4 +39,13 @@ code {
   display: flex !important;
   width: 95%;
   justify-content: space-between !important;
+}
+
+.vertical-align .form-label {
+  margin: 0 !important;
+  margin-right: 10px !important;
+}
+
+.margin-bottom {
+  margin-bottom: 20px;
 }

@@ -1,9 +1,7 @@
 import React from 'react';
 import './App.css';
 import Menu from './components/Menu/Menu';
-import AllTagsPage from './features/DatabaseManager/Tags/pages/AllTagsPage/AllTagsPage';
-import LoginComponent from './features/DatabaseManager/Login/LoginComponent';
-import LatestAlarmsPage from './features/AlarmDisplay/LatestAlarms/pages/LatestAlarmsPage/LatestAlarmsPage';
+import ReportsPage from './features/ReportManager/pages/ReportsPage/ReportsPage';
 
 
 function App() {
