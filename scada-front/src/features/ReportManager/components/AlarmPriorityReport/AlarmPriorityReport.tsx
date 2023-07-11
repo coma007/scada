@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import AlarmRecordsList from '../../../../components/AlarmRecordsList/AlarmRecordsList';
 import { AlarmHistoryRecord } from '../../../../types/AlarmHistoryRecord';
 import { Button } from 'react-bootstrap';
@@ -75,7 +75,7 @@ const AlarmPriorityReport = () => {
                 <div className='col-md-8'></div>
 
                 <div className="col-md-1">
-                    <Button variant="primary">
+                    <Button variant="primary" onClick={handleSubmit}>
                         Filter
                     </Button>
                 </div>

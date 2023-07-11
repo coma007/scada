@@ -19,10 +19,10 @@ const Menu: React.FC = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                     <Nav>
-                        <Nav.Link href="#" className={style.menuLink}>DatabaseManager</Nav.Link>
+                        <Nav.Link href="#" className={style.menuLink}>Database Manager</Nav.Link>
                         <Nav.Link href="#" className={style.menuLink}>Trending</Nav.Link>
-                        <Nav.Link href="#" className={style.menuLink}>AlarmDisplay</Nav.Link>
-                        <Nav.Link href="#" className={style.menuLink}>ReportManager</Nav.Link>
+                        <Nav.Link href="#" className={style.menuLink}>Alarm Display</Nav.Link>
+                        <Nav.Link href="#" className={style.menuLink}>Report Manager</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

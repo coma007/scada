@@ -1,7 +1,10 @@
-import  {useState } from 'react'
+import { useState } from 'react'
 import AlarmHistoryTimespanReport from '../../components/AlarmHistoryTimespanReport/AlarmHistoryTimespanReport';
 import AlarmPriorityReport from '../../components/AlarmPriorityReport/AlarmPriorityReport';
 import TagHistoryTimespanReport from '../../components/TagHistoryTimespanReport/TagHistoryTimespanReport';
+import TagTypeReport from '../../components/TagTypeReport/TagTypeReport';
+import { TagHistoryRecord } from '../../../../types/TagHistoryRecord';
+import TagHistoryReport from '../../components/TagHistoryReport/TagHistoryReport';
 
 const ReportsPage = () => {
 
@@ -21,7 +24,7 @@ const ReportsPage = () => {
                         <option value="alarmsTimespan">Alarms Timespan Report</option>
                         <option value="alarmsPriority">Alarms Priority Report</option>
                         <option value="tagsTimespan">Tags Timespan Report</option>
-                        <option value="digitalInputTags">Tags Type Report</option>
+                        <option value="tagType">Tags Type Report</option>
                         <option value="tagHistory">Tag History Report</option>
                     </select>
                 </span>
@@ -29,9 +32,8 @@ const ReportsPage = () => {
             {selectedReport === 'alarmsTimespan' && <AlarmHistoryTimespanReport />}
             {selectedReport === 'alarmsPriority' && <AlarmPriorityReport />}
             {selectedReport === 'tagsTimespan' && <TagHistoryTimespanReport />}
-            {/* {selectedReport === 'digitalInputTags' && <DigitalInputTagsReport />} */}
-            {/* {selectedReport === 'analogInputTags' && <AnalogInputTagsReport />} */}
-            {/* {selectedReport === 'tagHistory' && <TagHistoryReport />} */}
+            {selectedReport === 'tagType' && <TagTypeReport />}
+            {selectedReport === 'tagHistory' && <TagHistoryReport />}
         </div>
     )
 }

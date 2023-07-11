@@ -3,7 +3,7 @@ import { TagHistoryRecord } from '../../types/TagHistoryRecord';
 import { Table, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { formatDate } from '../../utils/DateFormatter';
 import AlarmRecordsList from '../AlarmRecordsList/AlarmRecordsList';
-import TagDetailsModal from '../../features/DatabaseManager/Tags/components/TagDetailsModal/TagDetailsModal';
+import TagDetailsModal from '../TagDetailsModal/TagDetailsModal';
 import { Tag } from '../../features/DatabaseManager/Tags/types/Tag';
 import style from './TagRecordsList.module.css';
 
