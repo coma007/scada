@@ -1,0 +1,30 @@
+.content {
+    margin: 2% 10%;
+    font-size: 17px;
+}
+
+.titleLine {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.nameColumn {
+    width: 15%;
+}
+
+.timestampColumn {
+    width: 15%;
+}
+
+.valueColumn {
+    width: 5%;
+}
+
+.messageColumn {
+    width: 55%;
+}
+
+td {
+    vertical-align: middle;
+}
