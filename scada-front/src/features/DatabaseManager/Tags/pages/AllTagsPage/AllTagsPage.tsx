@@ -25,7 +25,7 @@ const AllTagsPage: React.FC = () => {
 
     const [showDetailsModal, setShowDetailsModal] = React.useState(false);
     const [showAlarmsModal, setShowAlarmsModal] = React.useState(false);
-    const [selectedTag, setSelectedTag] = React.useState<any>(null);
+    const [selectedTag, setSelectedTag] = React.useState<Tag|undefined>();
 
     const handleOpenAlarmsModal = (tag: Tag) => {
         setSelectedTag(tag);
