@@ -44,7 +44,7 @@ public class DatabaseManager : ControllerBase
         return Ok(_tagService.Get(tagName));
     }
 
-    [HttpGet(Name = "GetTagLastValue"), AllowAnonymous]
+    [HttpGet(Name = "GetTagLastValue")]
     public ActionResult<string> GetTagLastValue(string tagName)
     {
         return Ok(_tagHistoryService.GetLastValueForTag(tagName));
