@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import AlarmRecordsList from '../../../../components/AlarmRecordsList/AlarmRecordsList'
-import { AlarmHistoryRecord } from '../../../../types/AlarmHistoryRecord';
+import  {useState } from 'react'
 import AlarmHistoryTimespanReport from '../../components/AlarmHistoryTimespanReport/AlarmHistoryTimespanReport';
 import AlarmPriorityReport from '../../components/AlarmPriorityReport/AlarmPriorityReport';
 import TagHistoryTimespanReport from '../../components/TagHistoryTimespanReport/TagHistoryTimespanReport';

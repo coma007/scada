@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
-import { formatDate } from '../../utils/DateFormatter'
 
 const TimespanFilter = (props: { handleSubmit: any }) => {
     const [dateFrom, setDateFrom] = useState<Date>(new Date())

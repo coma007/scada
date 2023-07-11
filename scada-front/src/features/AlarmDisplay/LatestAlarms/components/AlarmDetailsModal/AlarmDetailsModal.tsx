@@ -1,7 +1,6 @@
 import React from 'react'
-import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import { Alarm } from '../../../../DatabaseManager/Alarms/types/Alarm';
-import { AlarmHistoryRecord } from '../../../../../types/AlarmHistoryRecord';
 
 const AlarmDetailsModal = (props: { showModal: boolean, handleCloseModal: any, selectedAlarm: Alarm }) => {
 

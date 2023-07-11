@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import AlarmRecordsList from '../../../../components/AlarmRecordsList/AlarmRecordsList';
 import { AlarmHistoryRecord } from '../../../../types/AlarmHistoryRecord';
-import { Button, Form } from 'react-bootstrap';
-import { formatDate } from '../../../../utils/DateFormatter';
 import TimespanFilter from '../../../../components/TimespanFilter/TimespanFilter';
 const AlarmHistoryTimespanReport = () => {
     const [alarmRecords, setAlarmRecords] = useState<AlarmHistoryRecord[]>([]);
