@@ -50,4 +50,27 @@ public class AlarmHistoryRecordDto
             Message = Message
         };
     }
+
+    public AlarmHistoryRecordWebSocketDto ToWebSocketDto(string tagName)
+    {
+        return new AlarmHistoryRecordWebSocketDto
+        {
+            AlarmName = AlarmName,
+            TagName = tagName,
+            Timestamp = Timestamp,
+            TagValue = TagValue,
+            Message = Message
+        };
+    }
+}
+
+public class AlarmHistoryRecordWebSocketDto
+{
+    public string AlarmName { get; set; } = string.Empty;
+    
+    public string TagName { get; set; } = string.Empty;
+    public DateTime Timestamp { get; set; }
+    public double TagValue { get; set; }
+    public string Message { get; set; }
+
 }
