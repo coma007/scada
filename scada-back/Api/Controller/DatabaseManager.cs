@@ -4,6 +4,7 @@ using scada_back.Api.WebSocket;
 using scada_back.Infrastructure.Feature.Alarm;
 using scada_back.Infrastructure.Feature.Tag;
 using scada_back.Infrastructure.Feature.Tag.Model.Abstraction;
+using scada_back.Infrastructure.Feature.TagHistory;
 using scada_back.Infrastructure.Feature.User;
 
 namespace scada_back.Api.Controller;
@@ -18,11 +19,14 @@ public class DatabaseManager : ControllerBase
     private readonly IAlarmService _alarmService;
     private readonly ILogger<DatabaseManager> _logger;
     private readonly IWebSocketServer _webSocketServer;
+    private readonly ITagHistoryService _tagHistoryService;
 
-    public DatabaseManager(IUserService userService, ITagService tagService, IAlarmService alarmService, IWebSocketServer webSocketServer, ILogger<DatabaseManager> logger)
+    public DatabaseManager(IUserService userService, ITagService tagService, IAlarmService alarmService,
+        ITagHistoryService tagHistoryService, IWebSocketServer webSocketServer, ILogger<DatabaseManager> logger)
     {
         _userService = userService;
         _tagService = tagService;
+        _tagHistoryService = tagHistoryService;
         _alarmService = alarmService;
         _webSocketServer = webSocketServer;
         _logger = logger;
@@ -39,7 +43,13 @@ public class DatabaseManager : ControllerBase
     {
         return Ok(_tagService.Get(tagName));
     }
-    
+
+    [HttpGet(Name = "GetTagLastValue"), AllowAnonymous]
+    public ActionResult<string> GetTagLastValue(string tagName)
+    {
+        return Ok(_tagHistoryService.GetLastValueForTag(tagName));
+    }
+
     [HttpPost(Name = "CreateTag")]
     public ActionResult<TagDto> CreateTag([FromBody]TagDto tag)
     {

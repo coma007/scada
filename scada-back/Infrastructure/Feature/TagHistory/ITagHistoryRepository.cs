@@ -7,4 +7,5 @@ public interface ITagHistoryRepository
     Task<IEnumerable<TagHistoryRecord>> GetBetween(DateTime startDateTime, DateTime endDateTime);
     Task<IEnumerable<TagHistoryRecord>> GetLast(IEnumerable<string> tagNames);
     void Create(TagHistoryRecord newRecord);
+    Task<TagHistoryRecord> GetLastForTag(string tagName);
 }
