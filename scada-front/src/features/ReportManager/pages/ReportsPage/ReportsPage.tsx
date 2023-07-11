@@ -3,6 +3,8 @@ import AlarmHistoryTimespanReport from '../../components/AlarmHistoryTimespanRep
 import AlarmPriorityReport from '../../components/AlarmPriorityReport/AlarmPriorityReport';
 import TagHistoryTimespanReport from '../../components/TagHistoryTimespanReport/TagHistoryTimespanReport';
 import TagTypeReport from '../../components/TagTypeReport/TagTypeReport';
+import { TagHistoryRecord } from '../../../../types/TagHistoryRecord';
+import TagHistoryReport from '../../components/TagHistoryReport/TagHistoryReport';
 
 const ReportsPage = () => {
 
@@ -31,8 +33,7 @@ const ReportsPage = () => {
             {selectedReport === 'alarmsPriority' && <AlarmPriorityReport />}
             {selectedReport === 'tagsTimespan' && <TagHistoryTimespanReport />}
             {selectedReport === 'tagType' && <TagTypeReport />}
-            {/* {selectedReport === 'analogInputTags' && <AnalogInputTagsReport />} */}
-            {/* {selectedReport === 'tagHistory' && <TagHistoryReport />} */}
+            {selectedReport === 'tagHistory' && <TagHistoryReport />}
         </div>
     )
 }
