@@ -63,12 +63,23 @@ public class AlarmHistoryService : IAlarmHistoryService
             {
                 AlarmName = alarm.AlarmName, 
                 Timestamp = DateTime.Now, 
-                TagValue = value
+                TagValue = value,
+                Message = EvaluateMessage(tagName, alarm.Limit, value)
             };
             Create(newRecord);
             alarmRecords.Add(newRecord);
         }
 
         return alarmRecords;
+    }
+
+    private string EvaluateMessage(string tagName, double alarmLimit, double tagValue)
+    {
+        string relation = "lower";
+        if (alarmLimit <= tagValue)
+        {
+            relation = "higher";
+        }
+        return $"Value of tag {tagName} ({tagValue}) is critically {relation} than limit ({alarmLimit})";
     }
 }
