@@ -1,11 +1,20 @@
+import { WEBSOCKET } from "..";
+
+
+// const [socket, setSocket] = useState<WebSocket | null>(null);
+// useEffect(() => {
+//   WebSocketService.createSocket(setSocket);
+// }, []);
+// useEffect(() => {
+//   WebSocketService.defineSocket(socket, "NewTagRecordCreated");
+// }, [socket]);
 
 
 export const WebSocketService = {
     createSocket: function(setSocket : any) {
-      const url = "ws://localhost:7109/Api/Websocket";
   
       // Create a new WebSocket instance
-      const newSocket = new WebSocket(url);
+      const newSocket = new WebSocket(WEBSOCKET());
   
       // Store the WebSocket instance in state
       setSocket(newSocket);
