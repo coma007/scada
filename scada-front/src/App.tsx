@@ -10,7 +10,7 @@ function App() {
   return (
     <div>
       <Menu></Menu>
-      <LatestAlarmsPage></LatestAlarmsPage>
+      <AllTagsPage></AllTagsPage>
     </div>
   );
 }

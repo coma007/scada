@@ -94,4 +94,11 @@ public class AlarmService : IAlarmService
         }
         return _repository.Update(updatedAlarm.ToEntity()).Result.ToDto();
     }
+
+    public IEnumerable<AlarmDto> GetByTag(string name)
+    {
+        TagDto tag = _tagService.Get(name);
+        IEnumerable<Alarm> alarms = _repository.getByTagName(name).Result;
+        return alarms.Count() > 0 ? alarms.Select(alarm => alarm.ToDto()) : Enumerable.Empty<AlarmDto>();
+    }
 }

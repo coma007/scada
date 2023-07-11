@@ -2,48 +2,62 @@ import React, { useEffect } from 'react'
 import { Button, Form, Modal, OverlayTrigger, Table, Tooltip } from 'react-bootstrap'
 import style from './AllAlarmsOfTagModal.module.css';
 import { Alarm } from '../../types/Alarm';
+import AlarmsService from '../../services/AlarmService';
+import { Tag } from '../../../Tags/types/Tag';
 
-const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any, selectedTag: any }) => {
-  const dummyAlarms: Alarm[] = [
-    new Alarm('High', 1, 100, 'Alarm 1', 'Tag 1'),
-    new Alarm('Medium', 2, 200, 'Alarm 2', 'Tag 2'),
-    new Alarm('Low', 3, 300, 'Alarm 3', 'Tag 3'),
-    new Alarm('Medium', 1, 150, 'Alarm 4', 'Tag 1'),
-    new Alarm('High', 2, 250, 'Alarm 5', 'Tag 2'),
-  ];
-
+const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any, selectedTag: Tag }) => {
   const [alarms, setAlarms] = React.useState<Alarm[]>([]);
 
-  useEffect(() => {
-    setAlarms(dummyAlarms);
-  }, [])
+  const fetchData = async () => {
+    try {
+      let alarms = await AlarmsService.getByTagName(props.selectedTag.tagName);
+      setAlarms(alarms);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
-  const [newAlarm, setNewAlarm] = React.useState(new Alarm('', 0, 0, '', props.selectedTag.name));
+  React.useEffect(() => {
+      fetchData();
+      let updatedNameAlarm = {...newAlarm, tagName: props.selectedTag?.tagName};
+      setNewAlarm(updatedNameAlarm);
+  }, [props.selectedTag])
+
+  const [newAlarm, setNewAlarm] = React.useState(new Alarm('', 0, 0, '', props.selectedTag.tagName));
   const [isAddingActive, setIsAddingActive] = React.useState(false);
 
   const handleAddNewAlarm = () => {
     setIsAddingActive(true);
-    setNewAlarm(new Alarm('', 0, 0, '', props.selectedTag.name));
+    setNewAlarm(new Alarm('', 0, 0, '', props.selectedTag.tagName));
   };
 
   const handleCloseNewAlarm = () => {
     setIsAddingActive(false);
   };
 
-  const handleCreateAlarm = () => {
-    // Api request
-    // ...
-
-    alarms.push(newAlarm);
-    setAlarms(alarms);
+  const handleCreateAlarm = async () => {
+    // Close the modal and perform any necessary actions
+    try{
+        let createdAlarm: Alarm = await AlarmsService.create(newAlarm);
+        props.handleCloseModal(newAlarm);
+        alarms.push(newAlarm);
+        setAlarms(alarms);
+    } catch(error){
+        console.log(error);
+    }
   };
 
-  const handleRemoveAlarm = (selectedAlarm: Alarm) => {
-    // Api request
-    // ...
 
-    let updatedList = alarms.filter(alarm => alarm !== selectedAlarm);
-    setAlarms(updatedList);
+  const handleRemoveAlarm = async (selectedAlarm: Alarm) => {
+    try{
+      let alarm: Alarm = await AlarmsService.delete(selectedAlarm.alarmName);
+      console.log(alarm);
+      console.log(`Remove tag with ID: ${alarm.alarmName}`);
+      let updatedList = alarms.filter(alarm => alarm !== selectedAlarm);
+      setAlarms(updatedList);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
 
 
@@ -51,7 +65,7 @@ const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any,
     <Modal dialogClassName='alarms-dialog' show={props.showModal} onHide={props.handleCloseModal}>
       <Modal.Header closeButton>
         <div className="title-line">
-          <Modal.Title>Alarms of tag '{props.selectedTag.name}'</Modal.Title>
+          <Modal.Title>Alarms of tag '{props.selectedTag.tagName}'</Modal.Title>
           {!isAddingActive &&
             <Button variant="primary" onClick={handleAddNewAlarm}>
               Add new alarm

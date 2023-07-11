@@ -99,5 +99,17 @@ public class DatabaseManager : ControllerBase
     {
         return Ok(_alarmService.Update(alarm));
     }
+    
+    [HttpGet(Name = "GetAlarmByAlarmName")]
+    public ActionResult<AlarmDto> GetAlarm(string alarmName)
+    {
+        return Ok(_alarmService.Get(alarmName));
+    }
+    
+    [HttpGet(Name = "GetByTagName")]
+    public ActionResult<AlarmDto> GetAlarmByTagName(string name)
+    {
+        return Ok(_alarmService.GetByTag(name));
+    }
 
 }
