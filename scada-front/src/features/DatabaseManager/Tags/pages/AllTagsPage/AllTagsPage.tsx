@@ -155,7 +155,7 @@ const AllTagsPage: React.FC = () => {
                                     }
                                 </>
                                 }
-                                {(tag.type == "analog_input") && <Button variant="warning" size="sm" onClick={() => handleOpenAlarmsModal(tag)}>
+                                {(tag.tagType == "analog_input") && <Button variant="warning" size="sm" onClick={() => handleOpenAlarmsModal(tag)}>
                                     <OverlayTrigger
                                         placement="bottom"
                                         overlay={<Tooltip id="info-tooltip">View alarms</Tooltip>}
