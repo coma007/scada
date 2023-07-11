@@ -4,7 +4,7 @@ import { AlarmHistoryRecord } from '../../../../types/AlarmHistoryRecord';
 import { Button, Form } from 'react-bootstrap';
 import { formatDate } from '../../../../utils/DateFormatter';
 import TimespanFilter from '../../../../components/TimespanFilter/TimespanFilter';
-const AlarmHistoryTimespanReport = () => {
+const AlarmPriorityReport = () => {
     const [alarmRecords, setAlarmRecords] = useState<AlarmHistoryRecord[]>([]);
 
     const dummyAlarmRecords: AlarmHistoryRecord[] = [
@@ -45,22 +45,43 @@ const AlarmHistoryTimespanReport = () => {
     }, []);
 
 
-    const handleSubmit = (dateFrom: Date, dateTo: Date) => {
+    const [selectedPriority, setSelectedPriority] = useState<number | undefined>();
 
-        // Api request here
-        const filteredAlarmRecords = dummyAlarmRecords.filter((record) => {
-            return (
-                record.timestamp >= dateFrom && record.timestamp <= dateTo
-            );
-        });
+    const handlePriorityChange = (event: any) => {
 
-        setAlarmRecords(filteredAlarmRecords);
+        setSelectedPriority(event.target.value);
     };
+
+    const handleSubmit = () => {
+        if (selectedPriority !== undefined) {
+            // API request here ...
+
+            // setAlarmRecords(...)
+        }
+    }
 
     return (
         <div>
 
-            <TimespanFilter handleSubmit={handleSubmit}></TimespanFilter>
+            <div className="row align-items-center margin-bottom">
+                <div className="col-md-3">
+                    <select className="form-select" value={selectedPriority} onChange={handlePriorityChange}>
+                        <option value="">Choose Priority</option>
+                        <option value={0}>Low (1)</option>
+                        <option value={1}>Medium (2)</option>
+                        <option value={2}>High (3)</option>
+                    </select>
+                </div>
+
+
+                <div className='col-md-8'></div>
+
+                <div className="col-md-1">
+                    <Button variant="primary">
+                        Filter
+                    </Button>
+                </div>
+            </div>
 
             <AlarmRecordsList
                 alarmRecords={alarmRecords}
@@ -71,4 +92,4 @@ const AlarmHistoryTimespanReport = () => {
     );
 };
 
-export default AlarmHistoryTimespanReport;
+export default AlarmPriorityReport;

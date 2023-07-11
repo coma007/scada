@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import style from './TagDetailsModal.module.css';
+import { Tag } from "../../types/Tag";
 
 const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, selectedTag: any }) => {
     const [editMode, setEditMode] = React.useState(false);

@@ -1,14 +1,14 @@
 import React from 'react'
 import { Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Alarm } from '../../../../DatabaseManager/Alarms/types/Alarm';
-import { AlarmHistoryRecord } from '../../types/AlarmHistoryRecord';
+import { AlarmHistoryRecord } from '../../../../../types/AlarmHistoryRecord';
 
-const AlarmDetailsModal = (props: { showModal: boolean, handleCloseModal: any, selectedAlarmRecord: AlarmHistoryRecord }) => {
+const AlarmDetailsModal = (props: { showModal: boolean, handleCloseModal: any, selectedAlarm: Alarm }) => {
 
     const [alarm, setAlarm] = React.useState<Alarm>(new Alarm("", 0, 0, "", ""));
     React.useEffect(() => {
-        // Api call to get alarm from record
-    }, [props.selectedAlarmRecord])
+        setAlarm(props.selectedAlarm)
+    }, [])
 
     return (
         <Modal show={props.showModal} onHide={() => { props.handleCloseModal() }}>

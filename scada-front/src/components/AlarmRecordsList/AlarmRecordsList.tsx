@@ -1,17 +1,21 @@
 import React from 'react'
 import { Table, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import AlarmDetailsModal from '../../features/AlarmDisplay/LatestAlarms/components/AlarmDetailsModal/AlarmDetailsModal';
-import { AlarmHistoryRecord } from '../../features/AlarmDisplay/LatestAlarms/types/AlarmHistoryRecord';
+import { AlarmHistoryRecord } from '../../types/AlarmHistoryRecord';
 import { formatDate } from '../../utils/DateFormatter';
+import { Alarm } from '../../features/DatabaseManager/Alarms/types/Alarm';
 import style from './AlarmRecordsList.module.css';
 
 const AlarmRecordsList = (props: { alarmRecords: AlarmHistoryRecord[], setAlarmRecords: any, canSnooze: boolean }) => {
 
     const [selectedRecord, setSelectedRecord] = React.useState<AlarmHistoryRecord | undefined>();
+    const [selectedAlarm, setSelectedAlarm] = React.useState<Alarm | undefined>();
     const [showDetailsModal, setShowDetailsModal] = React.useState(false);
 
     const handleOpenDetailsModal = (record: AlarmHistoryRecord) => {
         setSelectedRecord(record);
+        // find alarm from alarmName in record
+        // setSelectedAlarm(...)
         setShowDetailsModal(true);
     };
 
@@ -75,7 +79,7 @@ const AlarmRecordsList = (props: { alarmRecords: AlarmHistoryRecord[], setAlarmR
 
             {selectedRecord && (
                 <AlarmDetailsModal
-                    selectedAlarmRecord={selectedRecord}
+                    selectedAlarm={selectedAlarm!}
                     showModal={showDetailsModal}
                     handleCloseModal={handleCloseDetailsModal} />
             )}

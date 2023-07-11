@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { AlarmHistoryRecord } from '../../types/AlarmHistoryRecord';
+import { AlarmHistoryRecord } from '../../../../../types/AlarmHistoryRecord';
 import style from './LatestAlarms.module.css';
 import AlarmRecordsList from '../../../../../components/AlarmRecordsList/AlarmRecordsList';
 
@@ -19,7 +19,7 @@ const LatestAlarmsPage = () => {
         setAlarmRecords(dummyAlarmRecords)
     }, [])
 
-    
+
 
     return (
         <div className="content">

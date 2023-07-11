@@ -1,0 +1,15 @@
+.nameColumn {
+    width: 40%;
+}
+
+.timestampColumn {
+    width: 35%;
+}
+
+.valueColumn {
+    width: 20%;
+}
+
+td {
+    vertical-align: middle;
+}
