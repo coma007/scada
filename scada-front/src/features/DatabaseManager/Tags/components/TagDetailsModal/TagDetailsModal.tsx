@@ -26,7 +26,7 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
     return (
         <Modal show={props.showModal} onHide={() => { props.handleCloseModal(); setEditMode(false) }}>
             <Modal.Header closeButton>
-                <Modal.Title>Details for '{props.selectedTag.name}'</Modal.Title>
+                <Modal.Title>Tag details</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
