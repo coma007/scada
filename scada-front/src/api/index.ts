@@ -6,3 +6,5 @@ export const UPDATE_TAG_SCAN = () => url + "/DatabaseManager/UpdateTagScan";
 export const CREATE_TAG = () => url + "/DatabaseManager/CreateTag";
 
 export const LOGIN = () => url + "/DatabaseManager/Login";
+
+export const WEBSOCKET = () => "ws://localhost:7109/Api/Websocket";
