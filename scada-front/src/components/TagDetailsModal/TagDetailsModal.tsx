@@ -1,24 +1,37 @@
 import React from "react";
-import { Button, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Alert, Button, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import style from './TagDetailsModal.module.css';
+import TagService from "../../features/DatabaseManager/Tags/services/TagService";
+import { Tag } from "../../features/DatabaseManager/Tags/types/Tag";
 
 // TODO scan on empty
 const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, selectedTag: any }) => {
     const [editMode, setEditMode] = React.useState(false);
     const [editedValue, setEditedValue] = React.useState(props.selectedTag.initialValue);
 
+    const [errorMessage, setErrorMessage] = React.useState('');
+
     // console.log(props.selectedTag.scan)
     const handleEditClick = () => {
         setEditMode(true);
     };
 
-    const handleSaveClick = () => {
+    const handleSaveClick = async () => {
         // Perform the save action with the editedValue
         console.log("Save:", editedValue);
 
-        // Exit edit mode and update the actual value
-        setEditMode(false);
-        props.selectedTag.initialValue = editedValue;
+        try{
+            let updatedTag: Tag = await TagService.updateOutputValue(props.selectedTag.tagName, editedValue);
+
+            // Exit edit mode and update the actual value
+            setEditMode(false);
+            props.selectedTag.initialValue = editedValue;
+            setErrorMessage('');
+        } catch(error: any){
+            setErrorMessage(error.message);
+        }
+
+
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +44,7 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
                 <Modal.Title>Tag details</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
                 <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                     <div style={{ textAlign: 'left' }}>
                         <p><strong>Name</strong></p>

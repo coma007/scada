@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag, Tag } from '../types/Tag';
-import { CREATE_TAG, DELETE_TAG, GET_TAGS, UPDATE_TAG_SCAN } from '../../../../api';
+import { CREATE_TAG, DELETE_TAG, GET_TAGS, UPDATE_TAG_OUTPUT_VALUE, UPDATE_TAG_SCAN } from '../../../../api';
 
 axios.interceptors.request.use(
     config => {
@@ -63,6 +63,18 @@ const TagService = {
 
     updateScan: async function (tagName: string): Promise<Tag> {
         return axios.patch(UPDATE_TAG_SCAN(), null, {params : {tagName : tagName}})
+            .then(response => {
+                let data: Tag = response.data;
+                return data;
+            })
+            .catch(error => {
+                console.log(error)
+                throw new Error(error.response.data);
+            });
+    },
+
+    updateOutputValue: async function (tagName: string, value: number): Promise<Tag> {
+        return axios.patch(UPDATE_TAG_OUTPUT_VALUE(), null, {params : {tagName : tagName, value: value}})
             .then(response => {
                 let data: Tag = response.data;
                 return data;
