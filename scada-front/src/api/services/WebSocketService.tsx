@@ -37,9 +37,9 @@ export const WebSocketService = {
             // WebSocket event listener for when a message is received
             socket.onmessage = async (event) => {
               let message : string = await event.data.text();
-              let tokens = message.split(" ");
+              let tokens = message.split("=>");
               topic = tokens[0];
-              message = tokens[1];
+              message = JSON.parse(tokens[1]);
               console.log('Received message:', message);
               processMessage(message)
               // Process the received message
