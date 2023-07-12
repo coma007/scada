@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CREATE_TAG, DELETE_TAG, GET_TAGS, UPDATE_TAG_OUTPUT_VALUE, UPDATE_TAG_SCAN } from '../../../../api';
+import { CREATE_TAG, DELETE_TAG, GET_LAST_TAG_VALUE, GET_TAGS, UPDATE_TAG_OUTPUT_VALUE, UPDATE_TAG_SCAN } from '../../../../api';
 import { AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag, Tag } from '../../../../types/Tag';
 
 axios.interceptors.request.use(
@@ -41,6 +41,19 @@ const TagService = {
                         }
                     }
                 });
+                return data;
+            })
+            .catch(error => {
+                console.log(error)
+                throw new Error(error.response.data);
+            });
+    },
+
+
+    getTagLastValue: async function (tagName: string): Promise<string> {
+        return axios.get(GET_LAST_TAG_VALUE(), {params: {tagName: tagName}})
+            .then(response => {
+                let data: string = response.data;
                 return data;
             })
             .catch(error => {
