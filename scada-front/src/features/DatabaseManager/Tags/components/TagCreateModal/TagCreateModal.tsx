@@ -34,7 +34,7 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
             let newTag: Tag = await TagService.create(tag);
             props.handleCloseModal(tag);
             setErrorMessage('');
-        } catch(error: any){
+        } catch (error: any) {
             setErrorMessage(error.message);
         }
     };
@@ -214,6 +214,14 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
                             </>
                         )}
                     </div>
+                    <br />
+                    <small>Please note that these are I/O Address distributions
+                        <br />
+                        - SD for AI signal takes addresses from 0 to 9. <br />
+                        (sin: 0, 1, 2; cos: 3, 4, 5; ramp: 6, 7, 8, 9) <br />
+                        - SD for DI signal takes addresses from 10 to 99. <br />
+                        - RTD for AI signal takes addresses from 100 and above. <br />
+                    </small>
                 </Form>
             </Modal.Body>
             <Modal.Footer>

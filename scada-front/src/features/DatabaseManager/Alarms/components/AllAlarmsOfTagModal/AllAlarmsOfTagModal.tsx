@@ -39,13 +39,13 @@ const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any,
 
   const handleCreateAlarm = async () => {
     // Close the modal and perform any necessary actions
-    try{
-        let createdAlarm: Alarm = await AlarmsService.create(newAlarm);
-        props.handleCloseModal(newAlarm);
-        alarms.push(newAlarm);
-        setAlarms(alarms);
-        setErrorMessage('');
-    } catch(error: any){
+    try {
+      let createdAlarm: Alarm = await AlarmsService.create(newAlarm);
+      props.handleCloseModal(newAlarm);
+      alarms.push(newAlarm);
+      setAlarms(alarms);
+      setErrorMessage('');
+    } catch (error: any) {
       setErrorMessage(error.message);
     }
   };
@@ -82,8 +82,8 @@ const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any,
           <thead>
             <tr>
               <th className={style.textCol}>Alarm Name</th>
+              <th className={style.textCol}>Priority</th>
               <th className={style.textCol}>Type</th>
-              <th className={style.numberCol}>Priority</th>
               <th className={style.numberCol}>Limit</th>
               <th className={style.actionsCol}>Actions</th>
             </tr>
@@ -98,19 +98,22 @@ const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any,
                     onChange={(e) => setNewAlarm({ ...newAlarm, alarmName: e.target.value })}
                   />
                 </td>
-                <td>
-                  <Form.Control
-                    type="text"
-                    value={newAlarm.type}
-                    onChange={(e) => setNewAlarm({ ...newAlarm, type: e.target.value })}
-                  />
-                </td>
                 <td >
-                  <Form.Control
-                    type="number"
-                    value={newAlarm.alarmPriority}
-                    onChange={(e) => setNewAlarm({ ...newAlarm, alarmPriority: parseInt(e.target.value) })}
-                  />
+                  <select className="form-select" value={newAlarm.alarmPriority}
+                    onChange={(e) => setNewAlarm({ ...newAlarm, alarmPriority: parseInt(e.target.value) })}>
+                    <option value="">Choose Priority</option>
+                    <option value={0}>Low (0)</option>
+                    <option value={1}>Medium (1)</option>
+                    <option value={2}>High (2)</option>
+                  </select>
+                </td>
+                <td>
+                  <select className="form-select" value={newAlarm.type}
+                    onChange={(e) => setNewAlarm({ ...newAlarm, type: e.target.value })}>
+                    <option value="">Choose Type</option>
+                    <option value="BELLOW">Bellow</option>
+                    <option value="ABOVE">Above</option>
+                  </select>
                 </td>
                 <td >
                   <Form.Control
