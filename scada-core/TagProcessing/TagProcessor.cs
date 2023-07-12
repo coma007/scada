@@ -11,6 +11,8 @@ namespace scada_core.TagProcessing
         private readonly TagProcessingService _service;
         private Dictionary<string, Dictionary<string, object>> _tagProperties;
         private Dictionary<string, Thread> _tagThreads;
+        
+        private const string _logTag = "TAG PROCCESSING: ";
 
         public TagProcessor(ApiClient.ApiClient apiClient)
         {
@@ -122,7 +124,7 @@ namespace scada_core.TagProcessing
         {
             string tagName = tag.Key;
             var tagAttributes = tag.Value;
-            Console.WriteLine(tagName);
+            Console.WriteLine(_logTag + $"Processed Tag: {tagName}");
         }
 
         private void GetAllTags()

@@ -11,6 +11,8 @@ public class BatchMediator : IBatchMediator
     private static int counter = 0;
     private static readonly object consoleLock = new object();
     private static int limit = 15;
+
+    private const string _logTag = "BATCH MEDIATOR: ";
     public BatchMediator(ApiClient.ApiClient apiClient)
     {
         _service = new DriverService(apiClient);
@@ -21,25 +23,25 @@ public class BatchMediator : IBatchMediator
     {
         if (!_pauseEvent.IsSet)
         {
-            Console.WriteLine($"{ioAddress} WAITS");
+            Console.WriteLine(_logTag + $"Address {ioAddress} Waits");
         }
         _pauseEvent.Wait();
         if (_pauseEvent.IsSet)
         {
-            Console.WriteLine($"UPDATE VALUE, {ioAddress}: {value}");
+            Console.WriteLine(_logTag + $"Update value, {ioAddress}: {value}");
             _states.AddOrUpdate(ioAddress, value,(k, oldValue) => value);
             
             IncrementCounter();
             lock (consoleLock)
             {
-                Console.WriteLine(counter);
+                Console.WriteLine(_logTag + $"Counter: {counter}");
             }
 
             if (Interlocked.CompareExchange(ref counter, 0, Int32.MaxValue) > limit)
             {
                 // pause adding new elements
                 _pauseEvent.Reset();
-                Console.WriteLine("PAUSE STARTED");
+                Console.WriteLine(_logTag + "Pause Started");
 
                 // wait for emptying structure before writing to it
                 var toSave = Array.Empty<KeyValuePair<int, double>>();
@@ -53,7 +55,7 @@ public class BatchMediator : IBatchMediator
                 // Thread.Sleep(3000);
 
                 // resume adding new elements
-                Console.WriteLine("PAUSE ENDED");
+                Console.WriteLine(_logTag + "Pause Ended");
                 _pauseEvent.Set();
             }
         }
