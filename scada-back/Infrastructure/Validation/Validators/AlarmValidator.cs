@@ -24,8 +24,5 @@ public class AlarmValidator : AbstractValidator<AlarmDto>
             .NotEmpty().WithMessage("AlarmName is required.")
             .Length(1, 20).WithMessage("AlarmName should have a length between 1 and 20.");
 
-        RuleFor(alarm => alarm.Limit)
-            .NotEmpty().WithMessage("Limit is required.");
-
     }
 }

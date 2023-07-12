@@ -3,7 +3,7 @@ namespace scada_core.Driver.SimulationDriver.Generator;
 public abstract class SignalGenerator
 {
     protected double t = 0;
-    protected double stepSize = 0.001;
+    protected double stepSize = 0.7;
     protected int ioAddress;
     protected abstract double Get();
 
