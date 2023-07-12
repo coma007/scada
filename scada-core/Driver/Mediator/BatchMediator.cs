@@ -19,8 +19,6 @@ public class BatchMediator : IBatchMediator
 
     public void notify(Driver sender, int ioAddress, double value)
     {
-        if(ioAddress == 20)
-            Console.WriteLine($"20 is in batch, NEW 20 value: {value} after batch end");
         if (!_pauseEvent.IsSet)
         {
             Console.WriteLine($"{ioAddress} WAITS");
@@ -29,9 +27,8 @@ public class BatchMediator : IBatchMediator
         if (_pauseEvent.IsSet)
         {
             Console.WriteLine($"UPDATE VALUE, {ioAddress}: {value}");
-            _states.AddOrUpdate(ioAddress, value,
-                // Update factory delegate for updating an existing key-value pair
-                (k, oldValue) => value);
+            _states.AddOrUpdate(ioAddress, value,(k, oldValue) => value);
+            
             IncrementCounter();
             lock (consoleLock)
             {
@@ -40,19 +37,23 @@ public class BatchMediator : IBatchMediator
 
             if (Interlocked.CompareExchange(ref counter, 0, Int32.MaxValue) > limit)
             {
-                Console.WriteLine("IN CONDITION");
                 // pause adding new elements
                 _pauseEvent.Reset();
                 Console.WriteLine("PAUSE STARTED");
 
-                var toSave = _states.ToArray();
-                _states.Clear();
-                ResetCounter();
+                // wait for emptying structure before writing to it
+                var toSave = Array.Empty<KeyValuePair<int, double>>();
+                lock (_states)
+                {
+                    toSave = _states.ToArray();
+                    _states.Clear();
+                }
                 JToken token = _service.UpdateDriverStates(toSave);
+                ResetCounter();
                 // Thread.Sleep(3000);
 
-                Console.WriteLine("PAUSE ENDED");
                 // resume adding new elements
+                Console.WriteLine("PAUSE ENDED");
                 _pauseEvent.Set();
             }
         }

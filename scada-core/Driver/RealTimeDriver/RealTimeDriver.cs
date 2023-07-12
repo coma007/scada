@@ -9,19 +9,30 @@ public class RealTimeDriver : Driver
     private List<Task> _tasks;
 
     private readonly IBatchMediator _batchMediator;
+    private readonly DriverService _service;
 
-    public RealTimeDriver(IBatchMediator batchMediator)
+    public RealTimeDriver(IBatchMediator batchMediator, DriverService service)
     {
 
+        _service = service;
         _batchMediator = batchMediator;
         
         _rtus = new List<RTU>();
         _tasks = new List<Task>();
 
-        for (int i = 10; i < 21; i++)
+        for (int i = 100; i < 120; i++)
         {
             _rtus.Add(new RTU(0, 10, i));
-            // JToken token = _service.CreateDriverState(i, 0);
+            // create addresses
+            try
+            {
+                // JToken token = _service.CreateDriverState(i, 0);
+            }
+            catch (System.Exception e)
+            {
+                
+            }
+
         }
     }
 
