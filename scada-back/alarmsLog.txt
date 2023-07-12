@@ -106,3 +106,7 @@ mmmm	12/07/2023 21:50:44	4.459222391956592	Value of micin_test_tag (4.4592223919
 micin_test_alarm_a	12/07/2023 21:50:55	4.459222391956592	Value of micin_test_tag (4.459222391956592) is critically above limit (2)
 micin_test_alarm_be	12/07/2023 21:50:55	4.459222391956592	Value of micin_test_tag (4.459222391956592) is critically bellow limit (8)
 mmmm	12/07/2023 21:50:55	4.459222391956592	Value of micin_test_tag (4.459222391956592) is critically bellow limit (7)
+micin_test_alarm_a	12/07/2023 21:51:05	9.5111158665854	Value of micin_test_tag (9.5111158665854) is critically above limit (2)
+micin_test_alarm_a	12/07/2023 21:51:15	9.5111158665854	Value of micin_test_tag (9.5111158665854) is critically above limit (2)
+bbbbb	12/07/2023 21:51:19	7.155618744567792	Value of analog tag 3 (7.155618744567792) is critically bellow limit (106)
+micin_test_alarm_a	12/07/2023 21:51:25	9.5111158665854	Value of micin_test_tag (9.5111158665854) is critically above limit (2)
