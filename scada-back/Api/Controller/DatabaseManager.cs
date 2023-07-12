@@ -77,7 +77,27 @@ public class DatabaseManager : ControllerBase
     [HttpPatch(Name = "UpdateOutputTagValue")]
     public ActionResult<TagDto> UpdateTagOutputValue(string tagName, double value)
     {
-        return Ok(_tagService.UpdateOutputValue(tagName, value));
+        TagDto tag = _tagService.UpdateOutputValue(tagName, value);
+        _tagHistoryService.Create(new TagHistoryRecordDto
+        {
+            TagName = tag.TagName,
+            Timestamp = DateTime.Now,
+            TagValue = value
+        });
+        return Ok(tag);
+    }
+    
+    
+    [HttpGet(Name = "GetAlarmByAlarmName")]
+    public ActionResult<AlarmDto> GetAlarm(string alarmName)
+    {
+        return Ok(_alarmService.Get(alarmName));
+    }
+    
+    [HttpGet(Name = "GetByTagName")]
+    public ActionResult<AlarmDto> GetAlarmByTagName(string name)
+    {
+        return Ok(_alarmService.GetByTag(name));
     }
     
     [HttpPost(Name = "CreateAlarm")]
@@ -96,18 +116,6 @@ public class DatabaseManager : ControllerBase
     public ActionResult<AlarmDto> UpdateAlarm([FromBody]AlarmDto alarm)
     {
         return Ok(_alarmService.Update(alarm));
-    }
-    
-    [HttpGet(Name = "GetAlarmByAlarmName")]
-    public ActionResult<AlarmDto> GetAlarm(string alarmName)
-    {
-        return Ok(_alarmService.Get(alarmName));
-    }
-    
-    [HttpGet(Name = "GetByTagName")]
-    public ActionResult<AlarmDto> GetAlarmByTagName(string name)
-    {
-        return Ok(_alarmService.GetByTag(name));
     }
 
 }

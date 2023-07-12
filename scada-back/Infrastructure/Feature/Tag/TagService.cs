@@ -2,6 +2,7 @@ using Microsoft.VisualBasic.CompilerServices;
 using scada_back.Infrastructure.Exception;
 using scada_back.Infrastructure.Feature.DriverState;
 using scada_back.Infrastructure.Feature.Tag.Model.Abstraction;
+using scada_back.Infrastructure.Feature.TagHistory;
 using scada_back.Infrastructure.Validation;
 
 namespace scada_back.Infrastructure.Feature.Tag;

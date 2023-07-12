@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using scada_back.Infrastructure.Feature.TagHistory;
 
@@ -5,6 +6,7 @@ namespace scada_back.Api.Controller;
 
 [ApiController]
 [Route("Api/[controller]/[action]")]
+[Authorize]
 public class Trending : ControllerBase
 {
     private readonly ITagHistoryService _tagHistoryService;
