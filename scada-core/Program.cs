@@ -24,7 +24,6 @@ namespace scada_core
             
             RealTimeDriver realTimeDriver = new RealTimeDriver(mediator, service);
             Task realTime = Task.Run(() => realTimeDriver.Simulate());
-            
             // WebSocketClient client = new WebSocketClient();
             // await client.Connect();
 
