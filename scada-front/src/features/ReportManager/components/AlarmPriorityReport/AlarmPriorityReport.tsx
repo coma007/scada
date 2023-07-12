@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import AlarmRecordsList from '../../../../components/AlarmRecordsList/AlarmRecordsList';
 import { AlarmHistoryRecord } from '../../../../types/AlarmHistoryRecord';
 import { Button } from 'react-bootstrap';
+import { ReportService } from '../../services/ReportsService';
 const AlarmPriorityReport = () => {
     const [alarmRecords, setAlarmRecords] = useState<AlarmHistoryRecord[]>([]);
 
@@ -38,9 +39,9 @@ const AlarmPriorityReport = () => {
         ),
     ];
 
-    useEffect(() => {
-        setAlarmRecords(dummyAlarmRecords);
-    }, []);
+    // useEffect(() => {
+    //     setAlarmRecords(dummyAlarmRecords);
+    // }, []);
 
 
     const [selectedPriority, setSelectedPriority] = useState<number | undefined>();
@@ -50,11 +51,11 @@ const AlarmPriorityReport = () => {
         setSelectedPriority(event.target.value);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (selectedPriority !== undefined) {
             // API request here ...
-
-            // setAlarmRecords(...)
+            let alarms = await ReportService.getAlarmHistoryPriority(selectedPriority);
+            setAlarmRecords(alarms)
         }
     }
 

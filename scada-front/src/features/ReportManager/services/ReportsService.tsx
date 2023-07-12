@@ -1,10 +1,10 @@
 import axios from "axios"
-import { ALARM_HISTORY_PRIORITY, ALARM_HISTORY_TIMESTAMP } from "../../../api"
+import { ALARM_HISTORY_PRIORITY, ALARM_HISTORY_TIMESPAN } from "../../../api"
 import { AlarmHistoryRecord } from "../../../types/AlarmHistoryRecord"
 
 export const ReportService = {
     getAlarmHistoryTimespan: async function(dateFrom: Date, dateTo: Date) : Promise<AlarmHistoryRecord[]> {
-        return await axios.get(ALARM_HISTORY_TIMESTAMP(), {
+        return await axios.get(ALARM_HISTORY_TIMESPAN(), {
             params : {
                 start: dateFrom,
                 end: dateTo
