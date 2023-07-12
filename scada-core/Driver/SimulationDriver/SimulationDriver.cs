@@ -9,9 +9,11 @@ public class SimulationDriver : Driver
     
     private List<SignalGenerator> _generators;
     private List<Task> _tasks;
+    private readonly DriverService _service;
 
-    public SimulationDriver(IBatchMediator batchMediator)
+    public SimulationDriver(IBatchMediator batchMediator, DriverService service)
     {
+        _service = service;
         _batchMediator = batchMediator;
         
         _generators = new List<SignalGenerator>();
@@ -30,9 +32,11 @@ public class SimulationDriver : Driver
         _generators.Add(new RampGenerator(8));
         _generators.Add(new RampGenerator(9));
 
+        // create addresses
         // for (int i = 0; i < _generators.Count; i++)
         // {
-        //     JToken token = _service.CreateDriverState(i, 0);
+        //     // create addresses, watch for already created error
+        //     // JToken token = _service.CreateDriverState(i, 0);
         // }
     }
 
@@ -56,7 +60,6 @@ public class SimulationDriver : Driver
             try
             {
                 _batchMediator.notify(this, gen.IoAddress, value);
-                // JToken token = _service.UpdateDriverState(gen.IoAddress, value);
             }
             catch (System.Exception ex)
             {

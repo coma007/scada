@@ -16,13 +16,14 @@ namespace scada_core
             webSocketClient.ConnectToWebSocket(tagProcessingService);
 
             tagProcessingService.InitializeTagThreads();
+
+            DriverService service = new DriverService(apiClient);
             
-            Driver.SimulationDriver.SimulationDriver simulationDriver = new Driver.SimulationDriver.SimulationDriver(mediator);
+            Driver.SimulationDriver.SimulationDriver simulationDriver = new Driver.SimulationDriver.SimulationDriver(mediator, service);
             Task simulation = Task.Run(() => simulationDriver.Simulate());
             
-            RealTimeDriver realTimeDriver = new RealTimeDriver(mediator);
+            RealTimeDriver realTimeDriver = new RealTimeDriver(mediator, service);
             Task realTime = Task.Run(() => realTimeDriver.Simulate());
-            
             // WebSocketClient client = new WebSocketClient();
             // await client.Connect();
 
