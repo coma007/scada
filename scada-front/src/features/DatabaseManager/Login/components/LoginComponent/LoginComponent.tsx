@@ -14,6 +14,7 @@ const LoginComponent: React.FC = () => {
             const jwt = await AuthService.login({ Username: username, Password: password });
             console.log(jwt);
             localStorage.setItem("token", jwt)
+            window.location.href = "/trending"
 
             setErrorMessage('');
             console.log('Logged in successfully!');
