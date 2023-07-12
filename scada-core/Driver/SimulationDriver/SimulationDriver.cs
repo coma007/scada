@@ -32,11 +32,16 @@ public class SimulationDriver : Driver
         _generators.Add(new RampGenerator(8));
         _generators.Add(new RampGenerator(9));
 
+        for (int i = 10; i < 21; i++)
+        {
+            _generators.Add(new DigitalGenerator(i));
+        } ;
+
         // create addresses
         // for (int i = 0; i < _generators.Count; i++)
         // {
         //     // create addresses, watch for already created error
-        //     // JToken token = _service.CreateDriverState(i, 0);
+        //     JToken token = _service.CreateDriverState(i, 0);
         // }
     }
 
