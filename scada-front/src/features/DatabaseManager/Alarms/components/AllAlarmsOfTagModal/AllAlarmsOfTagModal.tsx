@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Button, Form, Modal, OverlayTrigger, Table, Tooltip } from 'react-bootstrap'
+import { Alert, Button, Form, Modal, OverlayTrigger, Table, Tooltip } from 'react-bootstrap'
 import style from './AllAlarmsOfTagModal.module.css';
 import { Alarm } from '../../types/Alarm';
 import AlarmsService from '../../services/AlarmService';
@@ -7,6 +7,8 @@ import { Tag } from '../../../Tags/types/Tag';
 
 const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any, selectedTag: Tag }) => {
   const [alarms, setAlarms] = React.useState<Alarm[]>([]);
+
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   const fetchData = async () => {
     try {
@@ -42,8 +44,8 @@ const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any,
         props.handleCloseModal(newAlarm);
         alarms.push(newAlarm);
         setAlarms(alarms);
-    } catch(error){
-        console.log(error);
+    } catch(error: any){
+      setErrorMessage(error.message);
     }
   };
 
@@ -74,6 +76,7 @@ const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any,
         </div>
       </Modal.Header>
       <Modal.Body>
+        {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
         <Table striped bordered>
           <thead>
             <tr>

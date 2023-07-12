@@ -27,7 +27,7 @@ const AlarmsService = {
             })
             .catch(error => {
                 console.log(error)
-                throw new Error(error);
+                throw new Error(error.response.data);
             });
     },
 
@@ -41,7 +41,7 @@ const AlarmsService = {
             })
             .catch(error => {
                 console.log(error)
-                throw new Error(error);
+                throw new Error(error.response.data);
             });
     },
 
@@ -54,7 +54,7 @@ const AlarmsService = {
             })
             .catch(error => {
                 console.log(error)
-                throw new Error(error);
+                throw new Error(error.response.data);
             });
     },
 
@@ -66,7 +66,7 @@ const AlarmsService = {
             })
             .catch(error => {
                 console.log(error)
-                throw new Error(error);
+                throw new Error(error.response.data);
             });
     }
 }

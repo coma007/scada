@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Alert, Button, Form, Modal } from 'react-bootstrap';
 import { AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag, Tag } from "../../types/Tag";
 import TagService from "../../services/TagService";
 import style from './TagCreateModal.module.css';
@@ -17,6 +17,8 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
     const [initialValue, setInitialValue] = React.useState('');
     const [driver, setDriver] = React.useState('SIMULATION');
 
+    const [errorMessage, setErrorMessage] = React.useState('');
+
     const handleTypeChange = (event: any) => {
         setType(event.target.value);
     };
@@ -31,8 +33,8 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
         try{
             let newTag: Tag = await TagService.create(tag);
             props.handleCloseModal(tag);
-        } catch(error){
-            console.log(error);
+        } catch(error: any){
+            setErrorMessage(error.message);
         }
     };
 
@@ -91,6 +93,7 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
                 <Modal.Title>Create new tag</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
                 <Form >
                     <div className={style.grid}>
                         <Form.Group>
