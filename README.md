@@ -15,7 +15,6 @@ SCADA-like monitoring app. (Project for course SCADA Software)
 3.  [Prerequisites](#prerequisites)
 4.  [Configuration](#configuration)
 5.  [Getting started](#getting-started)
-6.  [Usage](#usage)
 
 ## Overview
 
@@ -120,7 +119,7 @@ The API application ([scada-back](https://github.com/coma007/scada/tree/main/sca
    ```bash
    dotnet run
    ```
-   The API will be available at http://localhost:7109. The web app will execute and display the logs in console.
+   The API will be available at http://localhost:7109. The web app will execute and display the logs in console. Visit http://localhost:7109/swagger/index.html to view swagger specification.
 
 ### Running the Console App (scada-core)
 
@@ -159,10 +158,5 @@ The React application ([scada-front](https://github.com/coma007/scada/tree/main/
    yarn start
    ```
    The React app will be available at http://localhost:3000.
-
-## Usage : TODO
-
-Explain how to use the project infrastructure. Provide examples or use cases to demonstrate its functionality. Include any command-line instructions, API endpoints, or user interface information. If applicable, provide guidelines on how to access and interact with the infrastructure.
-
 
 ### **Happy monitoring !** 📈💣
