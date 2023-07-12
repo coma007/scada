@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import TagRecordsList from '../../../components/TagRecordsList/TagRecordsList'
 import LatestAlarmsPage from '../../AlarmDisplay/LatestAlarms/pages/LatestAlarmsPage/LatestAlarmsPage'
 import GraphComponent from '../components/GraphComponent/GraphComponent'
-import { Tag, AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag } from '../../DatabaseManager/Tags/types/Tag'
+import { Tag, AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag } from '../../../types/Tag'
 import { TagHistoryRecord } from '../../../types/TagHistoryRecord'
 
 const TrendingPage = () => {
@@ -71,7 +71,7 @@ const TrendingPage = () => {
                         handleViewGraph={handleViewGraph} />
                 </div>
                 <div className="col-5 full-size">
-                    <GraphComponent selectedTag={{scanTime : 10}}></GraphComponent>
+                    <GraphComponent selectedTag={{ scanTime: 10 }}></GraphComponent>
                 </div>
             </div>
         </div>

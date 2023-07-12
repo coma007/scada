@@ -4,7 +4,7 @@ import { Table, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { formatDate } from '../../utils/DateFormatter';
 import AlarmRecordsList from '../AlarmRecordsList/AlarmRecordsList';
 import TagDetailsModal from '../TagDetailsModal/TagDetailsModal';
-import { Tag } from '../../features/DatabaseManager/Tags/types/Tag';
+import { Tag } from '../../types/Tag';
 import style from './TagRecordsList.module.css';
 
 const TagRecordsList = (props: { tagRecords: TagHistoryRecord[], setTagRecords: any, viewGraph?: boolean, handleViewGraph?: any }) => {

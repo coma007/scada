@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Table, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import TagDetailsModal from '../../../../../components/TagDetailsModal/TagDetailsModal';
 import TagCreateModal from '../../components/TagCreateModal/TagCreateModal';
-import { AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag, Tag } from '../../types/Tag';
+import { AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag, Tag } from '../../../../../types/Tag';
 import TagService from '../../services/TagService';
 import AllAlarmsOfTagModal from '../../../Alarms/components/AllAlarmsOfTagModal/AllAlarmsOfTagModal';
 import TagList from '../../../../../components/TagList/TagList';

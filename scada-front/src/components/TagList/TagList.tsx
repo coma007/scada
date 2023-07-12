@@ -1,6 +1,6 @@
 import React from 'react'
 import { Table, Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
-import { AnalogInputTag } from '../../features/DatabaseManager/Tags/types/Tag'
+import { AnalogInputTag } from '../../types/Tag'
 import style from './TagList.module.css';
 
 

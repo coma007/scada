@@ -4,7 +4,7 @@ import { AlarmHistoryRecord } from '../../../../types/AlarmHistoryRecord';
 import { Button } from 'react-bootstrap';
 import TagRecordsList from '../../../../components/TagRecordsList/TagRecordsList';
 import React from 'react';
-import { Tag, AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag } from '../../../DatabaseManager/Tags/types/Tag';
+import { Tag, AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag } from '../../../../types/Tag';
 import TagList from '../../../../components/TagList/TagList';
 import TagDetailsModal from '../../../../components/TagDetailsModal/TagDetailsModal';
 
