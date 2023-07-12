@@ -44,6 +44,7 @@ const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any,
         props.handleCloseModal(newAlarm);
         alarms.push(newAlarm);
         setAlarms(alarms);
+        setErrorMessage('');
     } catch(error: any){
       setErrorMessage(error.message);
     }

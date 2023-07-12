@@ -33,6 +33,7 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
         try{
             let newTag: Tag = await TagService.create(tag);
             props.handleCloseModal(tag);
+            setErrorMessage('');
         } catch(error: any){
             setErrorMessage(error.message);
         }
