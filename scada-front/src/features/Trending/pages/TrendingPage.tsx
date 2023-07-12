@@ -13,6 +13,7 @@ const TrendingPage = () => {
     const [selectedTagRecord, setSelectedTagRecord] = useState<TagHistoryRecord>();
     const [selectedTag, setSelectedTag] = useState<string | undefined>();
     const [selectedScanTime, setSelectedScanTime] = useState<number | undefined>();
+    const [selectedRange, setSelectedRange] = useState<{min: number, max: number} | undefined>();
     const [socket, setSocket] = useState<WebSocket | null>(null);
 
     const processValue = (message: any) => {
@@ -109,14 +110,18 @@ const TrendingPage = () => {
     const handleViewGraph = async (tagName: string) => {
         console.log(tagName);
         let scan = 10;
+        let [min, max] = [0,100]
         setSelectedTag(tagName)
         try {
             let tag = await TrendingService.getAnalogTag(tagName);
             scan = tag.scanTime
+            min = tag.lowLimit
+            max = tag.highLimit
         } catch(e : any) {
             console.log(e.message)
         }
         setSelectedScanTime(scan)
+        setSelectedRange({min:min, max:max})
     }
 
     useEffect(() => {
@@ -156,7 +161,7 @@ const TrendingPage = () => {
                         handleViewGraph={handleViewGraph} />
                 </div>
                 <div className="col-5 full-size">
-                    <GraphComponent selectedTag={{ tagName: selectedTag, scanTime: selectedScanTime }}></GraphComponent>
+                    <GraphComponent selectedTag={{ tagName: selectedTag, scanTime: selectedScanTime, range: selectedRange }}></GraphComponent>
                 </div>
             </div>
         </div>

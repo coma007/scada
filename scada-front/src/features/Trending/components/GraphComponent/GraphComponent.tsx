@@ -146,7 +146,12 @@ const GraphComponent = (props: { selectedTag: any }) => {
         <div className={style.card}>
             <CDBContainer>
                 {data !== undefined &&
-                    <Line data={data} options={{ responsive: true }} height={"300px"} />
+                    <Line data={data} options={{ responsive: true, scales: {
+                        y : {
+                            suggestedMin: props.selectedTag.range.min,
+                            suggestedMax: props.selectedTag.range.max
+                        }
+                    } }} height={"300px"} />
                 }
             </CDBContainer>
         </div>
