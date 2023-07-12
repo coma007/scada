@@ -19,7 +19,7 @@ public class WebSocketServer : IWebSocketServer
         await _handler.SendMessage("NewTagRecordCreated", record);
     }
     
-    public async void NotifyClientAboutNewAlarmRecord(IEnumerable<AlarmHistoryRecordDto> record)
+    public async void NotifyClientAboutNewAlarmRecord(IEnumerable<AlarmHistoryRecordWebSocketDto> record)
     {
         await _handler.SendMessage("NewAlarmRecordsCreated", record);
     }

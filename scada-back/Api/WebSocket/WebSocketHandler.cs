@@ -83,7 +83,7 @@ public class WebSocketHandler
     private byte[] SerializeMessage(string topic, object message)
     {
         string serializedMessage = JsonConvert.SerializeObject(message);
-        byte[] buffer = Encoding.UTF8.GetBytes(topic + " " + serializedMessage);
+        byte[] buffer = Encoding.UTF8.GetBytes(topic + "=>" + serializedMessage);
         return buffer;
     }
 

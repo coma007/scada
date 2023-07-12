@@ -62,7 +62,15 @@ public class TagHistoryService : ITagHistoryService
         newRecord.Timestamp = DateTime.Now;
         _repository.Create(newRecord.ToEntity());
         _webSocketServer.NotifyClientAboutNewTagRecord(newRecord);
-        if (alarms.Any()) _webSocketServer.NotifyClientAboutNewAlarmRecord(alarms);
+        if (alarms.Any())
+        {
+            List<AlarmHistoryRecordWebSocketDto> webSocketAlarms = new List<AlarmHistoryRecordWebSocketDto>();
+            foreach (AlarmHistoryRecordDto a in alarms)
+            {
+                webSocketAlarms.Add(a.ToWebSocketDto(newRecord.TagName));
+            }
+            _webSocketServer.NotifyClientAboutNewAlarmRecord(webSocketAlarms);
+        }
     }
 
     public string GetLastValueForTag(string tagName)
