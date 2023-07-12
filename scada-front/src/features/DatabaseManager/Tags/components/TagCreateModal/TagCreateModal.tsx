@@ -1,6 +1,6 @@
 import React from "react";
 import { Alert, Button, Form, Modal } from 'react-bootstrap';
-import { AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag, Tag } from "../../types/Tag";
+import { AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag, Tag } from "../../../../../types/Tag";
 import TagService from "../../services/TagService";
 import style from './TagCreateModal.module.css';
 
@@ -30,7 +30,7 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
     const handleCloseModal = async () => {
         let tag: Tag = createTag();
         // Close the modal and perform any necessary actions
-        try{
+        try {
             let newTag: Tag = await TagService.create(tag);
             props.handleCloseModal(tag);
             setErrorMessage('');

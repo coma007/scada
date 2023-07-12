@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { CREATE_ALARM, DELETE_ALARM, GET_ALARMS, GET_ALARM_BY_TAG } from '../../../../api';
-import { Alarm } from '../types/Alarm';
+import { Alarm } from '../../../../types/Alarm';
 
 axios.interceptors.request.use(
     config => {
@@ -20,7 +20,7 @@ const AlarmsService = {
     getAll: async function (): Promise<Alarm[]> {
         return axios.get(GET_ALARMS())
             .then(response => {
-                let data: Alarm[]= response.data.map((alarm: any) => {
+                let data: Alarm[] = response.data.map((alarm: any) => {
                     new Alarm(alarm.type, alarm.alarmPriority, alarm.limit, alarm.alarmName, alarm.tagName);
                 });
                 return data;
@@ -34,7 +34,7 @@ const AlarmsService = {
     getByTagName: async function (name: string): Promise<Alarm[]> {
         return axios.get(GET_ALARM_BY_TAG(), { params : {name : name}})
             .then(response => {
-                let data: Alarm[]= response.data.map((alarm: any) => {
+                let data: Alarm[] = response.data.map((alarm: any) => {
                     return new Alarm(alarm.type, alarm.alarmPriority, alarm.limit, alarm.alarmName, alarm.tagName);
                 });
                 return data;

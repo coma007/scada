@@ -106,7 +106,7 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
                                                 placement="bottom"
                                                 overlay={<Tooltip id="remove-tooltip">Save value</Tooltip>}
                                             >
-                                                <i className="bi bi-pencil"></i>
+                                                <i className="bi bi-check-lg"></i>
                                             </OverlayTrigger>
                                         </Button>
                                     </div>
@@ -153,7 +153,7 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
                                                     placement="bottom"
                                                     overlay={<Tooltip id="remove-tooltip">Save value</Tooltip>}
                                                 >
-                                                    <i className="bi bi-pencil"></i>
+                                                    <i className="bi bi-check-lg"></i>
                                                 </OverlayTrigger>
                                             </Button>
                                         </div>
