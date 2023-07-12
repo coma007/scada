@@ -35,7 +35,7 @@ const AlarmRecordsList = (props: { alarmRecords: AlarmHistoryRecord[], setAlarmR
             <Table striped bordered hover responsive>
                 <thead>
                     <tr>
-                        <th className={style.nameColumn}>Alarm Name</th>
+                        <th className={style.nameColumn}>Name</th>
                         <th className={style.timestampColumn}>Timestamp</th>
                         <th className={style.valueColumn}>Value</th>
                         <th className={style.messageColumn}>Message</th>

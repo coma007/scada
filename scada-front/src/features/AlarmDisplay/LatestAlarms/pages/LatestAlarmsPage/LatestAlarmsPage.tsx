@@ -7,7 +7,7 @@ const LatestAlarmsPage = () => {
     const [alarmRecords, setAlarmRecords] = React.useState<AlarmHistoryRecord[]>([]);
 
     const dummyAlarmRecords: AlarmHistoryRecord[] = [
-        new AlarmHistoryRecord("Alarm 1", new Date(), 10, "Value of tag {tagName} ({tagValue}) is critically {relation} than limit ({alarmLimit})"),
+        new AlarmHistoryRecord("Alarm 1", new Date(), 10, "Value of tag tag_1 (10) is critically lower than limit (100)"),
         new AlarmHistoryRecord("Alarm 2", new Date(), 15, "Value of tag {tagName} ({tagValue}) is critically {relation} than limit ({alarmLimit})"),
         new AlarmHistoryRecord("Alarm 3", new Date(), 20, "Value of tag {tagName} ({tagValue}) is critically {relation} than limit ({alarmLimit})"),
         new AlarmHistoryRecord("Alarm 4", new Date(), 25, "Value of tag {tagName} ({tagValue}) is critically {relation} than limit ({alarmLimit})"),
@@ -21,9 +21,9 @@ const LatestAlarmsPage = () => {
 
 
     return (
-        <div className="content">
-            <div className="titleLine">
-                <h3>Alarm Display</h3>
+        <div>
+            <div>
+                <h5>Alarm Display</h5>
             </div>
             <AlarmRecordsList alarmRecords={alarmRecords} setAlarmRecords={setAlarmRecords} canSnooze={false}></AlarmRecordsList>
         </div >
