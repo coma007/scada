@@ -77,16 +77,28 @@ public class TagService : ITagService
 
         if (newTag is IInputTagDto inputTagDto)
         {
-             int limit = Int32.Parse(_configuration.GetSection("Driver:SimulationAddressLimit").Value);
-             if (inputTagDto.Driver.ToUpper() == "SIMULATION" && newTag.IOAddress >= limit)
+             int simulationLimit = Int32.Parse(_configuration.GetSection("Driver:SimulationAddressLimit").Value);
+             if (inputTagDto.Driver.ToUpper() == "SIMULATION" && newTag.IOAddress >= simulationLimit)
              {
                  throw new InvalidParameterException(
-                     $"You are trying to write simulation tag to address that is for reserved for realtime, try value less than {limit}");
+                     $"You are trying to write simulation tag to address that is for reserved for realtime, try value less than {simulationLimit}");
              }
-             if (inputTagDto.Driver.ToUpper() == "REALTIME" && newTag.IOAddress < limit)
+             if (inputTagDto.Driver.ToUpper() == "REALTIME" && newTag.IOAddress < simulationLimit)
              {
                  throw new InvalidParameterException(
-                     $"You are trying to write real time tag to address that is for reserved for simulation, try value bigger or equal than {limit}");
+                     $"You are trying to write real time tag to address that is for reserved for simulation, try value bigger or equal than {simulationLimit}");
+             }
+             
+             int analogLimit = Int32.Parse(_configuration.GetSection("Driver:SimulationAddressAnalogLimit").Value);
+             if (inputTagDto is IAnalogTagDto && newTag.IOAddress >= analogLimit)
+             {
+                 throw new InvalidParameterException(
+                     $"You are trying to write analog value in digital are, try value less than {analogLimit}");
+             }
+             if (inputTagDto is IDigitalTagDto && newTag.IOAddress < analogLimit)
+             {
+                 throw new InvalidParameterException(
+                     $"You are trying to write digital value in analog are, try value greater or equal than {analogLimit}");
              }
         }
 
