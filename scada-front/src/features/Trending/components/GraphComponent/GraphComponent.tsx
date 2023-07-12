@@ -14,7 +14,7 @@ Chart.register(...registerables);
 
 const GraphComponent = (props: { selectedTag: any }) => {
     const [data, setData] = useState<{ labels: any, datasets: any } | undefined>(undefined);
-    const [graphData, setGraphData] = useState<(number|null)[]>([])
+    const [graphData, setGraphData] = useState<({value: number|null, timestamp: string | null})[]>([])
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [tagName, setTagName] =  useState<string>("");
     
@@ -26,7 +26,7 @@ const GraphComponent = (props: { selectedTag: any }) => {
         //console.log(message);
         let newTagValue : TagHistoryRecord = new TagHistoryRecord(message.TagName, message.Timestamp, message.TagValue);
         if (newTagValue.tagName === tagName) {
-            let newData = [...graphData, newTagValue.tagValue]
+            let newData = [...graphData, {value: newTagValue.tagValue, timestamp: formatTime(newTagValue.timestamp)}]
             newData.shift()
             console.log(newData)
             setGraphData(newData)
@@ -37,18 +37,20 @@ const GraphComponent = (props: { selectedTag: any }) => {
     WebSocketService.defineSocket(socket, "NewTagRecordCreated", processValue);
     }, [socket]);
 
-    const getLastData = (data: TagHistoryRecord[]) : (number | null)[] => {
+    const getLastData = (data: TagHistoryRecord[]) : ({value: number | null, timestamp: string | null})[] => {
         if (data.length >= 5) {
-            return [data[4].tagValue, data[3].tagValue, data[2].tagValue, data[1].tagValue, data[0].tagValue]
+            return [{value: data[4].tagValue, timestamp: formatTime(data[4].timestamp)}, {value: data[3].tagValue, timestamp: formatTime(data[3].timestamp)},
+            {value: data[2].tagValue, timestamp: formatTime(data[2].timestamp)}, {value: data[1].tagValue, timestamp: formatTime(data[1].timestamp)},
+            {value: data[0].tagValue, timestamp: formatTime(data[0].timestamp)}]
         }
         else {
-            let newData : (number | null)[] = []
+            let newData : ({value: number | null, timestamp: string | null})[] = []
             for (let record of data) {
-                newData = [record.tagValue, ...newData]
+                newData = [{value: record.tagValue, timestamp: formatTime(record.timestamp)}, ...newData]
             }
             let length = newData.length;
             while (length < 5) {
-                newData = [null, ...newData]
+                newData = [{value: null, timestamp: null}, ...newData]
                 length = newData.length;
             }
             return newData
@@ -117,6 +119,16 @@ const GraphComponent = (props: { selectedTag: any }) => {
         // newValue = ... 
         //let newData = [...oldData, Math.random() * 100] // should be [...oldData, newValue];
         //console.log("new", newData);
+        let labels : string[] = [];
+        let data : (number|null)[] = [];
+        for (let value of graphData) {
+            if (value.value === null) {
+                labels.push("")
+            } else {
+                labels.push(value.timestamp!)
+            }
+            data.push(value.value)
+        }
 
         let newDataSet = {
             label: 'Recent tag values',
@@ -125,16 +137,11 @@ const GraphComponent = (props: { selectedTag: any }) => {
             borderColor: '#3E86C4',
             pointBorderWidth: 1,
             pointHoverRadius: 5,
-            data: graphData,
+            data: data,
         };
 
         let newState = {
-            labels:
-                [formatTime(new Date(new Date().getTime() - 4 * new Date(props.selectedTag.scanTime * 1000).getTime())),
-                formatTime(new Date(new Date().getTime() - 3 * new Date(props.selectedTag.scanTime * 1000).getTime())),
-                formatTime(new Date(new Date().getTime() - 2 * new Date(props.selectedTag.scanTime * 1000).getTime())),
-                formatTime(new Date(new Date().getTime() - 1 * new Date(props.selectedTag.scanTime * 1000).getTime())),
-                formatTime(new Date(new Date().getTime()))],
+            labels: labels,
             datasets: [newDataSet],
         };
 
