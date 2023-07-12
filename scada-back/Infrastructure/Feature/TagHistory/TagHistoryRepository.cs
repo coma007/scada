@@ -23,7 +23,7 @@ public class TagHistoryRepository : ITagHistoryRepository
     public async Task<IEnumerable<TagHistoryRecord>> GetAll(string tagName)
     {
         return (await _tagRecords.Find(tagRecord => tagRecord.TagName == tagName)
-            .SortByDescending(record => record.TagValue).ToListAsync());
+            .SortByDescending(record => record.Timestamp).ToListAsync());
     }
 
     public async Task<IEnumerable<TagHistoryRecord>> GetBetween(DateTime startDateTime, DateTime endDateTime)

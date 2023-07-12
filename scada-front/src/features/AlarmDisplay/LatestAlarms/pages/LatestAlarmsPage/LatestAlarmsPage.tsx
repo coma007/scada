@@ -20,12 +20,12 @@ const LatestAlarmsPage = () => {
     ];
 
 
-    useEffect(() => {
-        setAllAlarmRecords([{
-            tagName: "Ime",
-            tagAlarms: dummyAlarmRecords
-        }])
-    }, [])
+    // useEffect(() => {
+    //     setAllAlarmRecords([{
+    //         tagName: "Ime",
+    //         tagAlarms: dummyAlarmRecords
+    //     }])
+    // }, [])
 
     useEffect(() => {
         let alarms: AlarmHistoryRecord[] = [];
@@ -47,7 +47,7 @@ const LatestAlarmsPage = () => {
         let found = false;
         for (let tag of allAlarmRecords) {
             if (tag.tagName === tagName) {
-                tag.tagAlarms = newAlarms;
+                tag.tagAlarms = [...newAlarms, ...tag.tagAlarms];
                 found = true;
             }
             if (tag.tagAlarms.length > 0) {
@@ -66,8 +66,20 @@ const LatestAlarmsPage = () => {
         setAllAlarmRecords(allAlarms);
     }
 
+    useEffect(()=>{
+        if (socket) {
+            socket.onmessage = async (event) => {
+                let message : string = await event.data.text();
+                let tokens = message.split("=>");
+                message = JSON.parse(tokens[1]);
+                console.log('Received message:', message);
+                processAlarm(message)
+            }
+        }
+    },[allAlarmRecords])
+
     useEffect(() => {
-        WebSocketService.createSocket(setSocket);
+        return WebSocketService.createSocket(setSocket);
     }, []);
     useEffect(() => {
         WebSocketService.defineSocket(socket, "NewAlarmRecordsCreated", processAlarm);
