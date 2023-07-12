@@ -74,7 +74,7 @@ This will install React 18.2.0 and its dependencies in your project.
 
 Before running the applications, you'll need to configure some settings by following the steps below:
 
-1. Download the [appsettings.json]() file and [App.config]() file from the repository.
+1. Download the [appsettings.json](https://github.com/coma007/scada/blob/documentation/docs/config_files/apsettings.json) file and [App.config](https://github.com/coma007/scada/blob/documentation/docs/config_files/App.config) file from the repository.
 2. Place the downloaded _appsettings.json_ file in the scada-back directory.
 3. Place the downloaded _App.config_ file in the scada-core directory.
 4. Open the configuration files and update the following placeholders with your actual values:
