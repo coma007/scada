@@ -15,6 +15,7 @@
 *.sln.docstates
 scada-back/appsettings.json
 scada-back/appsettings.Development.json
+alarmsLog.txt
 
 
 # User-specific files (MonoDevelop/Xamarin Studio)
