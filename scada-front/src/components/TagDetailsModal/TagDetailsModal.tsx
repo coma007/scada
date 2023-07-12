@@ -2,7 +2,7 @@ import React from "react";
 import { Alert, Button, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import style from './TagDetailsModal.module.css';
 import TagService from "../../features/DatabaseManager/Tags/services/TagService";
-import { Tag } from "../../features/DatabaseManager/Tags/types/Tag";
+import { Tag } from "../../types/Tag";
 
 // TODO scan on empty
 const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, selectedTag: any }) => {
