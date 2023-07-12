@@ -1,3 +1,5 @@
+using DnsClient.Protocol;
+using scada_back.Api.WebSocket;
 using scada_back.Infrastructure.Feature.Alarm;
 using scada_back.Infrastructure.Feature.AlarmHistory;
 using scada_back.Infrastructure.Feature.Tag;
@@ -10,12 +12,15 @@ public class TagHistoryService : ITagHistoryService
     private readonly ITagHistoryRepository _repository;
     private readonly ITagService _tagService;
     private readonly IAlarmHistoryService _alarmHistoryService;
+    private readonly IWebSocketServer _webSocketServer;
 
-    public TagHistoryService(ITagHistoryRepository repository, IAlarmHistoryService alarmHistoryService, ITagService tagService)
+    public TagHistoryService(ITagHistoryRepository repository, IAlarmHistoryService alarmHistoryService, ITagService tagService,
+        IWebSocketServer webSocketServer)
     {
         _repository = repository;
         _tagService = tagService;
         _alarmHistoryService = alarmHistoryService;
+        _webSocketServer = webSocketServer;
     }
     
     public IEnumerable<TagHistoryRecordDto> GetAll()
@@ -37,18 +42,48 @@ public class TagHistoryService : ITagHistoryService
         return records.Select(record => record.ToDto());
     }
 
-    public IEnumerable<TagHistoryRecordDto> GetLast(string signalType)
+    public IEnumerable<TagHistoryRecordDto> GetLatest(string signalType)
     {
-        IEnumerable<string> tagNames = _tagService.GetAllNames(signalType).Result;
-        IEnumerable<TagHistoryRecord> records  = _repository.GetLast(tagNames).Result;
+        IEnumerable<string> tagNames = _tagService.GetAllNames(signalType);
+        List<TagHistoryRecordDto> recordsDto = new List<TagHistoryRecordDto>();
+        foreach (string tagName in tagNames)
+        {
+            TagHistoryRecord record = _repository.GetLastForTag(tagName).Result;
+            if (record != null) recordsDto.Add(record.ToDto());
+        }
+        //IEnumerable<TagHistoryRecord> records  = _repository.GetLatest(tagNames).Result;
+        return recordsDto.OrderByDescending(record => record.Timestamp);
+    }
+
+    public IEnumerable<TagHistoryRecordDto> GetLatestInputScan()
+    {
+        IEnumerable<string> tagNames = _tagService.GetInputScanNames();
+        IEnumerable<TagHistoryRecord> records  = _repository.GetLastForTags(tagNames).Result;
         return records.Select(record => record.ToDto());
     }
 
     public void Create(TagHistoryRecordDto newRecord)
     {
         TagDto tag = _tagService.Get(newRecord.TagName);
-        _alarmHistoryService.AlarmIfNeeded(tag.TagName, newRecord.TagValue);
+        IEnumerable<AlarmHistoryRecordDto> alarms = _alarmHistoryService.AlarmIfNeeded(tag.TagName, newRecord.TagValue);
         newRecord.Timestamp = DateTime.Now;
         _repository.Create(newRecord.ToEntity());
+        _webSocketServer.NotifyClientAboutNewTagRecord(newRecord);
+        if (alarms.Any())
+        {
+            List<AlarmHistoryRecordWebSocketDto> webSocketAlarms = new List<AlarmHistoryRecordWebSocketDto>();
+            foreach (AlarmHistoryRecordDto a in alarms)
+            {
+                webSocketAlarms.Add(a.ToWebSocketDto(newRecord.TagName));
+            }
+            _webSocketServer.NotifyClientAboutNewAlarmRecord(webSocketAlarms);
+        }
+    }
+
+    public string GetLastValueForTag(string tagName)
+    {
+        TagHistoryRecord tagValue = _repository.GetLastForTag(tagName).Result;
+        if (tagValue == null) return "NaN";
+        return tagValue.TagValue.ToString();
     }
 }

@@ -8,4 +8,5 @@ public interface IAlarmRepository
     public Task<Alarm> Create(Alarm newAlarm);
     public Task<Alarm> Delete(string alarmName);
     public Task<Alarm> Update(Alarm updatedAlarm);
+    public Task<IEnumerable<Alarm>> getByTagName(string name);
 }

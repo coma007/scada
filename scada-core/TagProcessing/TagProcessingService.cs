@@ -8,9 +8,9 @@ namespace scada_core.TagProcessing
     {
         private readonly TagProcessingClient _client;
 
-        public TagProcessingService()
+        public TagProcessingService(ApiClient.ApiClient apiClient)
         {
-            _client = new TagProcessingClient();
+            _client = new TagProcessingClient(apiClient);
         }
         
         public Dictionary<string, Dictionary<string, object>> GetAllTags(string tagType)
@@ -28,27 +28,22 @@ namespace scada_core.TagProcessing
             return _client.CreateTagRecord(newRecord);
         }
         
-        public   JToken  GetDriverStateUrl(int ioAddress)
+        public    List<object>  GetDriverStateUrl(int ioAddress)
         {
-            return _client.GetDriverState(ioAddress);
+            return ExtractDriverStateProperties(_client.GetDriverState(ioAddress));
         }
         
-        public  JToken CreateDriverState(int ioAddress, double value)
+        private List<object> ExtractDriverStateProperties(JToken driverState)
         {
-            JObject newState = new JObject(
-                new JProperty("ioAddress", ioAddress),
-                new JProperty("value", value)
-            );
-            return _client.CreateDriverState(newState);
-        }
-        
-        public   JToken UpdateDriverState(int ioAddress, double value)
-        {
-            JObject updatedState = new JObject(
-                new JProperty("ioAddress", ioAddress),
-                new JProperty("value", value)
-            );
-            return _client.UpdateDriverState(updatedState);
+            List<object> driverProperties = new List<object>();
+
+                string? driverAddress = driverState["ioAddress"]?.ToString();
+                double driverValue = driverState["value"]!.ToObject<double>();
+                
+                driverProperties.Add(driverAddress);
+                driverProperties.Add(driverValue);
+
+            return driverProperties;
         }
         
         private Dictionary<string, Dictionary<string, object>> ExtractTagsProperties(JToken analogTags)
@@ -62,7 +57,7 @@ namespace scada_core.TagProcessing
                 int? ioAddress = tag["ioAddress"]?.ToObject<int>();
                 bool? scan = tag["scan"]?.ToObject<bool>();
                 int? scanTime = tag["scanTime"]?.ToObject<int>();
-                var tagData = new Dictionary<string, object>
+                Dictionary<string, object> tagData = new Dictionary<string, object>
                 {
                     { "ioAddress", ioAddress },
                     { "scan", scan },
@@ -80,6 +75,30 @@ namespace scada_core.TagProcessing
             }
 
             return tagProperties;
+        }
+
+        public static string? ExtractProperties(JToken tag, out Dictionary<string, object> tagData)
+        {
+            string? tagName = tag["TagName"]?.ToString();
+            string? tagType = tag["TagType"]?.ToString();
+            int? ioAddress = tag["IOAddress"]?.ToObject<int>();
+            bool? scan = tag["Scan"]?.ToObject<bool>();
+            int? scanTime = tag["ScanTime"]?.ToObject<int>();
+            tagData = new Dictionary<string, object>
+            {
+                { "ioAddress", ioAddress },
+                { "scan", scan },
+                { "scanTime", scanTime }
+            };
+            if (tagType != null && tagType.Contains("analog"))
+            {
+                double? lowLimit = tag["LowLimit"]?.ToObject<double>();
+                double? highLimit = tag["HighLimit"]?.ToObject<double>();
+                tagData.Add("lowLimit", lowLimit);
+                tagData.Add("highLimit", highLimit);
+            }
+
+            return tagName;
         }
     }
 }

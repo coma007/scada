@@ -1,6 +1,7 @@
 using MongoDB.Driver;
 using scada_back.Infrastructure.Database;
 using scada_back.Infrastructure.Exception;
+using scada_back.Infrastructure.Feature.Alarm.Enumeration;
 
 namespace scada_back.Infrastructure.Feature.Alarm;
 
@@ -33,7 +34,9 @@ public class AlarmRepository: IAlarmRepository
     public async Task<IEnumerable<Alarm>> GetInvoked(string tagName, double value)
     {
         return (await _alarms
-                .FindAsync(alarm => alarm.TagName == tagName && alarm.Limit <= value))
+                .FindAsync(alarm => alarm.TagName == tagName && 
+                                    ((alarm.Limit < value && alarm.Type == AlarmType.Above) || 
+                                     (alarm.Limit > value && alarm.Type == AlarmType.Bellow))))
             .ToList();
     }
 
@@ -68,7 +71,6 @@ public class AlarmRepository: IAlarmRepository
 
             DeleteResult result = await _alarms.DeleteOneAsync(session, alarm => alarm.AlarmName == alarmName);
             await _deletedAlarms.InsertOneAsync(session, toBeDeleted);
-            //Alarm alarm = await GetDeleted(alarmName);
             if (result.DeletedCount == 0 || toBeDeleted == null)
             {
                 throw new ActionNotExecutedException("Deletion failed.");
@@ -105,5 +107,10 @@ public class AlarmRepository: IAlarmRepository
             throw new ActionNotExecutedException("Update failed.");
         }
         return await Get(updatedAlarm.AlarmName);
+    }
+
+    public async Task<IEnumerable<Alarm>> getByTagName(string name)
+    {
+        return await _alarms.Find(alarm => alarm.TagName == name).ToListAsync();
     }
 }

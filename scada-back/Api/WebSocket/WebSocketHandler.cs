@@ -63,10 +63,18 @@ public class WebSocketHandler
     {
         if (topicSubscriptions.ContainsKey(topic))
         {
-            byte[] buffer = SerializeMessage(message);
+            byte[] buffer = SerializeMessage(topic, message);
             foreach (WebSocket subscriber in topicSubscriptions[topic])
             {
-                await subscriber.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Binary, true, CancellationToken.None);
+                try
+                {
+                    await subscriber.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Binary, true,
+                        CancellationToken.None);
+                }
+                catch (Exception ex)
+                {
+                    continue;
+                }
             }
         }
     }
@@ -80,10 +88,10 @@ public class WebSocketHandler
         topicSubscriptions[topic].Add(webSocket);
     }
     
-    private byte[] SerializeMessage(object message)
+    private byte[] SerializeMessage(string topic, object message)
     {
         string serializedMessage = JsonConvert.SerializeObject(message);
-        byte[] buffer = Encoding.UTF8.GetBytes(serializedMessage);
+        byte[] buffer = Encoding.UTF8.GetBytes(topic + "=>" + serializedMessage);
         return buffer;
     }
 

@@ -42,6 +42,18 @@ public class TagRepository : ITagRepository
         return tags.Select(tag => tag.TagName).ToList();
     }
 
+    public async Task<IEnumerable<string>> GetInputScanNames()
+    {
+        var filter = Builders<Model.Abstraction.Tag>.Filter.And(
+            Builders<Model.Abstraction.Tag>.Filter.Regex("_t", new BsonRegularExpression("^(digital_input|analog_input)$")),
+            Builders<Model.Abstraction.Tag>.Filter.Eq("scan", true)
+        );
+
+        IEnumerable<Model.Abstraction.Tag> tags = await _tags.Find(filter).ToListAsync();
+        return tags.Select(tag => tag.TagName);
+    }
+
+
     public async Task<Model.Abstraction.Tag> Get(string tagName)
     {
         return (await _tags.FindAsync(tag => tag.TagName == tagName)).FirstOrDefault();

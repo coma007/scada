@@ -13,7 +13,7 @@ public class AlarmHistoryLogger : IAlarmHistoryLogger
     
     public void LogToFile(AlarmHistoryRecord record)
     {
-        string logText = $"{record.AlarmName}\t{record.Timestamp}\t{record.TagValue}";
+        string logText = $"{record.AlarmName}\t{record.Timestamp}\t{record.TagValue}\t{record.Message}";
         try
         {
             using StreamWriter writer = new StreamWriter(FileName, true);

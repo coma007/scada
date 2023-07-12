@@ -42,4 +42,15 @@ public class DriverStateService : IDriverStateService
     {
         return _repository.Update(driverState.ToEntity()).Result.ToDto();
     }
+
+    public DriverStatesDto Update(DriverStatesDto driverStates)
+    {
+        return new DriverStatesDto(
+            _repository.Update(
+                driverStates.list
+                    .Select(state => state.ToEntity()))
+                .Result
+                .Select(ds => ds.ToDto())
+            );
+    }
 }

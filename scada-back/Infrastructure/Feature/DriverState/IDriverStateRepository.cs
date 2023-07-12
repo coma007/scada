@@ -7,4 +7,5 @@ public interface IDriverStateRepository
     Task<DriverState> Get(int ioAddress);
     Task<DriverState> Create(DriverState driverState);
     Task<DriverState> Update(DriverState driverState);
+    Task<IEnumerable<DriverState>> Update(IEnumerable<DriverState> driverState);
 }

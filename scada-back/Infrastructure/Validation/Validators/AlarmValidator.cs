@@ -13,8 +13,8 @@ public class AlarmValidator : AbstractValidator<AlarmDto>
        
         RuleFor(alarm => alarm.Type)
             .NotEmpty().WithMessage("Type is required.")
-            .Must(type => (type.ToUpper() == "LOW" || type.ToUpper() == "HIGH"))
-            .WithMessage("Type should be either 'LOW' or 'HIGH' for alarm.");
+            .Must(type => (type.ToUpper() == "ABOVE" || type.ToUpper() == "BELLOW"))
+            .WithMessage("Type should be either 'ABOVE' or 'BELLOW' for alarm.");
         
         RuleFor(alarm => alarm.AlarmPriority)
             .Must(priority => ((int)priority <= 2 && (int)priority >= 0))
@@ -23,9 +23,6 @@ public class AlarmValidator : AbstractValidator<AlarmDto>
         RuleFor(alarm => alarm.AlarmName)
             .NotEmpty().WithMessage("AlarmName is required.")
             .Length(1, 20).WithMessage("AlarmName should have a length between 1 and 20.");
-
-        RuleFor(alarm => alarm.Limit)
-            .NotEmpty().WithMessage("Limit is required.");
 
     }
 }

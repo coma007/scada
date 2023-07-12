@@ -38,10 +38,7 @@ public class DriverStateRepository : IDriverStateRepository
 
     public async Task<DriverState> Update(DriverState driverState)
     {
-        DriverState oldState = Get(driverState.IOAddress).Result;
-        if (oldState == null)
-            throw new ObjectNotFoundException($"Driver state with address {driverState.IOAddress} doesn't exist");
-        driverState.Id = oldState.Id;
+        SetId(driverState);
         ReplaceOneResult result = await _states.ReplaceOneAsync(state => state.IOAddress == driverState.IOAddress, driverState);
         // if (result.ModifiedCount == 0)
         // {
@@ -49,5 +46,36 @@ public class DriverStateRepository : IDriverStateRepository
         // }
 
         return await Get(driverState.IOAddress);
+    }
+
+    private void SetId(DriverState driverState)
+    {
+        DriverState oldState = Get(driverState.IOAddress).Result;
+        if (oldState == null)
+            throw new ObjectNotFoundException($"Driver state with address {driverState.IOAddress} doesn't exist");
+        driverState.Id = oldState.Id;
+    }
+
+    public async Task<IEnumerable<DriverState>> Update(IEnumerable<DriverState> driverStates)
+    {
+        Console.WriteLine(driverStates.Count());
+        var bulkOps = new List<WriteModel<DriverState>>();
+        driverStates.Where(x => x.IOAddress == 20).ToList().ForEach(x =>  Console.WriteLine("VALUE OF 20 IS: " +x.Value));
+        bulkOps.AddRange(driverStates.Select(driverState =>
+        {
+            SetId(driverState);
+            var filter = Builders<DriverState>.Filter.Eq(x => x.IOAddress, driverState.IOAddress);
+            var update = Builders<DriverState>.Update .Set(x => x.Value, driverState.Value);
+
+            return new UpdateOneModel<DriverState>(filter, update);
+        }));
+
+        if (bulkOps.Count > 0)
+        {
+            var options = new BulkWriteOptions { IsOrdered = false }; 
+            await _states.BulkWriteAsync(bulkOps, options);
+        }
+
+        return driverStates;
     }
 }

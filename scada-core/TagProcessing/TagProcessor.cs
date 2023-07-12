@@ -11,10 +11,12 @@ namespace scada_core.TagProcessing
         private readonly TagProcessingService _service;
         private Dictionary<string, Dictionary<string, object>> _tagProperties;
         private Dictionary<string, Thread> _tagThreads;
+        
+        private const string _logTag = "TAG PROCCESSING: ";
 
-        public TagProcessor()
+        public TagProcessor(ApiClient.ApiClient apiClient)
         {
-            _service = new TagProcessingService();
+            _service = new TagProcessingService(apiClient);
             _tagProperties = new Dictionary<string, Dictionary<string, object>>();
             _tagThreads = new Dictionary<string, Thread>();
         }
@@ -25,36 +27,110 @@ namespace scada_core.TagProcessing
             CreateThreads();
         }
 
+        public void AddTag(Dictionary<string, object> newTag)
+        {
+            _tagProperties.Add((string)newTag["tagName"], newTag);
+            foreach (var tag in _tagProperties)
+            {
+                if (tag.Key.Equals(newTag["tagName"]))
+                {
+                    CreateThread(tag);
+                    Console.WriteLine(_logTag + $"Added Tag: {tag.Key}");
+                    break;
+                }
+            }
+        }
+
+        public void RemoveTag(Dictionary<string, object> deletedTag)
+        {
+            foreach (var tag in _tagProperties)
+            {
+                if (tag.Key.Equals(deletedTag["tagName"]))
+                {
+                    RemoveThread(tag);
+                    Console.WriteLine(_logTag + $"Removed Tag: {tag.Key}");
+                    break;
+                }
+            }
+        }
+
+        public void ChangeScan(Dictionary<string, object> updatedTag)
+        {
+            foreach (var tag in _tagProperties)
+            {
+                if (tag.Key.Equals(updatedTag["tagName"]))
+                {
+                    bool scan = (bool)tag.Value["scan"];
+                    tag.Value["scan"] = !scan;
+
+                    if (!scan)
+                    {
+                        CreateThread(tag);
+                    }
+                    else
+                    {
+                        RemoveThread(tag);
+                    }
+
+                    break;
+                }
+            }
+        }
+
         private void CreateThreads()
         {
             foreach (var tag in _tagProperties)
             {
-                string tagName = tag.Key;
-                var tagAttributes = tag.Value;
-                bool scan = (bool)tagAttributes["scan"];
-                int scanTime = (int)tagAttributes["scanTime"];
-                
-                if (scan)
+                CreateThread(tag);
+            }
+        }
+
+        private void CreateThread(KeyValuePair<string, Dictionary<string, object>> tag)
+        {
+            string tagName = tag.Key;
+            var tagAttributes = tag.Value;
+            bool scan = (bool)tagAttributes["scan"];
+            int scanTime = (int)tagAttributes["scanTime"];
+            Console.WriteLine(_logTag + $"Created Thread for: {tagName}");
+
+            if (scan)
+            {
+                Thread tagThread = new Thread(() =>
                 {
-                    Thread tagThread = new Thread(() =>
+                    while (true)
                     {
-                        while (true)
+                        try
                         {
                             Thread.Sleep(scanTime * 1000);
-                            ProcessTag(tag);
                         }
-                    });
-                    tagThread.Start();
-                    _tagThreads[tagName] = tagThread;
-                }
+                        catch (ThreadInterruptedException e)
+                        {
+                            break;
+                        }
+
+                        ProcessTag(tag);
+                    }
+                });
+                tagThread.Start();
+                _tagThreads[tagName] = tagThread;
             }
+        }
+
+        private void RemoveThread(KeyValuePair<string, Dictionary<string, object>> tag)
+        {
+            Thread t = _tagThreads[tag.Key];
+            t.Interrupt();
+            _tagThreads.Remove(tag.Key);
+            Console.WriteLine(_logTag + $"Removed thread {tag.Key}");
         }
 
         private void ProcessTag(KeyValuePair<string, Dictionary<string, object>> tag)
         {
             string tagName = tag.Key;
             var tagAttributes = tag.Value;
-            Console.WriteLine(tagName);
+            List<object> driverProperties = _service.GetDriverStateUrl((int)tagAttributes["ioAddress"]);
+            _service.CreateTagRecord(tagName, (double)driverProperties[1]);
+            Console.WriteLine(_logTag + $"Processed Tag: {tagName}");
         }
 
         private void GetAllTags()
