@@ -9,7 +9,7 @@ import { TrendingService } from '../services/TrendingService'
 const TrendingPage = () => {
     const [tagRecords, setTagRecords] = useState<TagHistoryRecord[]>([]);
     const [selectedTagRecord, setSelectedTagRecord] = useState<TagHistoryRecord>();
-    const [selectedTag, setSelectedTag] = useState<Tag>();
+    const [selectedTag, setSelectedTag] = useState<string | undefined>();
 
     const dummyTagRecords: TagHistoryRecord[] = [
         new TagHistoryRecord(
@@ -82,14 +82,13 @@ const TrendingPage = () => {
     useEffect(() => {
         // API call
         // setSelectedTag(...)
-
+        setSelectedTag(selectedTagRecord?.tagName)
     }, [selectedTagRecord])
 
     const handleViewGraph = (tagName: string) => {
         console.log(tagName);
+        setSelectedTag(tagName)
     }
-
-
 
     return (
         <div className="content">
@@ -107,7 +106,7 @@ const TrendingPage = () => {
                         handleViewGraph={handleViewGraph} />
                 </div>
                 <div className="col-5 full-size">
-                    <GraphComponent selectedTag={{ scanTime: 10 }}></GraphComponent>
+                    <GraphComponent selectedTag={{ tagName: selectedTag, scanTime: 10 }}></GraphComponent>
                 </div>
             </div>
         </div>

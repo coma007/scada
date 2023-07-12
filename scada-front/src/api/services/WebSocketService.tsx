@@ -25,7 +25,7 @@ export const WebSocketService = {
       };
     },
 
-    defineSocket: function(socket : WebSocket | null, topic : string, processMessage : any) {
+    defineSocket: (socket : WebSocket | null, topic : string, processMessage : any) => {
         if (socket) {
             // WebSocket event listener for when the connection is opened
             socket.onopen = () => {
@@ -36,6 +36,7 @@ export const WebSocketService = {
       
             // WebSocket event listener for when a message is received
             socket.onmessage = async (event) => {
+              console.log(processMessage)
               let message : string = await event.data.text();
               let tokens = message.split("=>");
               topic = tokens[0];
