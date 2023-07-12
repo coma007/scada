@@ -19,19 +19,25 @@ public class TagController : ControllerBase
     [HttpGet(Name = "GetAll")]
     public ActionResult<IEnumerable<TagDto>> GetAll()
     {
-        return Ok(_service.GetAll());
+        var result =  Ok(_service.GetAll());
+        _logger.LogInformation("Successfully got all tags");
+        return result;
     }
     
     [HttpGet(Name = "GetAllByType")]
     public ActionResult<IEnumerable<TagDto>> GetAllByType(string tagType)
     {
-        return Ok(_service.GetAll(tagType));
+        var result = Ok(_service.GetAll(tagType));
+        _logger.LogInformation("Successfully got all tags by type");
+        return result;
     }
     
     [HttpGet(Name = "GetByName")]
     public ActionResult<TagDto> Get(string tagName)
     {
-        return Ok(_service.Get(tagName));
+        var result =Ok(_service.Get(tagName));
+        _logger.LogInformation("Successfully got all tags by name");
+        return result;
     }
 
 }

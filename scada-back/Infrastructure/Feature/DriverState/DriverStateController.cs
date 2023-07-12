@@ -18,6 +18,8 @@ public class DriverStateController : ControllerBase
     [HttpGet(Name = "GetAllDriverState")]
     public ActionResult<DriverStateDto> GetAll()
     {
-        return Ok(_service.GetAll());
+        var result = Ok(_service.GetAll());
+        _logger.LogInformation("Successfully got all driver states");
+        return result;
     }
 }

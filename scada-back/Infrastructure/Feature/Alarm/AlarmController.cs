@@ -18,7 +18,9 @@ public class AlarmController : ControllerBase
     [HttpGet(Name = "GetAllAlarms")]
     public ActionResult<AlarmDto> GetAll()
     {
-        return Ok(_service.GetAll());
+        var result = Ok(_service.GetAll());
+        _logger.LogInformation("Successfully got alarms");
+        return result;
     }
 
 }

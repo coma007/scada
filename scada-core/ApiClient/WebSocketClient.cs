@@ -8,6 +8,7 @@ using scada_core.TagProcessing;
 
 public class WebSocketClient
 {
+    private const string _logTag = "WS: ";
 
     private enum WebSocketClientType
     {
@@ -53,7 +54,7 @@ public class WebSocketClient
             Dictionary<string, object> tagData;
             string tagName = TagProcessingService.ExtractProperties(tag, out tagData);
             tagData.Add("tagName", tagName);
-            Console.WriteLine("Received message: " + receivedMessage);
+            Console.WriteLine(_logTag + $"Received message: {receivedMessage}");
             if (topic.Equals("NewTagCreated")) processor.AddTag(tagData);
             else if (topic.Equals("TagDeleted")) processor.RemoveTag(tagData);
             else processor.ChangeScan(tagData);

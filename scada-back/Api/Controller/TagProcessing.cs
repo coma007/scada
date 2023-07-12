@@ -29,32 +29,42 @@ public class TagProcessing : ControllerBase
     [HttpPost(Name = "CreateDriverState")]
     public ActionResult<DriverStateDto> CreateDriverState([FromBody] DriverStateDto driverState)
     {
-        return Ok(_driverStateService.Create(driverState));
+        var result = Ok(_driverStateService.Create(driverState));
+        _logger.LogInformation("Successfully created driver state");
+        return result;
     }
 
     [HttpPatch(Name = "UpdateDriverState")]
     public ActionResult<DriverStateDto> UpdateDriverState([FromBody] DriverStateDto driverState)
     {
-        return Ok(_driverStateService.Update(driverState));
+        var result = Ok(_driverStateService.Update(driverState));
+        _logger.LogInformation("Successfully updated driver state");
+        return result;
     }
     
     [HttpPatch(Name = "UpdateDriverStates")]
     public ActionResult<DriverStateDto> UpdateDriverStates([FromBody] DriverStatesDto driverStates)
     {
-        return Ok(_driverStateService.Update(driverStates));
+        var result = Ok(_driverStateService.Update(driverStates));
+        _logger.LogInformation("Successfully updated driver states");
+        return result;
     }
 
     [HttpGet(Name = "GetDriverState")]
     public ActionResult<DriverStateDto> GetDriverState(int address)
     {
-        return Ok(_driverStateService.Get(address));
+        var result = Ok(_driverStateService.Get(address));
+        _logger.LogInformation("Successfully got driver state");
+        return result;
     }
 
    
     [HttpGet(Name = "GetAllTagsByType")]
     public ActionResult<IEnumerable<TagDto>> GetAllTagsByType(string tagType)
     {
-        return Ok(_tagService.GetAll(tagType));
+        var result = Ok(_tagService.GetAll(tagType));
+        _logger.LogInformation("Successfully got tags by type");
+        return result;
     }
 
     
@@ -62,6 +72,8 @@ public class TagProcessing : ControllerBase
     public ActionResult CreateTagRecord([FromBody] TagHistoryRecordDto tagRecord)
     {
         _tagHistoryService.Create(tagRecord);
-        return Ok();
+        var result = Ok();
+        _logger.LogInformation("Successfully created tag history record");
+        return result;
     }
 }

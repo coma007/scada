@@ -20,20 +20,25 @@ public class AlarmHistoryController: ControllerBase
     public ActionResult<IEnumerable<AlarmHistoryRecordDto>> GetAll()
     {
         IEnumerable<AlarmHistoryRecordDto> records = _alarmHistoryService.GetAll();
-        return Ok(records);
+        var result =  Ok(records);
+        _logger.LogInformation("Successfully got alarms history");
+        return result;
     }
     
     [HttpGet(Name = "GetAlarmRecordByName")]
     public ActionResult<IEnumerable<AlarmHistoryRecordDto>> GetByAlarmName(string alarmName)
     {
         IEnumerable<AlarmHistoryRecordDto> records = _alarmHistoryService.Get(alarmName);
-        return Ok(records);
+        var result = Ok(records);
+        _logger.LogInformation("Successfully got alarms by name");
+        return result;
     }
 
     [HttpPost(Name = "CreateAlarmRecord")]
     public ActionResult<AlarmHistoryRecordDto> Create([FromBody]AlarmHistoryRecordDto alarmRecord)
     {
         _alarmHistoryService.Create(alarmRecord);
+        _logger.LogInformation("Successfully created alarm history");
         return Ok();
     }
 }

@@ -21,6 +21,8 @@ public class Trending : ControllerBase
     [HttpGet(Name = "GetLatestInputScanValues")]
     public ActionResult<TagHistoryRecordDto> GetLatestInputScanValues()
     {
-        return Ok(_tagHistoryService.GetLatestInputScan());
+        var result = Ok(_tagHistoryService.GetLatestInputScan());
+        _logger.LogInformation("Successfully got latest input scan");
+        return result;
     }
 }
