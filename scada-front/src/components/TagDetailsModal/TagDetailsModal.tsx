@@ -7,6 +7,7 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
     const [editMode, setEditMode] = React.useState(false);
     const [editedValue, setEditedValue] = React.useState(props.selectedTag.initialValue);
 
+    // console.log(props.selectedTag.scan)
     const handleEditClick = () => {
         setEditMode(true);
     };
@@ -73,7 +74,7 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
                         {props.selectedTag.tagType === 'digital_input' && (
                             <>
                                 <p>{props.selectedTag.scanTime}</p>
-                                <p>{props.selectedTag.scanOn}</p>
+                                <p>{props.selectedTag.scan ? "true" : "false"}</p>
                                 <p>{props.selectedTag.driver}</p>
                             </>
                         )}
@@ -113,7 +114,7 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
                         {props.selectedTag.tagType === 'analog_input' && (
                             <>
                                 <p>{props.selectedTag.scanTime}</p>
-                                <p>{props.selectedTag.scanOn}</p>
+                                <p>{props.selectedTag.scan ? "true" : "false"}</p>
                                 <p>{props.selectedTag.lowLimit}</p>
                                 <p>{props.selectedTag.highLimit}</p>
                                 <p>{props.selectedTag.units}</p>
