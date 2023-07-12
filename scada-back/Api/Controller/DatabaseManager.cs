@@ -35,19 +35,25 @@ public class DatabaseManager : ControllerBase
     [HttpPost(Name = "Login"), AllowAnonymous]
     public ActionResult<string> Login(LoginDto credentials)
     {
-        return Ok(_userService.Login(credentials.Username, credentials.Password));
+        var result = Ok(_userService.Login(credentials.Username, credentials.Password));
+        _logger.LogInformation("Successfully logged in");
+        return result;
     }
     
     [HttpGet(Name = "GetTagByName")]
     public ActionResult<TagDto> GetTag(string tagName)
     {
-        return Ok(_tagService.Get(tagName));
+        var result = Ok(_tagService.Get(tagName));
+        _logger.LogInformation("Successfully got tag by tag name");
+        return result;
     }
 
     [HttpGet(Name = "GetTagLastValue")]
     public ActionResult<string> GetTagLastValue(string tagName)
     {
-        return Ok(_tagHistoryService.GetLastValueForTag(tagName));
+        var result = Ok(_tagHistoryService.GetLastValueForTag(tagName));
+        _logger.LogInformation("Successfully got last tag value");
+        return result;
     }
 
     [HttpPost(Name = "CreateTag")]
@@ -55,7 +61,9 @@ public class DatabaseManager : ControllerBase
     {
         tag = _tagService.Create(tag);
         if (tag.TagType.Contains("_input")) _webSocketServer.NotifyClientAboutNewTag(tag);
-        return Ok(tag);
+        var result = Ok(tag);
+        _logger.LogInformation("Successfully created tag");
+        return result;
     }
     
     [HttpDelete(Name = "DeleteTag")]
@@ -63,7 +71,9 @@ public class DatabaseManager : ControllerBase
     {
         TagDto tag = _tagService.Delete(tagName);
         if (tag.TagType.Contains("_input")) _webSocketServer.NotifyClientAboutTagDelete(tag);
-        return Ok(tag);
+        var result = Ok(tag);
+        _logger.LogInformation("Successfully deleted tag");
+        return result;
     }
     
     [HttpPatch(Name = "UpdateTagScan")]
@@ -71,7 +81,9 @@ public class DatabaseManager : ControllerBase
     {
         TagDto updatedTag = _tagService.UpdateScan(tagName);
         _webSocketServer.NotifyClientAboutTagScan(updatedTag);
-        return Ok(updatedTag);
+        var result = Ok(updatedTag);
+        _logger.LogInformation("Successfully updated tag scan");
+        return result;
     }
     
     [HttpPatch(Name = "UpdateOutputTagValue")]
@@ -84,38 +96,50 @@ public class DatabaseManager : ControllerBase
             Timestamp = DateTime.Now,
             TagValue = value
         });
-        return Ok(tag);
+        var result = Ok(tag);
+        _logger.LogInformation("Successfully updated output tag value");
+        return result;
     }
     
     
     [HttpGet(Name = "GetAlarmByAlarmName")]
     public ActionResult<AlarmDto> GetAlarm(string alarmName)
     {
-        return Ok(_alarmService.Get(alarmName));
+        var result = Ok(_alarmService.Get(alarmName));
+        _logger.LogInformation("Successfully got alarm by name");
+        return result;
     }
     
     [HttpGet(Name = "GetByTagName")]
     public ActionResult<AlarmDto> GetAlarmByTagName(string name)
     {
-        return Ok(_alarmService.GetByTag(name));
+        var result = Ok(_alarmService.GetByTag(name));
+        _logger.LogInformation("Successfully got alarm by tag name");
+        return result;
     }
     
     [HttpPost(Name = "CreateAlarm")]
     public ActionResult<AlarmDto> CreateAlarm([FromBody]AlarmDto alarm)
     {
-        return Ok(_alarmService.Create(alarm));
+        var result = Ok(_alarmService.Create(alarm));
+        _logger.LogInformation("Successfully created alarm");
+        return result;
     }
     
     [HttpDelete(Name = "DeleteAlarm")]
     public ActionResult<AlarmDto> DeleteAlarm(string alarmName)
     {
-        return Ok(_alarmService.Delete(alarmName));
+        var result = Ok(_alarmService.Delete(alarmName));
+        _logger.LogInformation("Successfully deleted alarm");
+        return result;
     }
     
     [HttpPatch(Name = "UpdateAlarm")]
     public ActionResult<AlarmDto> UpdateAlarm([FromBody]AlarmDto alarm)
     {
-        return Ok(_alarmService.Update(alarm));
+        var result = Ok(_alarmService.Update(alarm));
+        _logger.LogInformation("Successfully updated alarm");
+        return result;
     }
 
 }

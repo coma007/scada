@@ -20,6 +20,8 @@ public class TagHistoryController : ControllerBase
     [HttpGet(Name = "GetAllTagHistoryRecords")]
     public ActionResult<IEnumerable<TagHistoryRecordDto>> GetAll()
     {
-        return Ok(_service.GetAll());
+        var result  = Ok(_service.GetAll());
+        _logger.LogInformation("Successfully got all tags record history");
+        return result;
     }
 }
