@@ -31,11 +31,11 @@ public class SimulationDriver : Driver
         _generators.Add(new RampGenerator(7));
         _generators.Add(new RampGenerator(8));
         _generators.Add(new RampGenerator(9));
-        
-        _generators.Add(new DigitalGenerator(10));
-        _generators.Add(new DigitalGenerator(11));
-        _generators.Add(new DigitalGenerator(12));
-        _generators.Add(new DigitalGenerator(13));
+
+        for (int i = 10; i < 21; i++)
+        {
+            _generators.Add(new DigitalGenerator(i));
+        } ;
 
         // create addresses
         // for (int i = 0; i < _generators.Count; i++)
