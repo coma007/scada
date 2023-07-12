@@ -16,12 +16,14 @@ public class TagProcessing : ControllerBase
     private readonly IDriverStateService _driverStateService;
     private readonly ITagService _tagService;
     private readonly ITagHistoryService _tagHistoryService;
+    private readonly ILogger<DatabaseManager> _logger;
 
-    public TagProcessing(IDriverStateService driverStateService, ITagService tagService, ITagHistoryService tagHistoryService)
+    public TagProcessing(IDriverStateService driverStateService, ITagService tagService, ITagHistoryService tagHistoryService, ILogger<DatabaseManager> logger)
     {
         _driverStateService = driverStateService;
         _tagService = tagService;
         _tagHistoryService = tagHistoryService;
+        _logger = logger;
     }
 
     [HttpPost(Name = "CreateDriverState")]
@@ -54,6 +56,7 @@ public class TagProcessing : ControllerBase
     {
         return Ok(_tagService.GetAll(tagType));
     }
+
     
     [HttpPost(Name = "CreateTagHistoryRecord")]
     public ActionResult<TagHistoryRecordDto> CreateTagRecord([FromBody] TagHistoryRecordDto tagRecord)

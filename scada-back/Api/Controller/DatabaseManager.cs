@@ -17,9 +17,9 @@ public class DatabaseManager : ControllerBase
     private readonly IUserService _userService;
     private readonly ITagService _tagService;
     private readonly IAlarmService _alarmService;
-    private readonly ILogger<DatabaseManager> _logger;
-    private readonly IWebSocketServer _webSocketServer;
     private readonly ITagHistoryService _tagHistoryService;
+    private readonly IWebSocketServer _webSocketServer;
+    private readonly ILogger<DatabaseManager> _logger;
 
     public DatabaseManager(IUserService userService, ITagService tagService, IAlarmService alarmService,
         ITagHistoryService tagHistoryService, IWebSocketServer webSocketServer, ILogger<DatabaseManager> logger)
@@ -55,8 +55,6 @@ public class DatabaseManager : ControllerBase
     {
         tag = _tagService.Create(tag);
         if (tag.TagType.Contains("_input")) _webSocketServer.NotifyClientAboutNewTag(tag);
-        // WebSocketHandler handler = new WebSocketHandler();
-        // handler.SendMessage("NewTag", tag);
         return Ok(tag);
     }
     
