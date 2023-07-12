@@ -3,10 +3,10 @@ import { Table, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import AlarmDetailsModal from '../../features/AlarmDisplay/LatestAlarms/components/AlarmDetailsModal/AlarmDetailsModal';
 import { AlarmHistoryRecord } from '../../types/AlarmHistoryRecord';
 import { formatDate } from '../../utils/DateFormatter';
-import { Alarm } from '../../features/DatabaseManager/Alarms/types/Alarm';
+import { Alarm } from '../../types/Alarm';
 import style from './AlarmRecordsList.module.css';
 
-const AlarmRecordsList = (props: { alarmRecords: AlarmHistoryRecord[], setAlarmRecords: any, canSnooze: boolean, snoozeCallback? : any }) => {
+const AlarmRecordsList = (props: { alarmRecords: AlarmHistoryRecord[], setAlarmRecords: any, canSnooze: boolean, snoozeCallback?: any }) => {
 
     const [selectedRecord, setSelectedRecord] = React.useState<AlarmHistoryRecord | undefined>();
     const [selectedAlarm, setSelectedAlarm] = React.useState<Alarm | undefined>();

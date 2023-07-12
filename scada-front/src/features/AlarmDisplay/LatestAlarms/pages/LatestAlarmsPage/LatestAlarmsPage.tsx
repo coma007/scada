@@ -20,25 +20,26 @@ const LatestAlarmsPage = () => {
     ];
 
 
-    useEffect(()=>{
+    useEffect(() => {
         setAllAlarmRecords([{
             tagName: "Ime",
-            tagAlarms: dummyAlarmRecords}])
+            tagAlarms: dummyAlarmRecords
+        }])
     }, [])
 
     useEffect(() => {
-        let alarms : AlarmHistoryRecord[] = [];
+        let alarms: AlarmHistoryRecord[] = [];
         for (let tag of allAlarmRecords) {
             alarms.push(tag.tagAlarms[0])
         }
         setAlarmRecords(alarms)
     }, [allAlarmRecords])
 
-    const processAlarm = (message : any) => {
-        let allAlarms : AllAlarms[] = [];
-        let tagName : string = message[0].TagName;
+    const processAlarm = (message: any) => {
+        let allAlarms: AllAlarms[] = [];
+        let tagName: string = message[0].TagName;
         console.log(tagName)
-        let newAlarms : AlarmHistoryRecord[] = []
+        let newAlarms: AlarmHistoryRecord[] = []
         for (let alarm of message) {
             newAlarms.push(new AlarmHistoryRecord(alarm.AlarmName, alarm.Timestamp, alarm.TagValue, alarm.Message, tagName))
         }
@@ -66,17 +67,17 @@ const LatestAlarmsPage = () => {
     }
 
     useEffect(() => {
-      WebSocketService.createSocket(setSocket);
+        WebSocketService.createSocket(setSocket);
     }, []);
     useEffect(() => {
         WebSocketService.defineSocket(socket, "NewAlarmRecordsCreated", processAlarm);
     }, [socket]);
 
     let snoozeAlarm = (tagName: string) => {
-        let allAlarms : AllAlarms[] = [];
+        let allAlarms: AllAlarms[] = [];
         for (let tag of allAlarmRecords) {
             if (tag.tagName === tagName) {
-                tag.tagAlarms.splice(0,1);
+                tag.tagAlarms.splice(0, 1);
             }
             if (tag.tagAlarms.length > 0) {
                 allAlarms.push({
@@ -89,9 +90,9 @@ const LatestAlarmsPage = () => {
     }
 
     return (
-        <div>
-            <div>
-                <h5>Alarm Display</h5>
+        <div className="content">
+            <div className="titleLine">
+                <h3>Alarm Display</h3>
             </div>
             <AlarmRecordsList alarmRecords={alarmRecords} setAlarmRecords={setAlarmRecords} canSnooze={true} snoozeCallback={snoozeAlarm}></AlarmRecordsList>
         </div >

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { Button, Form, Modal, OverlayTrigger, Table, Tooltip } from 'react-bootstrap'
-import style from './AllAlarmsOfTagModal.module.css';
-import { Alarm } from '../../types/Alarm';
+import { Alarm } from '../../../../../types/Alarm';
 import AlarmsService from '../../services/AlarmService';
-import { Tag } from '../../../Tags/types/Tag';
+import { Tag } from '../../../../../types/Tag';
+import style from './AllAlarmsOfTagModal.module.css';
 
 const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any, selectedTag: Tag }) => {
   const [alarms, setAlarms] = React.useState<Alarm[]>([]);
@@ -18,9 +18,9 @@ const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any,
   };
 
   React.useEffect(() => {
-      fetchData();
-      let updatedNameAlarm = {...newAlarm, tagName: props.selectedTag?.tagName};
-      setNewAlarm(updatedNameAlarm);
+    fetchData();
+    let updatedNameAlarm = { ...newAlarm, tagName: props.selectedTag?.tagName };
+    setNewAlarm(updatedNameAlarm);
   }, [props.selectedTag])
 
   const [newAlarm, setNewAlarm] = React.useState(new Alarm('', 0, 0, '', props.selectedTag.tagName));
@@ -37,19 +37,19 @@ const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any,
 
   const handleCreateAlarm = async () => {
     // Close the modal and perform any necessary actions
-    try{
-        let createdAlarm: Alarm = await AlarmsService.create(newAlarm);
-        props.handleCloseModal(newAlarm);
-        alarms.push(newAlarm);
-        setAlarms(alarms);
-    } catch(error){
-        console.log(error);
+    try {
+      let createdAlarm: Alarm = await AlarmsService.create(newAlarm);
+      props.handleCloseModal(newAlarm);
+      alarms.push(newAlarm);
+      setAlarms(alarms);
+    } catch (error) {
+      console.log(error);
     }
   };
 
 
   const handleRemoveAlarm = async (selectedAlarm: Alarm) => {
-    try{
+    try {
       let alarm: Alarm = await AlarmsService.delete(selectedAlarm.alarmName);
       console.log(alarm);
       console.log(`Remove tag with ID: ${alarm.alarmName}`);

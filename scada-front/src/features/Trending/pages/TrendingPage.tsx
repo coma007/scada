@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import TagRecordsList from '../../../components/TagRecordsList/TagRecordsList'
 import LatestAlarmsPage from '../../AlarmDisplay/LatestAlarms/pages/LatestAlarmsPage/LatestAlarmsPage'
 import GraphComponent from '../components/GraphComponent/GraphComponent'
-import { Tag, AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag } from '../../DatabaseManager/Tags/types/Tag'
+import { Tag, AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag } from '../../../types/Tag'
 import { TagHistoryRecord } from '../../../types/TagHistoryRecord'
 
 const TrendingPage = () => {
@@ -36,6 +36,36 @@ const TrendingPage = () => {
             new Date(),
             30,
         ),
+        new TagHistoryRecord(
+            'Tag 5',
+            new Date(),
+            30,
+        ),
+        new TagHistoryRecord(
+            'Tag 5',
+            new Date(),
+            30,
+        ),
+        new TagHistoryRecord(
+            'Tag 5',
+            new Date(),
+            30,
+        ),
+        new TagHistoryRecord(
+            'Tag 5',
+            new Date(),
+            30,
+        ),
+        new TagHistoryRecord(
+            'Tag 5',
+            new Date(),
+            30,
+        ),
+        new TagHistoryRecord(
+            'Tag 5',
+            new Date(),
+            30,
+        ),
     ];
 
     useEffect(() => {
@@ -62,8 +92,7 @@ const TrendingPage = () => {
             </div>
 
             <div className='row'>
-                <div className="col-7">
-                    <h5>Input Tag Values</h5>
+                <div className="col-7 scrollable">
                     <TagRecordsList
                         tagRecords={tagRecords}
                         setTagRecords={setTagRecords}
@@ -71,7 +100,7 @@ const TrendingPage = () => {
                         handleViewGraph={handleViewGraph} />
                 </div>
                 <div className="col-5 full-size">
-                    <GraphComponent selectedTag={{scanTime : 10}}></GraphComponent>
+                    <GraphComponent selectedTag={{ scanTime: 10 }}></GraphComponent>
                 </div>
             </div>
         </div>

@@ -53,6 +53,10 @@ code {
 .full-size {
   height: 70vh !important;
   display: flex;
-  align-items: center;
   justify-content: center;
+}
+
+.scrollable {
+  max-height: 70vh;
+  overflow: auto;
 }

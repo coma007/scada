@@ -3,7 +3,9 @@ import { Line } from 'react-chartjs-2';
 import { CDBContainer } from 'cdbreact';
 
 import { Chart, registerables } from 'chart.js';
+import style from './GraphComponent.module.css';
 import { formatTime } from '../../../../utils/DateFormatter';
+
 Chart.register(...registerables);
 
 
@@ -82,11 +84,13 @@ const GraphComponent = (props: { selectedTag: any }) => {
 
 
     return (
-        <CDBContainer>
-            {data !== undefined &&
-                <Line data={data} options={{ responsive: true }} height={"300px"} />
-            }
-        </CDBContainer>
+        <div className={style.card}>
+            <CDBContainer>
+                {data !== undefined &&
+                    <Line data={data} options={{ responsive: true }} height={"300px"} />
+                }
+            </CDBContainer>
+        </div>
     );
 };
 

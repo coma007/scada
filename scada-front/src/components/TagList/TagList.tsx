@@ -1,6 +1,6 @@
 import React from 'react'
 import { Table, Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
-import { AnalogInputTag } from '../../features/DatabaseManager/Tags/types/Tag'
+import { AnalogInputTag } from '../../types/Tag'
 import style from './TagList.module.css';
 
 
@@ -53,7 +53,7 @@ const TagList = (props: { tags: any[], viewOnly: boolean, handleOpenDetailsModal
                                                 </OverlayTrigger>
                                             </Button>{' '}
                                         </> : <>
-                                            <Button variant="primary" size="sm" onClick={() => props.handleScanTag(tag.tagName)}>
+                                            <Button variant="success" size="sm" onClick={() => props.handleScanTag(tag.tagName)}>
                                                 <OverlayTrigger
                                                     placement="bottom"
                                                     overlay={<Tooltip id="scan-tooltip">Turn on scan</Tooltip>}

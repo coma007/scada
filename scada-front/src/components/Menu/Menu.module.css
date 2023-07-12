@@ -6,3 +6,9 @@
 .menuLink:hover {
     color: #3E86C4 !important;
 }
+
+.logout {
+    position: absolute;
+    right: 4%;
+    margin-top: 2px;
+}
