@@ -7,7 +7,7 @@ import TagDetailsModal from '../TagDetailsModal/TagDetailsModal';
 import { Tag } from '../../features/DatabaseManager/Tags/types/Tag';
 import style from './TagRecordsList.module.css';
 
-const TagRecordsList = (props: { tagRecords: TagHistoryRecord[], setTagRecords: any }) => {
+const TagRecordsList = (props: { tagRecords: TagHistoryRecord[], setTagRecords: any, viewGraph?: boolean, handleViewGraph?: any }) => {
 
     const [selectedRecord, setSelectedRecord] = React.useState<TagHistoryRecord | undefined>();
     const [selectedTag, setSelectedTag] = React.useState<Tag | undefined>();
@@ -30,7 +30,7 @@ const TagRecordsList = (props: { tagRecords: TagHistoryRecord[], setTagRecords: 
             <Table striped bordered hover responsive>
                 <thead>
                     <tr>
-                        <th className={style.nameColumn}>Alarm Name</th>
+                        <th className={style.nameColumn}>Tag Name</th>
                         <th className={style.timestampColumn}>Timestamp</th>
                         <th className={style.valueColumn}>Value</th>
                         <th >Actions</th>
@@ -52,6 +52,16 @@ const TagRecordsList = (props: { tagRecords: TagHistoryRecord[], setTagRecords: 
                                     </OverlayTrigger>
                                 </Button>{' '}
 
+                                {props.viewGraph &&
+                                    <Button variant="secondary" size="sm" onClick={() => props.handleViewGraph(tagRecord.tagName)}>
+                                        <OverlayTrigger
+                                            placement="bottom"
+                                            overlay={<Tooltip id="remove-tooltip">View history</Tooltip>}
+                                        >
+                                            <i className="bi bi-bar-chart-fill"></i>
+                                        </OverlayTrigger>
+                                    </Button>
+                                }
                             </td>
                         </tr>
                     ))}

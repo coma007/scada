@@ -12,11 +12,13 @@ public class ReportManager : ControllerBase
 {
     private readonly IAlarmHistoryService _alarmHistoryService;
     private readonly ITagHistoryService _tagHistoryService;
+    private readonly ILogger<DatabaseManager> _logger;
 
-    public ReportManager(IAlarmHistoryService alarmHistoryService, ITagHistoryService tagHistoryService)
+    public ReportManager(IAlarmHistoryService alarmHistoryService, ITagHistoryService tagHistoryService, ILogger<DatabaseManager> logger)
     {
         _alarmHistoryService = alarmHistoryService;
         _tagHistoryService = tagHistoryService;
+        _logger = logger;
     }
 
     [HttpGet(Name = "GetAlarmRecordsBetween")]
@@ -42,7 +44,7 @@ public class ReportManager : ControllerBase
     [HttpGet(Name = "GetLastValueBySignalType")]
     public ActionResult<TagHistoryRecordDto> GetLastTagValues(string signalType)
     {
-        return Ok(_tagHistoryService.GetLast(signalType));
+        return Ok(_tagHistoryService.GetLatest(signalType));
     }
 
     [HttpGet(Name = "GetAllTagHistoryRecordsByTagName")]

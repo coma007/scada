@@ -49,3 +49,10 @@ code {
 .margin-bottom {
   margin-bottom: 20px;
 }
+
+.full-size {
+  height: 70vh !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

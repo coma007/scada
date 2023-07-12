@@ -41,10 +41,17 @@ public class TagHistoryService : ITagHistoryService
         return records.Select(record => record.ToDto());
     }
 
-    public IEnumerable<TagHistoryRecordDto> GetLast(string signalType)
+    public IEnumerable<TagHistoryRecordDto> GetLatest(string signalType)
     {
-        IEnumerable<string> tagNames = _tagService.GetAllNames(signalType).Result;
-        IEnumerable<TagHistoryRecord> records  = _repository.GetLast(tagNames).Result;
+        IEnumerable<string> tagNames = _tagService.GetAllNames(signalType);
+        IEnumerable<TagHistoryRecord> records  = _repository.GetLatest(tagNames).Result;
+        return records.Select(record => record.ToDto());
+    }
+
+    public IEnumerable<TagHistoryRecordDto> GetLatestInputScan()
+    {
+        IEnumerable<string> tagNames = _tagService.GetInputScanNames();
+        IEnumerable<TagHistoryRecord> records  = _repository.GetLastForTags(tagNames).Result;
         return records.Select(record => record.ToDto());
     }
 

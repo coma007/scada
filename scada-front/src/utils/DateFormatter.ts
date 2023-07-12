@@ -10,3 +10,13 @@ export const formatDate = (date: Date) => {
     });
     return formattedDate;
 }
+
+
+export const formatTime = (date: Date) => {
+    const formattedDate = date.toLocaleString("sr-RS", {
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+    });
+    return formattedDate;
+}

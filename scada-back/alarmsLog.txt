@@ -19,6 +19,16 @@ bnmbn	08/07/2023 16:39:13	10
 zxcqwdq	08/07/2023 16:42:07	10
 bnmbn	08/07/2023 16:42:07	10
 ascas	11/07/2023 12:17:42	190	Value of tag analog tag 1 (190) is critically higher than limit (50)
+micin_test_alarm_be	12/07/2023 10:56:27	0	Value of micin_test_tag (0) is critically bellow than limit (8)
+micin_test_alarm_a	12/07/2023 10:57:33	5	Value of micin_test_tag (5) is critically above than limit (2)
+micin_test_alarm_be	12/07/2023 10:57:33	5	Value of micin_test_tag (5) is critically bellow than limit (8)
+micin_test_alarm_a	12/07/2023 10:57:37	10	Value of micin_test_tag (10) is critically above than limit (2)
+micin_test_alarm_b	12/07/2023 10:57:37	10	Value of micin_test_tag (10) is critically above than limit (8)
+micin_test_alarm_a	12/07/2023 10:57:40	15	Value of micin_test_tag (15) is critically above than limit (2)
+micin_test_alarm_b	12/07/2023 10:57:40	15	Value of micin_test_tag (15) is critically above than limit (8)
+micin_test_alarm_be	12/07/2023 10:57:47	2	Value of micin_test_tag (2) is critically bellow than limit (8)
+micin_test_alarm_a	12/07/2023 10:57:52	8	Value of micin_test_tag (8) is critically above than limit (2)
+micin_test_alarm_be	12/07/2023 10:57:56	1	Value of micin_test_tag (1) is critically bellow than limit (8)
 bbbb	11/07/2023 17:59:34	20	Value of tag analog tag 1 (20) is critically higher than limit (2)
 bbbb	11/07/2023 18:03:44	20	Value of tag analog tag 1 (20) is critically higher than limit (2)
 bbbb	11/07/2023 18:04:54	20	Value of tag analog tag 1 (20) is critically higher than limit (2)

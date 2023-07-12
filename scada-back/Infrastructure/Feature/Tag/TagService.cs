@@ -2,6 +2,7 @@ using Microsoft.VisualBasic.CompilerServices;
 using scada_back.Infrastructure.Exception;
 using scada_back.Infrastructure.Feature.DriverState;
 using scada_back.Infrastructure.Feature.Tag.Model.Abstraction;
+using scada_back.Infrastructure.Feature.TagHistory;
 using scada_back.Infrastructure.Validation;
 
 namespace scada_back.Infrastructure.Feature.Tag;
@@ -36,13 +37,18 @@ public class TagService : ITagService
         return tags.Select(tag => tag.ToDto());
     }
 
-    public Task<IEnumerable<string>> GetAllNames(string signalType)
+    public IEnumerable<string> GetAllNames(string signalType)
     {
         signalType = signalType.ToLower().Trim();
         _validationService.ValidateEmptyString("signalType",signalType);
         _validationService.ValidateSignalType(signalType);
         
-        return _repository.GetAllNames(signalType);
+        return _repository.GetAllNames(signalType).Result;
+    }
+
+    public IEnumerable<string> GetInputScanNames()
+    {
+        return _repository.GetInputScanNames().Result;
     }
 
     public TagDto Get(string tagName)

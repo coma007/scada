@@ -17,9 +17,9 @@ public class DatabaseManager : ControllerBase
     private readonly IUserService _userService;
     private readonly ITagService _tagService;
     private readonly IAlarmService _alarmService;
-    private readonly ILogger<DatabaseManager> _logger;
-    private readonly IWebSocketServer _webSocketServer;
     private readonly ITagHistoryService _tagHistoryService;
+    private readonly IWebSocketServer _webSocketServer;
+    private readonly ILogger<DatabaseManager> _logger;
 
     public DatabaseManager(IUserService userService, ITagService tagService, IAlarmService alarmService,
         ITagHistoryService tagHistoryService, IWebSocketServer webSocketServer, ILogger<DatabaseManager> logger)
@@ -55,8 +55,6 @@ public class DatabaseManager : ControllerBase
     {
         tag = _tagService.Create(tag);
         if (tag.TagType.Contains("_input")) _webSocketServer.NotifyClientAboutNewTag(tag);
-        // WebSocketHandler handler = new WebSocketHandler();
-        // handler.SendMessage("NewTag", tag);
         return Ok(tag);
     }
     
@@ -79,7 +77,27 @@ public class DatabaseManager : ControllerBase
     [HttpPatch(Name = "UpdateOutputTagValue")]
     public ActionResult<TagDto> UpdateTagOutputValue(string tagName, double value)
     {
-        return Ok(_tagService.UpdateOutputValue(tagName, value));
+        TagDto tag = _tagService.UpdateOutputValue(tagName, value);
+        _tagHistoryService.Create(new TagHistoryRecordDto
+        {
+            TagName = tag.TagName,
+            Timestamp = DateTime.Now,
+            TagValue = value
+        });
+        return Ok(tag);
+    }
+    
+    
+    [HttpGet(Name = "GetAlarmByAlarmName")]
+    public ActionResult<AlarmDto> GetAlarm(string alarmName)
+    {
+        return Ok(_alarmService.Get(alarmName));
+    }
+    
+    [HttpGet(Name = "GetByTagName")]
+    public ActionResult<AlarmDto> GetAlarmByTagName(string name)
+    {
+        return Ok(_alarmService.GetByTag(name));
     }
     
     [HttpPost(Name = "CreateAlarm")]
@@ -98,18 +116,6 @@ public class DatabaseManager : ControllerBase
     public ActionResult<AlarmDto> UpdateAlarm([FromBody]AlarmDto alarm)
     {
         return Ok(_alarmService.Update(alarm));
-    }
-    
-    [HttpGet(Name = "GetAlarmByAlarmName")]
-    public ActionResult<AlarmDto> GetAlarm(string alarmName)
-    {
-        return Ok(_alarmService.Get(alarmName));
-    }
-    
-    [HttpGet(Name = "GetByTagName")]
-    public ActionResult<AlarmDto> GetAlarmByTagName(string name)
-    {
-        return Ok(_alarmService.GetByTag(name));
     }
 
 }
