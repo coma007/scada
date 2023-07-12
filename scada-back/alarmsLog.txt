@@ -138,3 +138,4 @@ micin_test_alarm_be	12/07/2023 21:53:41	4.258454700717232	Value of micin_test_ta
 mmmm	12/07/2023 21:53:41	4.258454700717232	Value of micin_test_tag (4.258454700717232) is critically bellow limit (7)
 micin_test_alarm_a	12/07/2023 21:53:51	8.341544731460665	Value of micin_test_tag (8.341544731460665) is critically above limit (2)
 micin_test_alarm_a	12/07/2023 21:54:02	8.341544731460665	Value of micin_test_tag (8.341544731460665) is critically above limit (2)
+micin_test_alarm_a	12/07/2023 22:18:19	8.160246752566245	Value of micin_test_tag (8.160246752566245) is critically above limit (2)
