@@ -19,10 +19,11 @@ public class RealTimeDriver : Driver
         
         _rtus = new List<RTU>();
         _tasks = new List<Task>();
+        Random r = new Random();
 
         for (int i = 100; i < 120; i++)
         {
-            _rtus.Add(new RTU(0, 10, i));
+            _rtus.Add(new RTU(50, 100, i));
             // create addresses, watch for already created error
             // JToken token = _service.CreateDriverState(i, 0);
         }

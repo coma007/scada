@@ -88,17 +88,20 @@ public class TagService : ITagService
                  throw new InvalidParameterException(
                      $"You are trying to write real time tag to address that is for reserved for simulation, try value bigger or equal than {simulationLimit}");
              }
-             
-             int analogLimit = Int32.Parse(_configuration.GetSection("Driver:SimulationAddressAnalogLimit").Value);
-             if (inputTagDto is IAnalogTagDto && newTag.IOAddress >= analogLimit)
+
+             if (inputTagDto.Driver.ToUpper() == "SIMULATION")
              {
-                 throw new InvalidParameterException(
-                     $"You are trying to write analog value in digital are, try value less than {analogLimit}");
-             }
-             if (inputTagDto is IDigitalTagDto && newTag.IOAddress < analogLimit)
-             {
-                 throw new InvalidParameterException(
-                     $"You are trying to write digital value in analog are, try value greater or equal than {analogLimit}");
+                 int analogLimit = Int32.Parse(_configuration.GetSection("Driver:SimulationAddressAnalogLimit").Value);
+                 if (inputTagDto is IAnalogTagDto && newTag.IOAddress >= analogLimit)
+                 {
+                     throw new InvalidParameterException(
+                         $"You are trying to write analog value in digital are, try value less than {analogLimit}");
+                 }
+                 if (inputTagDto is IDigitalTagDto && newTag.IOAddress < analogLimit)
+                 {
+                     throw new InvalidParameterException(
+                         $"You are trying to write digital value in analog are, try value greater or equal than {analogLimit}");
+                 }
              }
         }
 
