@@ -7,6 +7,8 @@ import React from 'react';
 import { Tag, AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag } from '../../../../types/Tag';
 import TagList from '../../../../components/TagList/TagList';
 import TagDetailsModal from '../../../../components/TagDetailsModal/TagDetailsModal';
+import { ReportService } from '../../services/ReportsService';
+import { TagHistoryRecord } from '../../../../types/TagHistoryRecord';
 
 const TagTypeReport = () => {
     let dummyTags: Tag[] = [
@@ -16,11 +18,11 @@ const TagTypeReport = () => {
         new DigitalOutputTag('DigitalOutput1', 'digital_output', 'Digital Output Tag 1', 4001, 1),
         new AnalogInputTag('AnalogInput2', 'analog_input', 'Analog Input Tag 2', 1002, 1000, true, 0, 100, "SIMULATION", 'V'),
     ];
-    const [tags, setTags] = React.useState<Tag[]>([]);
+    const [tags, setTags] = React.useState<TagHistoryRecord[]>([]);
 
-    React.useEffect(() => {
-        setTags(dummyTags);
-    }, [])
+    // React.useEffect(() => {
+    //     setTags(dummyTags);
+    // }, [])
 
     const [selectedType, setSelectedType] = useState<string | undefined>();
 
@@ -29,10 +31,11 @@ const TagTypeReport = () => {
         setSelectedType(event.target.value);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (selectedType !== undefined) {
             // API request here ... 
-
+            let tagValues = await ReportService.getTagHistoryType(selectedType);
+            setTags([...tagValues])
             // setTags(...)
         }
     }
@@ -72,7 +75,12 @@ const TagTypeReport = () => {
                 </div>
             </div>
 
-            <TagList tags={tags} viewOnly={true} handleOpenDetailsModal={handleOpenDetailsModal} />
+            {/* <TagList tags={tags} viewOnly={true} handleOpenDetailsModal={handleOpenDetailsModal} /> */}
+
+            <TagRecordsList
+                tagRecords={tags}
+                setTagRecords={setTags}
+            />
 
             {
                 selectedTag && (
