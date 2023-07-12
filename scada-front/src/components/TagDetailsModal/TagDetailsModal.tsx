@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Alert, Button, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import style from './TagDetailsModal.module.css';
 import TagService from "../../features/DatabaseManager/Tags/services/TagService";
@@ -10,11 +10,25 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
     const [editedValue, setEditedValue] = React.useState(props.selectedTag.initialValue);
 
     const [errorMessage, setErrorMessage] = React.useState('');
+    const [lastValue, setLastValue] = React.useState('');
 
     // console.log(props.selectedTag.scan)
     const handleEditClick = () => {
         setEditMode(true);
     };
+
+    const fetchLastValue = async () => {
+        try {
+            let lastVal = await TagService.getTagLastValue(props.selectedTag.tagName);
+            setLastValue(lastVal);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() =>{
+      fetchLastValue();
+    }, [props.selectedTag])
 
     const handleSaveClick = async () => {
         // Perform the save action with the editedValue
@@ -55,6 +69,7 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
                                 <p><strong>Scan Time</strong></p>
                                 <p><strong>Scan On</strong></p>
                                 <p><strong>Driver</strong></p>
+                                <p><strong>Last Value</strong></p>
                             </>
                         )}
                         {props.selectedTag.tagType === 'digital_output' && (
@@ -70,6 +85,7 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
                                 <p><strong>High Limit</strong></p>
                                 <p><strong>Units</strong></p>
                                 <p><strong>Driver</strong></p>
+                                <p><strong>Last Value</strong></p>
                             </>
                         )}
                         {props.selectedTag.tagType === 'analog_output' && (
@@ -90,6 +106,7 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
                                 <p>{props.selectedTag.scanTime}</p>
                                 <p>{props.selectedTag.scan ? "true" : "false"}</p>
                                 <p>{props.selectedTag.driver}</p>
+                                <p>{lastValue}</p>
                             </>
                         )}
                         {props.selectedTag.tagType === 'digital_output' && (
@@ -133,6 +150,7 @@ const TagDetailsModal = (props: { showModal: boolean, handleCloseModal: any, sel
                                 <p>{props.selectedTag.highLimit}</p>
                                 <p>{props.selectedTag.units}</p>
                                 <p>{props.selectedTag.driver}</p>
+                                <p>{lastValue}</p>
                             </>
                         )}
                         {props.selectedTag.tagType === 'analog_output' && (
