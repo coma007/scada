@@ -25,7 +25,20 @@ This project aims to emulate the fundamental behavior of a SCADA monitoring syst
 
 ## Architecture
 
-Explain the high-level architecture of the project. Include diagrams if possible to visually represent the components and their interactions. Describe the role of each component and how they work together to achieve the project's objectives.
+The application consists of three main layers:
+*  **Client App** - This layer provides a graphical interface for the monitoring application, allowing users to log in, manipulate tags and alarms, and monitor their status. The Client App communicates with the API via an HTTP connection, utilizing a mandatory JWT token for authentication. It comprises four key components:
+    * **Database Manager** - Enables users to perform login, manipulate tags and alarms, and provides a basic preview of these entities.
+    * **Trending** - Allows users to monitor real-time values of tags and their graphical representation.
+    * **Alarm Display** - Provides notifications to users about new alarms, sorted by priority.
+    * **Report Manager** -  Enables users to filter data and generate reports across five different categories.
+*  **Api Layer** - This layer serves as a connection interface to the database and logging system. It provides secure access points for different client components, with each component relying on a specific API interface. Furthermore, the API layer generates WebSocket messages when specific events occur, ensuring that subscribed clients receive relevant information.
+*  **SCADA Core**
+
+
+Diagram bellow shows application arhitecture. [Click here](https://github.com/coma007/scada/blob/documentation/docs/diagram.png) to download the image.
+
+![poster](https://github.com/coma007/scada/blob/documentation/docs/diagram.png)
+
 
 ## Prerequisites
 
