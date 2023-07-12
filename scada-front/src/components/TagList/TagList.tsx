@@ -53,7 +53,7 @@ const TagList = (props: { tags: any[], viewOnly: boolean, handleOpenDetailsModal
                                                 </OverlayTrigger>
                                             </Button>{' '}
                                         </> : <>
-                                            <Button variant="primary" size="sm" onClick={() => props.handleScanTag(tag.tagName)}>
+                                            <Button variant="success" size="sm" onClick={() => props.handleScanTag(tag.tagName)}>
                                                 <OverlayTrigger
                                                     placement="bottom"
                                                     overlay={<Tooltip id="scan-tooltip">Turn on scan</Tooltip>}

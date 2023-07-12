@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { Button, Form, Modal, OverlayTrigger, Table, Tooltip } from 'react-bootstrap'
-import style from './AllAlarmsOfTagModal.module.css';
 import { Alarm } from '../../../../../types/Alarm';
 import AlarmsService from '../../services/AlarmService';
 import { Tag } from '../../../../../types/Tag';
+import style from './AllAlarmsOfTagModal.module.css';
 
 const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any, selectedTag: Tag }) => {
   const [alarms, setAlarms] = React.useState<Alarm[]>([]);

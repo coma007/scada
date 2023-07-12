@@ -36,6 +36,36 @@ const TrendingPage = () => {
             new Date(),
             30,
         ),
+        new TagHistoryRecord(
+            'Tag 5',
+            new Date(),
+            30,
+        ),
+        new TagHistoryRecord(
+            'Tag 5',
+            new Date(),
+            30,
+        ),
+        new TagHistoryRecord(
+            'Tag 5',
+            new Date(),
+            30,
+        ),
+        new TagHistoryRecord(
+            'Tag 5',
+            new Date(),
+            30,
+        ),
+        new TagHistoryRecord(
+            'Tag 5',
+            new Date(),
+            30,
+        ),
+        new TagHistoryRecord(
+            'Tag 5',
+            new Date(),
+            30,
+        ),
     ];
 
     useEffect(() => {
@@ -62,8 +92,7 @@ const TrendingPage = () => {
             </div>
 
             <div className='row'>
-                <div className="col-7">
-                    <h5>Input Tag Values</h5>
+                <div className="col-7 scrollable">
                     <TagRecordsList
                         tagRecords={tagRecords}
                         setTagRecords={setTagRecords}
