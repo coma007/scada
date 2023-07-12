@@ -3,6 +3,7 @@ import TagRecordsList from '../../../../components/TagRecordsList/TagRecordsList
 import TimespanFilter from '../../../../components/TimespanFilter/TimespanFilter';
 import { TagHistoryRecord } from '../../../../types/TagHistoryRecord';
 import { Button, Form } from 'react-bootstrap';
+import { ReportService } from '../../services/ReportsService';
 
 const TagHistoryReport = () => {
     const [tagRecords, setTagRecords] = useState<TagHistoryRecord[]>([]);
@@ -41,16 +42,17 @@ const TagHistoryReport = () => {
     }, []);
 
 
-    const handleSubmit = (tagName: string) => {
+    const handleSubmit = async (tagName: string) => {
 
+        let tagValues = await ReportService.getTagHistory(tagName);
         // Api request here
-        const filteredAlarmRecords = dummyTagRecords.filter((record) => {
-            return (
-                record.tagName == tagName
-            );
-        });
+        // const filteredAlarmRecords = dummyTagRecords.filter((record) => {
+        //     return (
+        //         record.tagName == tagName
+        //     );
+        // });
 
-        setTagRecords(filteredAlarmRecords);
+        setTagRecords(tagValues);
     };
     return (
         <div>
