@@ -33,17 +33,11 @@ public class SimulationDriver : Driver
         _generators.Add(new RampGenerator(9));
 
         // create addresses
-        for (int i = 0; i < _generators.Count; i++)
-        {
-            try
-            {
-                // JToken token = _service.CreateDriverState(i, 0);
-            }
-            catch (System.Exception e)
-            {
-                
-            }
-        }
+        // for (int i = 0; i < _generators.Count; i++)
+        // {
+        //     // create addresses, watch for already created error
+        //     // JToken token = _service.CreateDriverState(i, 0);
+        // }
     }
 
     public override void Simulate()

@@ -23,16 +23,8 @@ public class RealTimeDriver : Driver
         for (int i = 100; i < 120; i++)
         {
             _rtus.Add(new RTU(0, 10, i));
-            // create addresses
-            try
-            {
-                // JToken token = _service.CreateDriverState(i, 0);
-            }
-            catch (System.Exception e)
-            {
-                
-            }
-
+            // create addresses, watch for already created error
+            // JToken token = _service.CreateDriverState(i, 0);
         }
     }
 
