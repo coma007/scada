@@ -50,7 +50,16 @@ public class BatchMediator : IBatchMediator
                     toSave = _states.ToArray();
                     _states.Clear();
                 }
-                JToken token = _service.UpdateDriverStates(toSave);
+
+                try
+                {
+                    JToken token = _service.UpdateDriverStates(toSave);
+                }
+                catch (System.Exception e)
+                {
+                    Console.WriteLine(_logTag + $"ERROR {e.Message}");
+                }
+
                 ResetCounter();
                 // Thread.Sleep(3000);
 

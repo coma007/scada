@@ -35,6 +35,7 @@ namespace scada_core.TagProcessing
                 if (tag.Key.Equals(newTag["tagName"]))
                 {
                     CreateThread(tag);
+                    Console.WriteLine(_logTag + $"Added Tag: {tag.Key}");
                     break;
                 }
             }
@@ -47,6 +48,7 @@ namespace scada_core.TagProcessing
                 if (tag.Key.Equals(deletedTag["tagName"]))
                 {
                     RemoveThread(tag);
+                    Console.WriteLine(_logTag + $"Removed Tag: {tag.Key}");
                     break;
                 }
             }
@@ -89,6 +91,7 @@ namespace scada_core.TagProcessing
             var tagAttributes = tag.Value;
             bool scan = (bool)tagAttributes["scan"];
             int scanTime = (int)tagAttributes["scanTime"];
+            Console.WriteLine(_logTag + $"Created Thread for: {tagName}");
 
             if (scan)
             {
@@ -118,6 +121,7 @@ namespace scada_core.TagProcessing
             Thread t = _tagThreads[tag.Key];
             t.Interrupt();
             _tagThreads.Remove(tag.Key);
+            Console.WriteLine(_logTag + $"Removed thread {tag.Key}");
         }
 
         private void ProcessTag(KeyValuePair<string, Dictionary<string, object>> tag)
