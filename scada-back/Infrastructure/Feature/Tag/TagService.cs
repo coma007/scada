@@ -136,12 +136,25 @@ public class TagService : ITagService
     {
         tagName = tagName.Trim();
         _validationService.ValidateEmptyString("tagName", tagName);
-        _validationService.ValidateDigitalValue(value);
 
         Model.Abstraction.Tag tag = _repository.Get(tagName).Result;
-        if (tag is IInputTag or IAnalogTag)
+        if (tag is IInputTag)
         {
-            throw new InvalidSignalTypeException($"Can only change value of digital output tag.");
+            throw new InvalidSignalTypeException($"Can only change value of output tag.");
+        }
+
+        if (tag is IDigitalTag)
+        {
+            _validationService.ValidateDigitalValue(value);
+        }
+
+        if (tag is IAnalogTag analogTag)
+        {
+            if (value < analogTag.LowLimit || value > analogTag.HighLimit)
+            {
+                throw new InvalidSignalTypeException($"Value is not between limits {analogTag.LowLimit} and {analogTag.HighLimit}");
+            }
+            
         }
 
         ((IOutputTag)tag).InitialValue = value;
