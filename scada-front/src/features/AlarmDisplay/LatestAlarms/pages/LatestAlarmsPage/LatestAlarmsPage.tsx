@@ -79,7 +79,7 @@ const LatestAlarmsPage = () => {
     },[allAlarmRecords])
 
     useEffect(() => {
-        WebSocketService.createSocket(setSocket);
+        return WebSocketService.createSocket(setSocket);
     }, []);
     useEffect(() => {
         WebSocketService.defineSocket(socket, "NewAlarmRecordsCreated", processAlarm);

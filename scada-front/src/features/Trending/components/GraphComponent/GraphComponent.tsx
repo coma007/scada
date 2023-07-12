@@ -19,7 +19,7 @@ const GraphComponent = (props: { selectedTag: any }) => {
     const [tagName, setTagName] =  useState<string>("");
     
     useEffect(() => {
-    WebSocketService.createSocket(setSocket);
+        return WebSocketService.createSocket(setSocket);
     }, []);
     
     const processValue = (message: any) => {
