@@ -22,10 +22,10 @@ public class Alarm
 
     public AlarmDto ToDto()
     {
-        string alarmType = "HIGH";
-        if (Type == AlarmType.LOW)
+        string alarmType = "BELLOW";
+        if (Type == AlarmType.Above)
         {
-            alarmType = "LOW";
+            alarmType = "ABOVE";
         }
         return new AlarmDto
         {
@@ -49,10 +49,10 @@ public class AlarmDto
 
     public Alarm ToEntity()
     {
-        AlarmType alarmType = AlarmType.HIGH;
-        if (Type.ToUpper() == "LOW")
+        AlarmType alarmType = AlarmType.Bellow;
+        if (Type.ToUpper() == "ABOVE")
         {
-            alarmType = AlarmType.LOW;
+            alarmType = AlarmType.Above;
         }
         return new Alarm()
         {

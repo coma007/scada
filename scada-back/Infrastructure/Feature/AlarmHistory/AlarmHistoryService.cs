@@ -1,5 +1,6 @@
 using scada_back.Api.WebSocket;
 using scada_back.Infrastructure.Feature.Alarm;
+using scada_back.Infrastructure.Feature.Alarm.Enumeration;
 
 namespace scada_back.Infrastructure.Feature.AlarmHistory;
 
@@ -53,8 +54,7 @@ public class AlarmHistoryService : IAlarmHistoryService
     public IEnumerable<AlarmHistoryRecordDto> AlarmIfNeeded(string tagName, double value)
     {
         IEnumerable<AlarmDto> alarms = _alarmService.GetInvoked(tagName, value)
-            .OrderByDescending(a => a.Type)
-            .ThenByDescending(a => a.AlarmPriority);
+            .OrderByDescending(a => a.AlarmPriority);
         List<AlarmHistoryRecordDto> alarmRecords = new List<AlarmHistoryRecordDto>();
 
         foreach (var alarm in alarms)
@@ -64,7 +64,7 @@ public class AlarmHistoryService : IAlarmHistoryService
                 AlarmName = alarm.AlarmName, 
                 Timestamp = DateTime.Now, 
                 TagValue = value,
-                Message = EvaluateMessage(tagName, alarm.Limit, value)
+                Message = EvaluateMessage(tagName,  value, alarm)
             };
             Create(newRecord);
             alarmRecords.Add(newRecord);
@@ -73,13 +73,8 @@ public class AlarmHistoryService : IAlarmHistoryService
         return alarmRecords;
     }
 
-    private string EvaluateMessage(string tagName, double alarmLimit, double tagValue)
+    private string EvaluateMessage(string tagName,  double tagValue, AlarmDto alarm)
     {
-        string relation = "lower";
-        if (alarmLimit <= tagValue)
-        {
-            relation = "higher";
-        }
-        return $"Value of tag {tagName} ({tagValue}) is critically {relation} than limit ({alarmLimit})";
+        return $"Value of {tagName} ({tagValue}) is critically {alarm.Type.ToLower()} limit ({alarm.Limit})";
     }
 }

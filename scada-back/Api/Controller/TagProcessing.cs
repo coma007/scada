@@ -59,7 +59,7 @@ public class TagProcessing : ControllerBase
 
     
     [HttpPost(Name = "CreateTagHistoryRecord")]
-    public ActionResult<TagHistoryRecordDto> CreateTagRecord([FromBody] TagHistoryRecordDto tagRecord)
+    public ActionResult CreateTagRecord([FromBody] TagHistoryRecordDto tagRecord)
     {
         _tagHistoryService.Create(tagRecord);
         return Ok();
