@@ -45,6 +45,8 @@ const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any,
       alarms.push(newAlarm);
       setAlarms(alarms);
       setErrorMessage('');
+      setIsAddingActive(false);
+      setNewAlarm(new Alarm('', 0, 0, '', props.selectedTag.tagName));
     } catch (error: any) {
       setErrorMessage(error.message);
     }
@@ -146,8 +148,8 @@ const AllAlarmsOfTagModal = (props: { showModal: boolean, handleCloseModal: any,
             {alarms.map((alarm, index) => (
               <tr key={index}>
                 <td>{alarm.alarmName}</td>
-                <td>{alarm.type}</td>
                 <td>{alarm.alarmPriority}</td>
+                <td>{alarm.type}</td>
                 <td>{alarm.limit}</td>
                 <td>
                   <Button variant="danger" size="sm" onClick={() => handleRemoveAlarm(alarm)}>

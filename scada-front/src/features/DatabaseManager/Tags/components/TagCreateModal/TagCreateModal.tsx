@@ -220,7 +220,7 @@ const TagCreateModal = (props: { showModal: boolean, handleCloseModal: any }) =>
                         - SD for AI signal takes addresses from 0 to 9. <br />
                         (sin: 0, 1, 2; cos: 3, 4, 5; ramp: 6, 7, 8, 9) <br />
                         - SD for DI signal takes addresses from 10 to 99. <br />
-                        - RTD for AI signal takes addresses from 100 and above. <br />
+                        - RTD for AI signal takes addresses from 100 to 119. <br />
                     </small>
                 </Form>
             </Modal.Body>
