@@ -47,7 +47,7 @@ const LoginComponent: React.FC = () => {
                         onChange={(event) => setPassword(event.target.value)}
                     />
                 </Form.Group>
-                <Button variant="primary" type="submit" style={{ marginTop: '10px' }}>
+                <Button variant="primary" type="submit" className={style.loginButton}>
                     Log in
                 </Button>
             </Form>
