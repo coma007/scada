@@ -101,7 +101,7 @@ const AllTagsPage: React.FC = () => {
 
             <TagList
                 tags={tags}
-                viewOnly={true}
+                viewOnly={false}
                 handleOpenAlarmsModal={handleOpenAlarmsModal}
                 handleOpenDetailsModal={handleOpenDetailsModal}
                 handleRemoveTag={handleRemoveTag}
