@@ -128,6 +128,8 @@ namespace scada_core.TagProcessing
         {
             string tagName = tag.Key;
             var tagAttributes = tag.Value;
+            List<object> driverProperties = _service.GetDriverStateUrl((int)tagAttributes["ioAddress"]);
+            _service.CreateTagRecord(tagName, (double)driverProperties[1]);
             Console.WriteLine(_logTag + $"Processed Tag: {tagName}");
         }
 

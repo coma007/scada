@@ -28,9 +28,22 @@ namespace scada_core.TagProcessing
             return _client.CreateTagRecord(newRecord);
         }
         
-        public   JToken  GetDriverStateUrl(int ioAddress)
+        public    List<object>  GetDriverStateUrl(int ioAddress)
         {
-            return _client.GetDriverState(ioAddress);
+            return ExtractDriverStateProperties(_client.GetDriverState(ioAddress));
+        }
+        
+        private List<object> ExtractDriverStateProperties(JToken driverState)
+        {
+            List<object> driverProperties = new List<object>();
+
+                string? driverAddress = driverState["ioAddress"]?.ToString();
+                double driverValue = driverState["value"]!.ToObject<double>();
+                
+                driverProperties.Add(driverAddress);
+                driverProperties.Add(driverValue);
+
+            return driverProperties;
         }
         
         private Dictionary<string, Dictionary<string, object>> ExtractTagsProperties(JToken analogTags)
