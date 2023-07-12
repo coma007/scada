@@ -16,15 +16,15 @@ const GraphComponent = (props: { selectedTag: any }) => {
     const [data, setData] = useState<{ labels: any, datasets: any } | undefined>(undefined);
     const [graphData, setGraphData] = useState<({value: number|null, timestamp: string | null})[]>([])
     const [socket, setSocket] = useState<WebSocket | null>(null);
-    const [tagName, setTagName] =  useState<string>("");
-    
+    const [tagName, setTagName] = useState<string>("");
+
     useEffect(() => {
         return WebSocketService.createSocket(setSocket);
     }, []);
-    
+
     const processValue = (message: any) => {
         //console.log(message);
-        let newTagValue : TagHistoryRecord = new TagHistoryRecord(message.TagName, message.Timestamp, message.TagValue);
+        let newTagValue: TagHistoryRecord = new TagHistoryRecord(message.TagName, message.Timestamp, message.TagValue);
         if (newTagValue.tagName === tagName) {
             let newData = [...graphData, {value: newTagValue.tagValue, timestamp: formatTime(newTagValue.timestamp)}]
             newData.shift()
@@ -32,9 +32,9 @@ const GraphComponent = (props: { selectedTag: any }) => {
             setGraphData(newData)
         }
     }
-    
+
     useEffect(() => {
-    WebSocketService.defineSocket(socket, "NewTagRecordCreated", processValue);
+        WebSocketService.defineSocket(socket, "NewTagRecordCreated", processValue);
     }, [socket]);
 
     const getLastData = (data: TagHistoryRecord[]) : ({value: number | null, timestamp: string | null})[] => {
@@ -85,17 +85,17 @@ const GraphComponent = (props: { selectedTag: any }) => {
     }
 
 
-    useEffect(()=>{
+    useEffect(() => {
         if (socket) {
             socket.onmessage = async (event) => {
-                let message : string = await event.data.text();
+                let message: string = await event.data.text();
                 let tokens = message.split("=>");
                 message = JSON.parse(tokens[1]);
                 console.log('Received message:', message);
                 processValue(message)
             }
         }
-    },[graphData, tagName])
+    }, [graphData, tagName])
 
     useEffect(() => {
         console.log(props.selectedTag)
@@ -151,14 +151,17 @@ const GraphComponent = (props: { selectedTag: any }) => {
 
     return (
         <div className={style.card}>
+            Visualization ({props.selectedTag.tagName})
             <CDBContainer>
                 {data !== undefined &&
-                    <Line data={data} options={{ responsive: true, scales: {
-                        y : {
-                            suggestedMin: props.selectedTag.range.min,
-                            suggestedMax: props.selectedTag.range.max
+                    <Line data={data} options={{
+                        responsive: true, scales: {
+                            y: {
+                                suggestedMin: props.selectedTag.range.min,
+                                suggestedMax: props.selectedTag.range.max
+                            }
                         }
-                    } }} height={"300px"} />
+                    }} height={"300px"} />
                 }
             </CDBContainer>
         </div>

@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthGuard } from './GuardedRoute';
+import { AuthGuard, NonAuthGuard } from './GuardedRoute';
 import LoginComponent from '../features/DatabaseManager/Login/components/LoginComponent/LoginComponent';
 import AllTagsPage from '../features/DatabaseManager/Tags/pages/AllTagsPage/AllTagsPage';
 import TrendingPage from '../features/Trending/pages/TrendingPage';
@@ -11,7 +11,9 @@ const Router = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route index element={<LoginComponent />} />
+                <Route element={<NonAuthGuard />}>
+                    <Route index element={<LoginComponent />} />
+                </Route>
                 <Route element={<AuthGuard />}>
                     <Route path="/database-manager" element={<AllTagsPage />} />
                     <Route path="/trending" element={<TrendingPage />} />

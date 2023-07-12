@@ -6,14 +6,16 @@ import TrendingPage from './features/Trending/pages/TrendingPage';
 import AllTagsPage from './features/DatabaseManager/Tags/pages/AllTagsPage/AllTagsPage';
 import LoginComponent from './features/DatabaseManager/Login/components/LoginComponent/LoginComponent';
 import Router from './routes/Router';
+import { useEffect } from 'react';
 
 
 function App() {
+
   return (
-    <div>
+    < div >
       <Menu></Menu>
       <Router></Router>
-    </div>
+    </ div >
   );
 }
 
