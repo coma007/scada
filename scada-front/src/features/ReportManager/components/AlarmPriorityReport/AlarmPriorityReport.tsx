@@ -55,7 +55,7 @@ const AlarmPriorityReport = () => {
         if (selectedPriority !== undefined) {
             // API request here ...
             let alarms = await ReportService.getAlarmHistoryPriority(selectedPriority);
-            setAlarmRecords(alarms)
+            setAlarmRecords([...alarms])
         }
     }
 

@@ -1,6 +1,7 @@
 const url = "http://localhost:7109/Api"
 
 export const GET_TAGS = () => url + "/Tag/GetAll";
+export const GET_TAG = () => url + "/DatabaseManager/GetTag";
 export const DELETE_TAG = () => url + "/DatabaseManager/DeleteTag";
 export const UPDATE_TAG_SCAN = () => url + "/DatabaseManager/UpdateTagScan";
 export const UPDATE_TAG_OUTPUT_VALUE = () => url + "/DatabaseManager/UpdateTagOutputValue";
@@ -19,3 +20,6 @@ export const WEBSOCKET = () => "ws://localhost:7109/Api/Websocket";
 
 export const ALARM_HISTORY_TIMESPAN = () => url + "/ReportManager/GetAlarmsBetween"
 export const ALARM_HISTORY_PRIORITY = () => url + "/ReportManager/GetAlarmsByPriority"
+export const TAG_HISTORY_TIMESPAN = () => url + "/ReportManager/GetTagValuesBetween"
+export const TAG_HISTORY_TYPE = () => url + "/ReportManager/GetLastTagValues"
+export const TAG_HISTORY = () => url + "/ReportManager/GetAllTagValuesByTagName"

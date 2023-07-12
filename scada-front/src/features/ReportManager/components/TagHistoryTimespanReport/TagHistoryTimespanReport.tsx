@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import TimespanFilter from '../../../../components/TimespanFilter/TimespanFilter';
 import TagRecordsList from '../../../../components/TagRecordsList/TagRecordsList';
 import { TagHistoryRecord } from '../../../../types/TagHistoryRecord';
+import { ReportService } from '../../services/ReportsService';
 
 const TagHistoryTimespanReport = () => {
     const [tagRecords, setTagRecords] = useState<TagHistoryRecord[]>([]);
@@ -34,21 +35,22 @@ const TagHistoryTimespanReport = () => {
         ),
     ];
 
-    useEffect(() => {
-        setTagRecords(dummyTagRecords);
-    }, []);
+    // useEffect(() => {
+    //     setTagRecords(dummyTagRecords);
+    // }, []);
 
 
-    const handleSubmit = (dateFrom: Date, dateTo: Date) => {
+    const handleSubmit = async (dateFrom: Date, dateTo: Date) => {
 
-        // Api request here
-        const filteredAlarmRecords = dummyTagRecords.filter((record) => {
-            return (
-                record.timestamp >= dateFrom && record.timestamp <= dateTo
-            );
-        });
+        let tagValues = await ReportService.getTagHistoryTimespan(dateFrom, dateTo)
+        console.log(tagValues)
+        // const filteredAlarmRecords = dummyTagRecords.filter((record) => {
+        //     return (
+        //         record.timestamp >= dateFrom && record.timestamp <= dateTo
+        //     );
+        // });
 
-        setTagRecords(filteredAlarmRecords);
+        setTagRecords([...tagValues]);
     };
     return (
         <div>

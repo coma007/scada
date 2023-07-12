@@ -49,7 +49,7 @@ const AlarmHistoryTimespanReport = () => {
         // Api request here
         let data = await ReportService.getAlarmHistoryTimespan(dateFrom, dateTo)
         console.log(data)
-        setAlarmRecords(data)
+        setAlarmRecords([...data])
         // const filteredAlarmRecords = dummyAlarmRecords.filter((record) => {
         //     return (
         //         record.timestamp >= dateFrom && record.timestamp <= dateTo
