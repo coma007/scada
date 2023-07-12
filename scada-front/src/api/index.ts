@@ -15,3 +15,7 @@ export const DELETE_ALARM = () => url + "/DatabaseManager/DeleteAlarm";
 export const LOGIN = () => url + "/DatabaseManager/Login";
 
 export const WEBSOCKET = () => "ws://localhost:7109/Api/Websocket";
+
+
+export const ALARM_HISTORY_TIMESTAMP = () => url + "/ReportManager/GetAlarmsBetween"
+export const ALARM_HISTORY_PRIORITY = () => url + "/ReportManager/GetAlarmsByPriority"

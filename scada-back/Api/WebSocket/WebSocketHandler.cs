@@ -66,7 +66,15 @@ public class WebSocketHandler
             byte[] buffer = SerializeMessage(topic, message);
             foreach (WebSocket subscriber in topicSubscriptions[topic])
             {
-                await subscriber.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Binary, true, CancellationToken.None);
+                try
+                {
+                    await subscriber.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Binary, true,
+                        CancellationToken.None);
+                }
+                catch (Exception ex)
+                {
+                    continue;
+                }
             }
         }
     }
