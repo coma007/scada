@@ -28,8 +28,8 @@ export const ReportService = {
             }
         }).then(response => {
             console.log(response.data)
-            let alarm : Tag = response.data;
-            return alarm
+            let tag : Tag = response.data;
+            return tag
         }).catch(error => {
             console.log(error)
             throw new Error(error.response.data);
@@ -72,8 +72,8 @@ export const ReportService = {
                 endDateTime: dateTo
             }
         }).then(response => {
-            let alarms : TagHistoryRecord[] = response.data;
-            return alarms
+            let tags : TagHistoryRecord[] = response.data;
+            return tags
         }).catch(error => {
             console.log(error)
             throw new Error(error.response.data);
@@ -86,8 +86,8 @@ export const ReportService = {
                 signalType: signalType
             }
         }).then(response => {
-            let alarms : TagHistoryRecord[] = response.data;
-            return alarms
+            let tags : TagHistoryRecord[] = response.data;
+            return tags
         }).catch(error => {
             console.log(error)
             throw new Error(error.response.data);
@@ -100,8 +100,8 @@ export const ReportService = {
                 tagName: tagName
             }
         }).then(response => {
-            let alarms : TagHistoryRecord[] = response.data;
-            return alarms
+            let tags : TagHistoryRecord[] = response.data;
+            return tags
         }).catch(error => {
             console.log(error)
             throw new Error(error.response.data);

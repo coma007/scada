@@ -18,6 +18,7 @@ export const LOGIN = () => url + "/DatabaseManager/Login";
 
 export const WEBSOCKET = () => "ws://localhost:7109/Api/Websocket";
 
+export const LATEST_VALUES = () => url + "/Trending/GetLatestInputScanValues"
 
 export const ALARM_HISTORY_TIMESPAN = () => url + "/ReportManager/GetAlarmsBetween"
 export const ALARM_HISTORY_PRIORITY = () => url + "/ReportManager/GetAlarmsByPriority"

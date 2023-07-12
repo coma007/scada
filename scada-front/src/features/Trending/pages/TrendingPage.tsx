@@ -4,6 +4,7 @@ import LatestAlarmsPage from '../../AlarmDisplay/LatestAlarms/pages/LatestAlarms
 import GraphComponent from '../components/GraphComponent/GraphComponent'
 import { Tag, AnalogInputTag, AnalogOutputTag, DigitalInputTag, DigitalOutputTag } from '../../../types/Tag'
 import { TagHistoryRecord } from '../../../types/TagHistoryRecord'
+import { TrendingService } from '../services/TrendingService'
 
 const TrendingPage = () => {
     const [tagRecords, setTagRecords] = useState<TagHistoryRecord[]>([]);
@@ -68,8 +69,14 @@ const TrendingPage = () => {
         ),
     ];
 
+    const fetchData = async () => {
+        let tagValues = await TrendingService.getLatestInput();
+        setTagRecords([...tagValues])
+    }
+
     useEffect(() => {
-        setTagRecords(dummyTagRecords);
+        fetchData();
+        //setTagRecords(dummyTagRecords);
     }, []);
 
     useEffect(() => {
