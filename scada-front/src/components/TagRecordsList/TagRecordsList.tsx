@@ -6,6 +6,7 @@ import AlarmRecordsList from '../AlarmRecordsList/AlarmRecordsList';
 import TagDetailsModal from '../TagDetailsModal/TagDetailsModal';
 import { Tag } from '../../types/Tag';
 import style from './TagRecordsList.module.css';
+import { ReportService } from '../../features/ReportManager/services/ReportsService';
 
 const TagRecordsList = (props: { tagRecords: TagHistoryRecord[], setTagRecords: any, viewGraph?: boolean, handleViewGraph?: any }) => {
 
@@ -13,15 +14,19 @@ const TagRecordsList = (props: { tagRecords: TagHistoryRecord[], setTagRecords: 
     const [selectedTag, setSelectedTag] = React.useState<Tag | undefined>();
     const [showDetailsModal, setShowDetailsModal] = React.useState(false);
 
-    const handleOpenDetailsModal = (record: TagHistoryRecord) => {
-        setSelectedRecord(record);
+    const handleOpenDetailsModal = async (record: TagHistoryRecord) => {
         // find tag based on tagName in record
         // setSelectedTag(...)
+        let tag = await ReportService.getTag(record.tagName);
+        setSelectedTag(tag)
+        setSelectedRecord(record);
         setShowDetailsModal(true);
     };
 
     const handleCloseDetailsModal = () => {
         setShowDetailsModal(false);
+        setSelectedRecord(undefined);
+        setSelectedTag(undefined);
     };
 
 

@@ -5,6 +5,7 @@ import { AlarmHistoryRecord } from '../../types/AlarmHistoryRecord';
 import { formatDate } from '../../utils/DateFormatter';
 import { Alarm } from '../../types/Alarm';
 import style from './AlarmRecordsList.module.css';
+import { ReportService } from '../../features/ReportManager/services/ReportsService';
 
 const AlarmRecordsList = (props: { alarmRecords: AlarmHistoryRecord[], setAlarmRecords: any, canSnooze: boolean, snoozeCallback?: any }) => {
 
@@ -12,15 +13,18 @@ const AlarmRecordsList = (props: { alarmRecords: AlarmHistoryRecord[], setAlarmR
     const [selectedAlarm, setSelectedAlarm] = React.useState<Alarm | undefined>();
     const [showDetailsModal, setShowDetailsModal] = React.useState(false);
 
-    const handleOpenDetailsModal = (record: AlarmHistoryRecord) => {
-        setSelectedRecord(record);
+    const handleOpenDetailsModal = async (record: AlarmHistoryRecord) => {
         // find alarm from alarmName in record
-        // setSelectedAlarm(...)
+        let alarm = await ReportService.getAlarm(record.alarmName);
+        setSelectedAlarm(alarm)
+        setSelectedRecord(record);
         setShowDetailsModal(true);
     };
 
     const handleCloseDetailsModal = () => {
         setShowDetailsModal(false);
+        setSelectedRecord(undefined);
+        setSelectedAlarm(undefined);
     };
 
 

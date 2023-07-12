@@ -1,3 +1,4 @@
+using DnsClient.Protocol;
 using scada_back.Api.WebSocket;
 using scada_back.Infrastructure.Feature.Alarm;
 using scada_back.Infrastructure.Feature.AlarmHistory;
@@ -44,8 +45,14 @@ public class TagHistoryService : ITagHistoryService
     public IEnumerable<TagHistoryRecordDto> GetLatest(string signalType)
     {
         IEnumerable<string> tagNames = _tagService.GetAllNames(signalType);
-        IEnumerable<TagHistoryRecord> records  = _repository.GetLatest(tagNames).Result;
-        return records.Select(record => record.ToDto());
+        List<TagHistoryRecordDto> recordsDto = new List<TagHistoryRecordDto>();
+        foreach (string tagName in tagNames)
+        {
+            TagHistoryRecord record = _repository.GetLastForTag(tagName).Result;
+            if (record != null) recordsDto.Add(record.ToDto());
+        }
+        //IEnumerable<TagHistoryRecord> records  = _repository.GetLatest(tagNames).Result;
+        return recordsDto.OrderByDescending(record => record.Timestamp);
     }
 
     public IEnumerable<TagHistoryRecordDto> GetLatestInputScan()

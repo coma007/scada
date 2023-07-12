@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import AlarmRecordsList from '../../../../components/AlarmRecordsList/AlarmRecordsList';
 import { AlarmHistoryRecord } from '../../../../types/AlarmHistoryRecord';
 import TimespanFilter from '../../../../components/TimespanFilter/TimespanFilter';
+import { ReportService } from '../../services/ReportsService';
 const AlarmHistoryTimespanReport = () => {
     const [alarmRecords, setAlarmRecords] = useState<AlarmHistoryRecord[]>([]);
 
@@ -38,21 +39,24 @@ const AlarmHistoryTimespanReport = () => {
         ),
     ];
 
-    useEffect(() => {
-        setAlarmRecords(dummyAlarmRecords);
-    }, []);
+    // useEffect(() => {
+    //     setAlarmRecords(dummyAlarmRecords);
+    // }, []);
 
 
-    const handleSubmit = (dateFrom: Date, dateTo: Date) => {
+    const handleSubmit = async (dateFrom: Date, dateTo: Date) => {
 
         // Api request here
-        const filteredAlarmRecords = dummyAlarmRecords.filter((record) => {
-            return (
-                record.timestamp >= dateFrom && record.timestamp <= dateTo
-            );
-        });
+        let data = await ReportService.getAlarmHistoryTimespan(dateFrom, dateTo)
+        console.log(data)
+        setAlarmRecords([...data])
+        // const filteredAlarmRecords = dummyAlarmRecords.filter((record) => {
+        //     return (
+        //         record.timestamp >= dateFrom && record.timestamp <= dateTo
+        //     );
+        // });
 
-        setAlarmRecords(filteredAlarmRecords);
+        // setAlarmRecords(filteredAlarmRecords);
     };
 
     return (
