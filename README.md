@@ -140,7 +140,7 @@ The console application ([scada-core](https://github.com/coma007/scada/tree/main
 
 ### Running the React App (scada-front)
 
-The React application ([scada-front](https://github.com/coma007/scada/tree/main/scada-front) serves as the frontend for the project. Follow these steps to run the React app:
+The React application ([scada-front](https://github.com/coma007/scada/tree/main/scada-front)) serves as the frontend for the project. Follow these steps to run the React app:
 1. Navigate to the scada-core directory:
    ```bash
    cd scada-front
