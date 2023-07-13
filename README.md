@@ -36,9 +36,9 @@ The application consists of three main layers:
    * **Driver Service** - Encapsulates two concrete drivers: the Simulation Driver and the Real Time Driver. The **Simulation Driver** generates various types of signals, such as sinusoidal, cosinusoidal, ramp, and digital (0 and 1). It simulates different signal patterns commonly found in industrial processes. The **Real Time Driver** generates values within the range of the minimum and maximum capabilities of the Remote Terminal Unit (RTU).  It emulates real-time data from physical devices or systems. The driver inputs are sent to the **Batch Mediator**, which facilitates batch inputs to the database through the API layer. The Mediator acts as an intermediary between the drivers and the database, facilitating batch inputs through the API layer. When the drivers generate new values, they notify the Mediator, which stores the values. The writings remain in the Mediator until they reach a specified limit. At that point, the Mediator sends them to the backend via the Driver Service to be saved as a batch, rather than individual writes. Afterward, the threads refill the Mediator, and the process repeats.
 
 
-Diagram bellow shows application arhitecture. [Click here](https://github.com/coma007/scada/blob/documentation/docs/diagram.png) to download the image.
+Diagram bellow shows application arhitecture. [Click here](https://github.com/coma007/scada/blob/main/docs/diagram.png) to download the image.
 
-![poster](https://github.com/coma007/scada/blob/documentation/docs/diagram.png)
+![poster](https://github.com/coma007/scada/blob/main/docs/diagram.png)
 
 
 ## Prerequisites
@@ -74,7 +74,7 @@ This will install React 18.2.0 and its dependencies in your project.
 
 Before running the applications, you'll need to configure some settings by following the steps below:
 
-1. Download the [appsettings.json](https://github.com/coma007/scada/blob/documentation/docs/config_files/appsettings.json) file and [App.config](https://github.com/coma007/scada/blob/documentation/docs/config_files/App.config) file from the repository.
+1. Download the [appsettings.json](https://github.com/coma007/scada/blob/main/docs/config_files/appsettings.json) file and [App.config](https://github.com/coma007/scada/blob/main/docs/config_files/App.config) file from the repository.
 2. Place the downloaded _appsettings.json_ file in the scada-back directory.
 3. Place the downloaded _App.config_ file in the scada-core directory.
 4. Open the configuration files and update the following placeholders with your actual values:
