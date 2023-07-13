@@ -4,7 +4,7 @@ SCADA-like monitoring app. (Project for course SCADA Software)
 
 ## Authors
 
-- [Nemanja Majstorović](https://github.com/Cone3214)
+- [Nemanja Majstorović](https://github.com/Nemanja3214)
 - [Milica Sladaković](https://github.com/coma007)
 - [Nemanja Dutina](https://github.com/eXtremeNemanja)
 
